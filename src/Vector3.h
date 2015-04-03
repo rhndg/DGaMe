@@ -1,16 +1,6 @@
-/**
- *  COP290 ScreenSaverApp
-    Vector3.h
-    Purpose: Class to store ball's vector and co-ordinates vectors
-
-    @author Abhishek Gupta
-    @author Anmol Mahajan
-    @author Rohan Das
-    @version 1.0 25/01/15
- */
-
 #ifndef VECTOR3_H
 #define VECTOR3_H
+
 #include <bits/stdc++.h>
 
 class Vector3 {

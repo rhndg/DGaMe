@@ -5,7 +5,7 @@
 #include "network.h"
 #include "player.h"
 #include "bullet.h"
-
+#include "Vector3.h"
 
 int main(int argc , char** argv ){
 
