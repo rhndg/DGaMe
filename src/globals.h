@@ -1,8 +1,7 @@
-#ifndef AI_H
-#define AI_H
+#ifndef GLOBAL_H
+#define GLOBAL_H
 
 #include <bits/stdc++.h>
-#include "globals.h"
 #include "game_map.h"
 
 using namespace std;
