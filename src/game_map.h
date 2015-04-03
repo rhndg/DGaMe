@@ -6,7 +6,7 @@
 #include "bullet.h"
 #include "globals.h"
 #include "Vector3.h"
-
+#include "grid.h"
 using namespace std;
 
 #endif
