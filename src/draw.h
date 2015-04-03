@@ -6,7 +6,9 @@
 #include <GL/glu.h>
 #include "globals.h"
 #include "game_map.h"
+#include "player.h"
+#include "bullet.h"
 
 using namespace std;
-
+ 
 #endif
