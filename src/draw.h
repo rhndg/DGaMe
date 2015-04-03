@@ -4,7 +4,6 @@
 #include <bits/stdc++.h>
 #include <GL/glut.h>
 #include <GL/glu.h>
-#include "globals.h"
 #include "game_map.h"
 #include "player.h"
 #include "bullet.h"
