@@ -3,7 +3,7 @@
 
 #include <bits/stdc++.h>
 #include <pthread.h>
-#include "network.h"
+#include "../network/network.h"
 
 using namespace std;
 

@@ -2,7 +2,7 @@
 #define PLAYER_H
 
 #include <bits/stdc++.h>
-#include "Vector3.h"
+#include "../vector/Vector3.h"
 
 using namespace std;
 

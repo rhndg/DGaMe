@@ -10,8 +10,8 @@
 #include <sys/types.h>
 #include <netinet/in.h>
 #include <resolv.h>
-#include "globals.h"
-#include "game_map.h"
+#include "../main/globals.h"
+#include "../game_map/game_map.h"
 
 using namespace std;
 

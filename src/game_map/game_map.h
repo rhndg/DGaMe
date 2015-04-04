@@ -2,10 +2,10 @@
 #define GAME_MAP_H
 
 #include <bits/stdc++.h>
-#include "player.h"
-#include "bullet.h"
-#include "Vector3.h"
-#include "grid.h"
+#include "../player/player.h"
+#include "../bullet/bullet.h"
+#include "../vector/Vector3.h"
+#include "../grid/grid.h"
 
 using namespace std;
 

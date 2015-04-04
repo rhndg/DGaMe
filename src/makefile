@@ -31,7 +31,7 @@ thread_functions.o: main/thread_functions.h main/thread_functions.cpp network.o
 
 
 clean:
-	rm -f *.o
+	rm -f *.o Game
 
 join_game: all
 	./Game join $(PEER)
