@@ -1,7 +1,7 @@
 game_map_h = game_map/game_map.h game_map/ai.h game_map/draw.h game_map/update.h 
 game_map_cpp = game_map/game_map.cpp game_map/draw.cpp game_map/update.cpp
 
-
+  
 CXX = g++ -std=c++11 -w
 DRAWFLAGS = -lGL -lGLU -lglut
 THREADFLAGS = -lpthread
