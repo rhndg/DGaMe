@@ -16,6 +16,18 @@ public:
 	 */
 	Vector3(float x_,float y_,float z_);
 	/**
+	 * @brief initialized by zero vector
+	 */
+	Vector3();
+	/**
+	 * @brief set the coordinates of the vector
+	 *  
+	 * @param x_ x coordinate
+	 * @param y_ y coordinate
+	 * @param z_ z coordinate
+	 */
+	void set(float x_,float y_,float z_);
+	/**
 	 * @brief Vector Addition of 2 vectors
 	 * @details Adds the vector passed as argument to the function to this vector without updating it
 	 * 
@@ -63,6 +75,7 @@ public:
 	 * @return Cross product of type Vector3 of this vector with the passed vector 
 	 */
 	Vector3 cross(Vector3 V);
+	
 };
 
 #endif

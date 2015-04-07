@@ -5,5 +5,13 @@
 #include "../vector/Vector3.h"
 
 using namespace std;
+class player{
+private:
+
+public:
+	player();
+	~player();
+
+};
 
 #endif
