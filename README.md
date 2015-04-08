@@ -2,5 +2,9 @@
 it z D Gaaaimee
 
 ##Instructions##
-* make join_game PEER="IP:Port"
-* make host_game PORT="Port"
+* make join PEER="IP:Port"
+* make host
+
+##Status##
+* Currently only "free for all" game mode is being implented 
+* other game modes comming soon

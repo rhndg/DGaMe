@@ -1,4 +1,3 @@
-game_map_h = game_map/game_map.h game_map/ai.h game_map/draw.h game_map/update.h 
 game_map_cpp = game_map/game_map.cpp game_map/draw.cpp game_map/update.cpp
 
   
@@ -20,7 +19,7 @@ bullet.o: bullet/bullet.h bullet/bullet.cpp vector.o
 	$(CXX) -c bullet/bullet.cpp
 grid.o: grid/grid.h grid/grid.cpp vector.o
 	$(CXX) -c grid/grid.cpp
-game_map.o: $(game_map_h) $(game_map_cpp) player.o grid.o bullet.o vector.o
+game_map.o: game_map/game_map.h $(game_map_cpp) player.o grid.o bullet.o vector.o
 	$(CXX) $(DRAWFLAGS) -c $(game_map_cpp)
 globals.o: main/globals.h main/globals.cpp game_map.o vector.o
 	$(CXX) $(DRAWFLAGS) -c main/globals.cpp
@@ -33,11 +32,11 @@ thread_functions.o: main/thread_functions.h main/thread_functions.cpp network.o
 clean:
 	rm -f *.o Game
 
-join_game: all
+join: all
 	./Game join $(PEER)
 
-host_game: all
-	./Game host $(PORT)
+host: all
+	./Game host
 
 debug:
 	

@@ -16,7 +16,7 @@ public:
 	~grid();
 	Vector3* vertex;
 	Vector3* draw_vertex;
-	vector<player> Players;
+	vector<player*> Players;
 	vector<bullet> Bullets;
 	int* neigh;
 };
