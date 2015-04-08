@@ -23,9 +23,8 @@ public:
 	vector<player> All_Players;		//All_Players[player_id] gives player info
 	vector<key_tap> KeyPressed;		//updated by keypad func
 	void draw();
-	vector<key_tap> AI (int player_id);
+	vector<key_tap>AI(int player_id);
 	void update(vector< vector<key_tap> > playerIn);
-	
 };
 
 #endif
