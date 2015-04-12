@@ -11,6 +11,7 @@
 #include "../grid/grid.h"
 
 using namespace std;
+
 class game_map{
 private:
 
@@ -19,13 +20,13 @@ public:
 	~game_map();
 	
 	enum key_tap{
-		up,down,left,right,rot_left,rot_right,shoot,skill
+		up,down,left,right,rot_left,rot_right,shoot_up,shoot_down,shoot_left,shoot_right,skill,nop
 	};
 	vector<grid> Map;				//all the grid instances
 	vector<player> All_Players;		//All_Players[player_id] gives player info
 	vector<key_tap> KeyPressed;		//updated by keypad func
 	void draw();
-	vector<key_tap>AI(int player_id);
+	vector<key_tap>AI(int player_id,int movCount);
 	void update(vector< vector<key_tap> > playerIn);
 };
 
