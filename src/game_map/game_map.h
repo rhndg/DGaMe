@@ -2,6 +2,8 @@
 #define GAME_MAP_H
 
 #include <bits/stdc++.h>
+#include <GL/glut.h>
+#include <GL/glu.h>
 #include "../player/player.h"
 #include "../bullet/bullet.h"
 #include "../game_map/game_map.h"
