@@ -24,7 +24,7 @@ public:
 	void recovery();
 
 	//weaponry
-	void get_weapon(weapons weapon);
+	void get_weapon(int ID);
 
 	//change weapon
 	void toggle_weapon();
@@ -55,7 +55,9 @@ public:
 	int new_location(int move_up,int move_right);
 
 	void update(vector<key_tap> keys_pressed);
-	
+
+	~player();
+
 	int id;	
 	int group_id;				//for team play(0 for neutral)
 	int g_locate;	

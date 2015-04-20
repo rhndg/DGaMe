@@ -8,6 +8,14 @@
 #include "../effects/bullet_effect.h"
 
 using namespace std;
+class bullet{
+private:
+
+public:
+	bullet();
+	~bullet();
+
+};
 
 class bullet{
 public: 

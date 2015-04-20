@@ -450,4 +450,6 @@ void player::update(vector<key_tap> keys_pressed)
 	}	
 }
 
+player::~player(){
 	
+}

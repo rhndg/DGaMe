@@ -13,7 +13,6 @@
 using namespace std;
 
 class game_map{
-
 private:
 
 public:
@@ -26,9 +25,8 @@ public:
 	vector<weapons> Weapons;
 	vector<boost> Boosts;
 	vector<key_tap> KeyPressed;		//updated by keypad func
-	vector<key_tap> AI(int player_id);
 	void draw();
-	void update(vector< vector<key_tap> > playerIn);
+	vector<key_tap>AI(int player_id,int movCount);
 };
 
 #endif

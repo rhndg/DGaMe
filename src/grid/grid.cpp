@@ -19,7 +19,7 @@ Vector3 grid::set_normal(Vector3* f)
 	return first_edge.setlen(1.0);
 }
 
-int check_neighbour(grid* g)
+int grid::check_neighbour(grid* g)
 {
 	int index=-1;
 	for(int i=0;i<8;i++){
@@ -29,10 +29,24 @@ int check_neighbour(grid* g)
 	return index;
 }
 
-float distance_from_surface(Vector3 v)
+float grid::distance_from_surface(Vector3 v)
 {
 	Vector3 pos=v.add((vertex[0]).neg());
-	return (pos.dot(normal)).mod();	
+	return (pos.dot(normal)).mod();
+}
+
+grid::grid (float* f,int* n){
+	vertex = new Vector3[4];
+	draw_vertex = new Vector3[4];
+	neigh = new int[4];
+	vertex[0].set(f[0],f[1],f[2]);
+	vertex[1].set(f[3],f[4],f[5]);
+	vertex[2].set(f[6],f[7],f[8]);
+	vertex[3].set(f[9],f[10],f[11]);
+	neigh[0] = n[0];
+	neigh[1] = n[1];
+	neigh[2] = n[2];
+	neigh[3] = n[3];
 }
 
 grid::~grid(){
