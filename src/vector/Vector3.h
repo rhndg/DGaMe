@@ -75,7 +75,8 @@ public:
 	 * @return Cross product of type Vector3 of this vector with the passed vector 
 	 */
 	Vector3 cross(Vector3 V);
-	
+
+	Vector3 rotate(Vector3 axis,float rad);
 };
 
 #endif

@@ -18,16 +18,15 @@ private:
 public:
 	game_map();
 	~game_map();
-	
-	enum key_tap{
-		up,down,left,right,rot_left,rot_right,shoot_up,shoot_down,shoot_left,shoot_right,skill,nop
-	};
 	vector<grid> Map;				//all the grid instances
 	vector<player> All_Players;		//All_Players[player_id] gives player info
+	vector<bots> All_Bots;			
+	vector<bullet> Bullets;
+	vector<weapons> Weapons;
+	vector<boost> Boosts;
 	vector<key_tap> KeyPressed;		//updated by keypad func
 	void draw();
 	vector<key_tap>AI(int player_id,int movCount);
-	void update(vector< vector<key_tap> > playerIn);
 };
 
 #endif
