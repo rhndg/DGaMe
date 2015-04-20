@@ -33,13 +33,12 @@ private:
 																		//
 	game_map* dGame
 
-	map< int,vector <sockaddr_in> > address;					//socket addressed of given id
+	map< int,struct sockaddr_in> address;								//socket addressed of given id
 	map< int,bool > isPeer;										//current connected peers
 	map< int,vector<game_map::key_tap> > syncData;				//recieved data
 	map< pair<int,int>,vector<char> > gameData;					//recieved data for recon to be sent data for rec data
-	map< int,vector <int> > syncReqs;						//requested data of players by the given id
-	map< int,vector <int,int> > gameReqs;					//requested data of players by the given id
-
+	map< int,vector <int> > syncReqs;							//requested data of players by the given id
+	map< int,vector <int,int> > gameReqs;						//requested data of players by the given id
 	vector<pair<int,vector<char> > > syncBuf;					//contains sync data
 	vector<vector<char> > gameBuf;
 	int delay;													//time delay for message to reach
@@ -50,15 +49,17 @@ private:
 	void encodeSync(vector<game_map::key_tap> moves);
 	void encodeSyncReqs();
 	void encodeGameReqs();
-	void encodeGame(int forId,game_map* aGame);						//encodes game state		
+	void encodeGame(int forId);										//encodes game state		
 	void decodeSync(vector<char> pack);								//analyzes recieved packets and updates state
 	void decodeGame(vector<char> pack,game_map* aGame);				//updates agame with data
 	void decodeSyncReq(vector<char> pack);
 	void decodeGameReq();
 
 	void sendSyncBuf();												//send contents of the buffer
+	void decodeSyncBuf();											//can contain sync data ,sync req, control
+	void decodeGameBuf();											//can contain game data ,game req
 	void sendGameBuf();
-	void recBuf();													//loads all data from socket to buffer wih int field -1
+	void recBuf();														//session no checked here loads all data from socket to buffer wih int field -1 
 	void wait();													//wait for time delay
 	void incCounter();												//increaments counters
 	void clearTemp();												//clears temp data for restarting process

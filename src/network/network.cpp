@@ -19,14 +19,14 @@ vector<char> Network::bufInit(packType t,int packId,int packCount){
 	vector<char> buffer;
 	int x;
 	if (t!=controlPack)
-		x=dataSession/256;
-	else
-		x=controlSession/256;
-	buffer.push_back(((char)x);
-	if (t!=controlPack)
 		x=dataSession%256;
 	else
 		x=controlSession%256;
+	buffer.push_back(((char)x);
+	if (t!=controlPack)
+		x=dataSession/256;
+	else
+		x=controlSession/256;
 	buffer.push_back(((char)x);
 	buffer.push_back(((char)playerId));
 	buffer.push_back(((char)t));
@@ -42,7 +42,7 @@ vector<char> Network::bufInit(packType t,int packId,int packCount){
 }
 
 void Network::encodeSync(vector<game_map::key_tap> moves){
-	vector<char> buffer=bufInit(syncPack,0,1);
+	vector<char> buffer=bufInit(syncPack,0,3);
 	while(moves.size()<mvsLen) moves.push_back(nop);
 	buffer.push_back(((char)playerId));
 	for(int i = 0;i<mvsLen;i+=2){
@@ -59,7 +59,7 @@ void Network::encodeSync(vector<game_map::key_tap> moves){
 }
 
 void Network::encodeSyncAns(){
-	vector<char> temp=bufInit(syncPack,0,1),buffer;
+	vector<char> temp=bufInit(syncPack,1,3),buffer;
 	for(int j=1;j<=numPlayers;j++){
 		if(isPeer[j]){
 			reqIds=syncReqs[j];
@@ -91,7 +91,7 @@ void Network::encodeSyncReqs(){
 			residue.push_back(i);
 		}
 	}
-	vector<char> buffer = bufInit(syncReqPack,0,1);
+	vector<char> buffer = bufInit(syncReqPack,2,3);
 	for(int i=0;i!=residue.size();i++) buffer.push_back(((char)residue[i]));
 	residue.resize(packSize,((char)-1));
 	syncBuf.push_back(buffer);
@@ -121,4 +121,59 @@ void Network::decodeSyncReq(vector<char> pack){
 		syncReqs[fromPlayer].push_back(((int)pack[i]));
 	}
 }
+//playerid 2 , packid 4,5
+void decodeSyncBuf(){
+	map<pair<int,int>,bool>hist;
+	vector<char> buffer;
+	while(!syncBuf.empty()){
+		buffer=syncBuf.back();
+		syncBuf.pop_back();
+		int sender=((int)(buffer[2]+256)%256),
+		packID=((int)((buffer[4]+256)%256))*256+((int)((buffer[5]+256)%256));
+		if(!hist[pair<int,int>(sender,packID)]){
+			switch ((packType)buffer[3]){
+				case: syncPack
+					decodeSync(buffer);
+					break;
+				case: syncReqPack
+					decodeSyncReq(buffer);
+					break;
+				case: controlPack
+					//add ips etc etc
+					break;
+			}
+			hist[pair<int,int>(sender,packID)]=true;
+		}
+	}
+}
 
+int main(void) {
+    struct sockaddr_in si_me, si_other;
+    int s, i, blen, slen = sizeof(si_other);
+    char buf[BUFLEN];
+
+    s = socket(AF_INET, SOCK_DGRAM, IPPROTO_UDP);
+    if (s == -1)
+        die("socket");
+
+    memset((char *) &si_me, 0, sizeof(si_me));
+    si_me.sin_family = AF_INET;
+    si_me.sin_port = htons(1234);
+    si_me.sin_addr.s_addr = htonl(192.168.1.1);
+
+    if (bind(s, (struct sockaddr*) &si_me, sizeof(si_me))==-1)
+        die("bind");
+
+    int blen = recvfrom(s, buf, sizeof(buf), 0, (struct sockaddr*) &si_other, &slen);
+    if (blen == -1)
+       diep("recvfrom()");
+
+    printf("Data: %.*s \nReceived from %s:%d\n\n", blen, buf, inet_ntoa(si_other.sin_addr), ntohs(si_other.sin_port));
+
+    //send answer back to the client
+    if (sendto(s, buf, blen, 0, (struct sockaddr*) &si_other, slen) == -1)
+        diep("sendto()");
+
+    close(s);
+    return 0;
+}
