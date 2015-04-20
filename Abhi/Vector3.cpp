@@ -28,6 +28,10 @@ Vector3 Vector3::add(Vector3 V){
 	return Vector3(x+V.x,y+V.y,z+V.z);
 }
 
+Vector3 Vector3::sub(Vector3 V){
+	return Vector3(x-V.x,y-V.y,z-V.z);
+}
+
 Vector3 Vector3::neg(){
 	return Vector3(-x,-y,-z);
 }

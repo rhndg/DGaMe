@@ -28,47 +28,13 @@ GLfloat player_up_z = 1.0;
 GLdouble cube_size = 2.0;
 
 int num_frames = 0;
+int hitDuration = -1;
 
 spark* coll;
-image loadedImgs[7];
+image loadedImgs[11];
 
 sf::Sound sound;
 
-
-void drawSq(Vector3 tl, Vector3 bl, Vector3 br, Vector3 tr){
-	Vector3 edge1(tl.x-bl.x,tl.y-bl.y,tl.z-bl.z);
-	Vector3 edge2(br.x-bl.x,br.y-bl.y,br.z-bl.z);
-	Vector3 normal = edge1.cross(edge2);
-	normal.setlen(1);
-	Vector3 cam1(cam.x,cam.y,cam.z);
-	cam1.setlen(1);
-	//glNormal3d(normal.x, normal.y, normal.z);
-	
-	glColor3f(0.1,0.6,0.8);
-	//GLfloat cyan[] = {0.4f, 0.f, 1.0f, 1.f};
-	//GLfloat black[] = {0.0f, 0.0f, 0.0f, 1.f};
-	//glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, cyan);
-	// glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT, black);
-	// glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, black);
-	// glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT, black);
-	glBegin(GL_QUADS);
-	glVertex3f(tl.x,tl.y,tl.z);
-	glVertex3f(bl.x,bl.y,bl.z);
-	glVertex3f(br.x,br.y,br.z);
-	glVertex3f(tr.x,tr.y,tr.z);
-	glEnd();
-
-	float cam_norm_dot_inv = 1-normal.dot(cam1);
-	float cam_norm_dot_inv_sq = 1-(normal.dot(cam1)*normal.dot(cam1));
-
-	glColor3f(0+cam_norm_dot_inv*20, 15+cam_norm_dot_inv*120, 30+cam_norm_dot_inv*150);
-	glBegin(GL_QUADS);
-	glVertex3f((tl.x)*0.99,(tl.y)*0.99,(tl.z)*0.99);
-	glVertex3f((bl.x)*0.99,(bl.y)*0.99,(bl.z)*0.99);
-	glVertex3f((br.x)*0.99,(br.y)*0.99,(br.z)*0.99);
-	glVertex3f((tr.x)*0.99,(tr.y)*0.99,(tr.z)*0.99);
-	glEnd();
-}
 
 void loadBMP(const char * imagepath, int imageNo){
 
@@ -198,6 +164,41 @@ int loadPNG(const char* imagepath, int imageNo){
 
 }
 
+void drawSq(Vector3 tl, Vector3 bl, Vector3 br, Vector3 tr){
+	Vector3 edge1(tl.x-bl.x,tl.y-bl.y,tl.z-bl.z);
+	Vector3 edge2(br.x-bl.x,br.y-bl.y,br.z-bl.z);
+	Vector3 normal = edge1.cross(edge2);
+	normal.setlen(1);
+	Vector3 cam1(cam.x,cam.y,cam.z);
+	cam1.setlen(1);
+	//glNormal3d(normal.x, normal.y, normal.z);
+	
+	glColor3f(0.1,0.6,0.8);
+	//GLfloat cyan[] = {0.4f, 0.f, 1.0f, 1.f};
+	//GLfloat black[] = {0.0f, 0.0f, 0.0f, 1.f};
+	//glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, cyan);
+	// glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT, black);
+	// glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, black);
+	// glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT, black);
+	glBegin(GL_QUADS);
+	glVertex3f(tl.x,tl.y,tl.z);
+	glVertex3f(bl.x,bl.y,bl.z);
+	glVertex3f(br.x,br.y,br.z);
+	glVertex3f(tr.x,tr.y,tr.z);
+	glEnd();
+
+	float cam_norm_dot_inv = 1-normal.dot(cam1);
+	float cam_norm_dot_inv_sq = 1-(normal.dot(cam1)*normal.dot(cam1));
+
+	glColor3f(0+cam_norm_dot_inv*20, 15+cam_norm_dot_inv*120, 30+cam_norm_dot_inv*150);
+	glBegin(GL_QUADS);
+	glVertex3f((tl.x)*0.99,(tl.y)*0.99,(tl.z)*0.99);
+	glVertex3f((bl.x)*0.99,(bl.y)*0.99,(bl.z)*0.99);
+	glVertex3f((br.x)*0.99,(br.y)*0.99,(br.z)*0.99);
+	glVertex3f((tr.x)*0.99,(tr.y)*0.99,(tr.z)*0.99);
+	glEnd();
+}
+
 void drawImg(Vector3 tl, Vector3 bl, Vector3 br, Vector3 tr, int imageNo){
 
 	glEnable(GL_TEXTURE_2D);                        // Enable Texture Mapping ( NEW )
@@ -231,7 +232,26 @@ void drawImg(Vector3 tl, Vector3 bl, Vector3 br, Vector3 tr, int imageNo){
 	glDisable(GL_TEXTURE_2D);
 }
 
-void drawPl(Vector3 frontDirec, Vector3 centre_b, Vector3 normal, float size, int imageNo){
+void drawBullet(Vector3 direc, Vector3 normal, Vector3 pos, int imageNo, float size){
+	Vector3 otherDirec = direc.cross(normal);
+	direc = direc.setlen(size/2);
+	otherDirec = otherDirec.setlen(size/2);
+	Vector3 temp(pos.add(direc));
+	Vector3 tr(temp.add(otherDirec));
+	Vector3 br(temp.sub(otherDirec));
+	direc = direc.neg();
+	temp = pos.add(direc);
+	Vector3 bl(temp.sub(otherDirec));
+	Vector3 tl(temp.add(otherDirec));
+	drawImg(tl,bl,br,tr,imageNo);
+}
+
+
+void drawPl(Vector3 frontDirec, Vector3 centre_b, Vector3 normal, float size, int imageNo, bool isHit){
+	if (isHit) hitDuration=0; 
+	if (hitDuration==30) hitDuration=-1;
+	if (hitDuration>=0) hitDuration++;
+	if(num_frames==0 && hitDuration>=0) size*=1.03;
 	Vector3 sideDirec = frontDirec.cross(normal);
 	sideDirec = sideDirec.setlen(0.5*size);
 	frontDirec = frontDirec.setlen(0.5*size);
@@ -342,9 +362,9 @@ void healthBar(int health_percent){
 	Vector3 vertical = camUp;
 	Vector3 camEye(cam.x,cam.y,cam.z);
 	Vector3 frontplaneCentre = camEye.add(cam2player);
-	Vector3 healthBarCentre = frontplaneCentre.add(horizontal.setlen(0.8*cam.nearWidth));	
+	Vector3 healthBarCentre = frontplaneCentre.add(horizontal.setlen(0.9*cam.nearWidth));	
 	
-	horizontal = horizontal.setlen(0.1*cam.nearWidth);
+	horizontal = horizontal.setlen(0.07*cam.nearWidth);
 	vertical = vertical.setlen(0.7*cam.nearWidth);
 	Vector3 verticalh = vertical.setlen((-0.7+health_percent*1.4/100)*cam.nearWidth);
 	Vector3 offset = vertical.add(horizontal);
@@ -352,7 +372,7 @@ void healthBar(int health_percent){
 	Vector3 temp1 = healthBarCentre.add(offset);
 	Vector3 temp1h = healthBarCentre.add(offseth);
 
-	horizontal = horizontal.setlen(-0.1*cam.nearWidth);
+	horizontal = horizontal.setlen(-0.07*cam.nearWidth);
 	offset = vertical.add(horizontal);
 	offseth = verticalh.add(horizontal);
 	Vector3 temp2 = healthBarCentre.add(offset);
@@ -362,7 +382,7 @@ void healthBar(int health_percent){
 	offset = vertical.add(horizontal);
 	Vector3 temp3 = healthBarCentre.add(offset);
 
-	horizontal = horizontal.setlen(-0.1*cam.nearWidth);
+	horizontal = horizontal.setlen(-0.07*cam.nearWidth);
 	offset = vertical.add(horizontal);
 	Vector3 temp4 = healthBarCentre.add(offset);
 
@@ -448,10 +468,10 @@ void display() {
 	Vector3 frontDirec(0.0,1.0,0.0);
 	Vector3 centre(0.0,0.0,0.0);
 	Vector3 normal(1.0,0.0,1.0);
-	if(num_frames==0)
-		drawPl(frontDirec, centre, normal, 1.03, 0);
-	else
-		drawPl(frontDirec, centre, normal, 1.0, 0);
+	drawPl(frontDirec, centre, normal, 1.0, 0,true);
+
+	Vector3 normal1(1.0,0.0,0.0);
+	drawBullet(frontDirec, normal1, centre, 7, 1.0);
 
 	if ((*coll).timeElapsed < 30)
 		(*coll).display(30);
@@ -520,6 +540,10 @@ int main(int argc, char** argv) {
    loadPNG("/home/abhi19gupta/Desktop/COP290_ass3/DGaMe/Abhi/images/powers1.png",4);
    loadPNG("/home/abhi19gupta/Desktop/COP290_ass3/DGaMe/Abhi/images/powers2.png",5);
    loadPNG("/home/abhi19gupta/Desktop/COP290_ass3/DGaMe/Abhi/images/powers3.png",6);
+   loadPNG("/home/abhi19gupta/Desktop/COP290_ass3/DGaMe/Abhi/images/bullet1.png",7);
+   loadPNG("/home/abhi19gupta/Desktop/COP290_ass3/DGaMe/Abhi/images/bullet2.png",8);
+   loadPNG("/home/abhi19gupta/Desktop/COP290_ass3/DGaMe/Abhi/images/bullet3.png",9);
+   loadPNG("/home/abhi19gupta/Desktop/COP290_ass3/DGaMe/Abhi/images/bullet7.png",10);
    glutMainLoop();                 // Enter the infinite event-processing loop
    return 0;
 }
