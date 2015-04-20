@@ -9,6 +9,7 @@
 #include <math.h>     // Needed for sin, cos
 #include "lodepng.h"
 #include "image.h"
+#include "camera.h"
 
 using namespace std;
 #define PI 3.14159265f
@@ -16,15 +17,20 @@ using namespace std;
  
 /* Global variables */
 char title[] = "3D Shapes";
-GLfloat player_x= 1.0;
+camera cam;
+
+GLfloat player_x = 1.0;
 GLfloat player_y = 0.0;
 GLfloat player_z = 0.0;
-GLfloat camera_x= 2.0;
-GLfloat camera_y = 0.0;
-GLfloat camera_z = 0.0;
+GLfloat player_up_x = 0.0;
+GLfloat player_up_y = 0.0;
+GLfloat player_up_z = 1.0;
 GLdouble cube_size = 2.0;
+
+int num_frames = 0;
+
 spark* coll;
-image loadedImgs[2];
+image loadedImgs[7];
 
 sf::Sound sound;
 
@@ -34,8 +40,8 @@ void drawSq(Vector3 tl, Vector3 bl, Vector3 br, Vector3 tr){
 	Vector3 edge2(br.x-bl.x,br.y-bl.y,br.z-bl.z);
 	Vector3 normal = edge1.cross(edge2);
 	normal.setlen(1);
-	Vector3 cam(camera_x,camera_y,camera_z);
-	cam.setlen(1);
+	Vector3 cam1(cam.x,cam.y,cam.z);
+	cam1.setlen(1);
 	//glNormal3d(normal.x, normal.y, normal.z);
 	
 	glColor3f(0.1,0.6,0.8);
@@ -52,8 +58,8 @@ void drawSq(Vector3 tl, Vector3 bl, Vector3 br, Vector3 tr){
 	glVertex3f(tr.x,tr.y,tr.z);
 	glEnd();
 
-	float cam_norm_dot_inv = 1-normal.dot(cam);
-	float cam_norm_dot_inv_sq = 1-(normal.dot(cam)*normal.dot(cam));
+	float cam_norm_dot_inv = 1-normal.dot(cam1);
+	float cam_norm_dot_inv_sq = 1-(normal.dot(cam1)*normal.dot(cam1));
 
 	glColor3f(0+cam_norm_dot_inv*20, 15+cam_norm_dot_inv*120, 30+cam_norm_dot_inv*150);
 	glBegin(GL_QUADS);
@@ -328,6 +334,44 @@ void drawPl(Vector3 frontDirec, Vector3 centre_b, Vector3 normal, float size, in
     
 }
 
+void healthBar(int health_percent){
+	Vector3 cam2player(cam.player_x-cam.x, cam.player_y-cam.y, cam.player_z-cam.z);
+			cam2player = cam2player.setlen(cam.frontRelative);
+	Vector3 camUp(cam.up_x,cam.up_y,cam.up_z);
+	Vector3 horizontal = camUp.cross(cam2player);
+	Vector3 vertical = camUp;
+	Vector3 camEye(cam.x,cam.y,cam.z);
+	Vector3 frontplaneCentre = camEye.add(cam2player);
+	Vector3 healthBarCentre = frontplaneCentre.add(horizontal.setlen(0.8*cam.nearWidth));	
+	
+	horizontal = horizontal.setlen(0.1*cam.nearWidth);
+	vertical = vertical.setlen(0.7*cam.nearWidth);
+	Vector3 verticalh = vertical.setlen((-0.7+health_percent*1.4/100)*cam.nearWidth);
+	Vector3 offset = vertical.add(horizontal);
+	Vector3 offseth = verticalh.add(horizontal);
+	Vector3 temp1 = healthBarCentre.add(offset);
+	Vector3 temp1h = healthBarCentre.add(offseth);
+
+	horizontal = horizontal.setlen(-0.1*cam.nearWidth);
+	offset = vertical.add(horizontal);
+	offseth = verticalh.add(horizontal);
+	Vector3 temp2 = healthBarCentre.add(offset);
+	Vector3 temp2h = healthBarCentre.add(offseth);
+
+	vertical = vertical.setlen(-0.7*cam.nearWidth);
+	offset = vertical.add(horizontal);
+	Vector3 temp3 = healthBarCentre.add(offset);
+
+	horizontal = horizontal.setlen(-0.1*cam.nearWidth);
+	offset = vertical.add(horizontal);
+	Vector3 temp4 = healthBarCentre.add(offset);
+
+	drawImg(temp1,temp2,temp3,temp4,2);
+	drawImg(temp1h,temp2h,temp3,temp4,3);
+	
+
+}
+
 /* Initialize OpenGL Graphics */
 void initGL() {
    glClearColor(0.0f, 0.0f, 0.0f, 1.0f); // Set background color to black and opaque
@@ -354,11 +398,18 @@ void initGL() {
    whenever the window needs to be re-painted. */
 void display() {
 
-	float dist = sqrt(player_x*player_x + player_y*player_y + player_z*player_z);
-	float near = (cube_size*0.1)/dist;
+	num_frames++;
+	if(num_frames==5) num_frames=0;
+
+	GLfloat dist = sqrt(player_x*player_x + player_y*player_y + player_z*player_z);
+   	GLfloat near = (cube_size*0.1)/dist;
+   	cam.set(2*player_x,2*player_y,2*player_z,player_x,player_y,player_z,
+   		player_up_x,player_up_y,player_up_z,near,
+   		0.1,4*dist);
+	
 	glMatrixMode(GL_PROJECTION);  // To operate on the Projection matrix
    	glLoadIdentity();             // Reset
-   	glFrustum(-near, near, -near, near, 0.1, 4*dist);
+   	glFrustum(-cam.nearWidth, cam.nearWidth, -cam.nearWidth, cam.nearWidth, cam.frontRelative, cam.backRelative);
 
   	glMatrixMode(GL_MODELVIEW);     // To operate on model-view matrix
 
@@ -366,7 +417,7 @@ void display() {
 
 	glLoadIdentity();                 // Reset the model-view matrix
 	
-	gluLookAt(camera_x,camera_y,camera_z,player_x,player_y,player_z,0.0f,0.0f,1.0f);
+	gluLookAt(cam.x,cam.y,cam.z,cam.player_x,cam.player_y,cam.player_z,cam.up_x,cam.up_y,cam.up_z);
 	
 	Vector3 tl(0.0,1.0,1.0);
 	Vector3 bl(0.0,1.0,-1.0);
@@ -377,8 +428,9 @@ void display() {
     Vector3 bl1(0.0f, -0.5f, -0.5f);  // Bottom Left Of The Texture and Quad
     Vector3 br1(0.0f, 0.5f, -0.5f);  // Bottom Right Of The Texture and Quad
     Vector3 tr1(0.0f, 0.5f, 0.5f);  // Top Right Of The Texture and Quad
-    //drawImg(tl1,bl1,br1,tr1,0);
-    drawImg(br1,tr1,tl1,bl1,1);
+    //drawImg(tl1,bl1,br1,tr1,4);
+    //drawImg(br1,tr1,tl1,bl1,1);
+    healthBar(100);
     
 /*
     int detail = 100;
@@ -392,10 +444,14 @@ void display() {
  */
    //  glDisable(GL_BLEND);        // Enable blending
    // glEnable(GL_DEPTH_TEST);  // Need to disable depth testing
+
 	Vector3 frontDirec(0.0,1.0,0.0);
 	Vector3 centre(0.0,0.0,0.0);
 	Vector3 normal(1.0,0.0,1.0);
-	//drawPl(frontDirec, centre, normal, 1.0, 0);
+	if(num_frames==0)
+		drawPl(frontDirec, centre, normal, 1.03, 0);
+	else
+		drawPl(frontDirec, centre, normal, 1.0, 0);
 
 	if ((*coll).timeElapsed < 30)
 		(*coll).display(30);
@@ -457,8 +513,13 @@ int main(int argc, char** argv) {
    glutTimerFunc(0,timer,0);
    glutKeyboardFunc (keyboard);
    initGL();                       // Our own OpenGL initialization
-   loadBMP("/home/abhi19gupta/Desktop/COP290_ass3/images/images_13_.bmp",0);
-   loadPNG("/home/abhi19gupta/Desktop/COP290_ass3/images/trans_7.png",1);
+   loadBMP("/home/abhi19gupta/Desktop/COP290_ass3/DGaMe/Abhi/images/images_13_.bmp",0);
+   loadPNG("/home/abhi19gupta/Desktop/COP290_ass3/DGaMe/Abhi/images/trans_7.png",1);
+   loadPNG("/home/abhi19gupta/Desktop/COP290_ass3/DGaMe/Abhi/images/healthrect.png",2);
+   loadPNG("/home/abhi19gupta/Desktop/COP290_ass3/DGaMe/Abhi/images/healthrectsolid2.png",3);
+   loadPNG("/home/abhi19gupta/Desktop/COP290_ass3/DGaMe/Abhi/images/powers1.png",4);
+   loadPNG("/home/abhi19gupta/Desktop/COP290_ass3/DGaMe/Abhi/images/powers2.png",5);
+   loadPNG("/home/abhi19gupta/Desktop/COP290_ass3/DGaMe/Abhi/images/powers3.png",6);
    glutMainLoop();                 // Enter the infinite event-processing loop
    return 0;
 }
