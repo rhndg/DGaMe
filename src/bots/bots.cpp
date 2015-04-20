@@ -1,8 +1,13 @@
-#include "player.h"
+#include "bots.h"
 
-//gameplay is the game_map object
+/*difficulty level (1,2,3)
+ *easy->4 level deep
+ *medium->8 level deep
+ *advanced->12 level deep
+*/
 
-player::player(int ID,int gr_id=0,Vector3 pos,int n_lives,int n_kills,int g)
+
+bots::bots(int ID,int gr_id,Vector3 pos,int n_lives,int n_kills,int difficulty)
 {
 	id=ID;
 	group_id=gr_id;
@@ -20,26 +25,28 @@ player::player(int ID,int gr_id=0,Vector3 pos,int n_lives,int n_kills,int g)
 	//set mass and radius
 	mass=player_mass;
 	radius=player_radius;
+
+	difficulty_level=difficulty;
 }
 
 //respawn
-bool player::player_reset()
+bool bots::bot_reset()
 {
 	if(lives==0)
 	{	
-		for(int i=0;i<gameplay->All_players.size();i++)
+		for(int i=0;i<gameplay->All_Bots.size();i++)
 		{
-			if(gameplay->All_players[i].id==id)
+			if(gameplay->All_Bots[i].id==id)
 			{
-				gameplay->All_players[i].active=false;
+				gameplay->All_Bots[i].active=false;
 				break;
 			}	
 		}
-		for(int i=0;i<gameplay->Map[g_locate].Players.size();i++)
+		for(int i=0;i<gameplay->Map[g_locate].Bots.size();i++)
 		{
-			if(gameplay->Map[g_locate].Players[i].id==id)
+			if(gameplay->Map[g_locate].Bots[i].id==id)
 			{
-				gameplay->Map[g_locate].Players.erase(gameplay->Map[g_locate].Players.begin()+i);
+				gameplay->Map[g_locate].Bots.erase(gameplay->Map[g_locate].Bots.begin()+i);
 				break;
 			}
 		}		
@@ -53,10 +60,11 @@ bool player::player_reset()
 	up=0;
 	down=0;
 	return true; 
+
 }
 
-//max_lives and health_increase are global variables
-void player::get_health_pack(int id)
+//max_lives and health_increase are global variable
+void bots::get_health_pack(int id)
 {
 	//life pack
 	if((id==1)&&(lives<max_lives))
@@ -70,13 +78,13 @@ void player::get_health_pack(int id)
 	}
 }
 
-void player::recovery()
+void bots::recovery()
 {
 	if(last_hit>recovery_time)
 		health=(health<(100-health_recovery*DELTA_T))?(health+health_recovery*DELTA_T):100;	
 }
 
-void player::get_weapon(int ID)
+void bots::get_weapon(int ID)
 {	
 	//ID -> corresponding to Weapon_set
 
@@ -97,7 +105,7 @@ void player::get_weapon(int ID)
 		current_weapon++;	
 }
 
-void player::toggle_weapon()
+void bots::toggle_weapon()
 {
 	if(current_weapon==weaponry.size()-1)
 		current_weapon=0;
@@ -105,7 +113,7 @@ void player::toggle_weapon()
 		current_weapon++;		
 }
 
-void player::fire_weapon()
+void bots::fire_weapon()
 {
 	weaponry[current_weapon].shot_fired();
 
@@ -120,7 +128,7 @@ void player::fire_weapon()
 	}
 }
 
-int player::Player_CheckCollision()							//-1 if no collision,0 if collision in grid itself,(1,2,3,4)-collision in neighbour cells
+int bots::Player_CheckCollision()							//-1 if no collision,0 if collision in grid itself,(1,2,3,4)-collision in neighbour cells
 {
 	int index=-1;
 
@@ -140,7 +148,7 @@ int player::Player_CheckCollision()							//-1 if no collision,0 if collision in
 	return index;	
 }
 
-int player::Bot_CheckCollision()							//-1 if no collision,0 if collision in grid itself,(1,2,3,4)-collision in neighbour cells
+int bots::Bot_CheckCollision()							//-1 if no collision,0 if collision in grid itself,(1,2,3,4)-collision in neighbour cells
 {
 	int index=-1;
 
@@ -160,7 +168,7 @@ int player::Bot_CheckCollision()							//-1 if no collision,0 if collision in gr
 	return index;	
 }
 
-int player::CheckHit()									//-1 if no collision,0 if collision in grid itself,(1,2,3,4)-collision in neighbour cells
+int bots::CheckHit()									//-1 if no collision,0 if collision in grid itself,(1,2,3,4)-collision in neighbour cells
 {
 	int index=-1;
 	if(gameplay->Map[g_locate].Bullets.size()>0)
@@ -179,7 +187,7 @@ int player::CheckHit()									//-1 if no collision,0 if collision in grid itsel
 	return index;		
 }
 
-void player::Player_SolveCollision()
+void bots::Player_SolveCollision()
 {
 	int i=Player_CheckCollision();
 	if(i!=-1)
@@ -212,10 +220,10 @@ void player::Player_SolveCollision()
 	}
 	last_hit=0;
 	if(health==0)
-		player_reset();		
+		bot_reset();		
 }
 
-void player::Bot_SolveCollision()
+void bots::Bot_SolveCollision()
 {
 	int i=Bot_CheckCollision();
 	if(i!=-1)
@@ -248,10 +256,10 @@ void player::Bot_SolveCollision()
 	}
 	last_hit=0;
 	if(health==0)
-		player_reset();		
+		bot_reset();		
 }
 
-void player::OnHit()
+void bots::OnHit()
 {
 	int i=CheckHit();
 	if(i!=-1)
@@ -272,11 +280,11 @@ void player::OnHit()
 		//set last_hit to zero
 		last_hit=0;
 		if(health==0)
-			player_reset();
+			bot_reset();
 	}
 }
 
-Vector3 player::set_velocity(int up,int right,int move_up,int move_right,Vector3 v)
+Vector3 bots::set_velocity(int up,int right,int move_up,int move_right,Vector3 v)
 {
 	Vector3 final;
 	if(move_up!=up)
@@ -317,13 +325,13 @@ Vector3 player::set_velocity(int up,int right,int move_up,int move_right,Vector3
 	return final;	
 }
 
-void player::surface_constraint()
+void bots::surface_constraint()
 {
 	float distance= gameplay->Map[g_locate].distance_from_surface(position);
 	position=position.add((Map[g_locate].normal).mult(-distance));              
 }
 
-int player::new_location(int move_up,int move_right)
+int bots::new_location(int move_up,int move_right)
 {
 	if(move_up==0 && move_right==1)
 		return 0;
@@ -345,7 +353,7 @@ int player::new_location(int move_up,int move_right)
 		return 8;
 }
 
-void player::update(vector<key_tap> keys_pressed)
+void bots::update(vector<key_tap> keys_pressed)
 {
 	key_tap k;				//for looping over vector<key_taps>
 	int move_up=0;			//up movement parameter given by key taps
@@ -407,11 +415,11 @@ void player::update(vector<key_tap> keys_pressed)
 	/*updating grids*/
 	if(new_location(up,right)!=8)
 	{
-		for(int i=0;i<gameplay->Map[g_locate].Players.size();i++)
+		for(int i=0;i<gameplay->Map[g_locate].Bots.size();i++)
 		{
-			if(id==gameplay->All_Players[(gameplay->Map[g_locate].Players[i])].id)
+			if(id==gameplay->All_Bots[(gameplay->Map[g_locate].Bots[i])].id)
 			{
-				gameplay->Map[g_locate].Players.erase(gameplay->Map[g_locate].Players.begin()+i);
+				gameplay->Map[g_locate].Bots.erase(gameplay->Map[g_locate].Bots.begin()+i);
 				break;
 			}
 		}
@@ -436,18 +444,291 @@ void player::update(vector<key_tap> keys_pressed)
 	recovery();	
 	
 	if(changed)
-		gameplay->Map[g_locate].Players.push_back(*this);
+		gameplay->Map[g_locate].Bots.push_back(*this);
 	else
 	{
-		for(int i=0;i<Map[g_locate].Players.size();i++)
+		for(int i=0;i<Map[g_locate].Bots.size();i++)
 		{
-			if(Map[g_locate].Players[i].id==id)
+			if(Map[g_locate].Bots[i].id==id)
 			{
-				Map[g_locate].Players[i]=*this;
+				Map[g_locate].Bots[i]=*this;
 				break;
 			}	
 		}
 	}	
 }
 
-	
+
+direction bots::get_directions(int i)
+{
+	direction temp;
+	switch(i){
+		case 0:
+			temp.tang=0;
+			temp.normal=0;
+			break;
+		case 1:
+			temp.tang=1;
+			temp.normal=1;
+			break;
+		case 2:
+			temp.tang=1;
+			temp.normal=0;
+			break;
+		case 3:
+			temp.tang=1;
+			temp.normal=-1;
+			break;
+		case 4:
+			temp.tang=0;
+			temp.normal=-1;
+			break;
+		case 5:
+			temp.tang=-1;
+			temp.normal=-1;
+			break;
+		case 6:
+			temp.tang=-1;
+			temp.normal=0;
+			break;
+		case 7:
+			temp.tang=-1;
+			temp.normal=1;
+			break;				
+		default:
+			temp.tang=0;
+			temp.normal=0;
+			break;
+	}
+
+	return temp;
+}
+
+
+bool bots::present_in_vector(int i,vector<nodes>*checkzones)
+{
+	for(int j=0;j<checkzones->size();j++)
+	{
+		if(checkzones[j].id==i)
+		{
+			return true;
+		}
+	}
+	return false;
+}
+
+void bots::add_to_vector(int i,int j,int up,int right,vector<nodes>* checkzones,int level)
+{
+	//i-> grid id of base grid
+	//j-> neighbour index wrt base grid
+
+	if(!present_in_vector(i,checkzones))
+	{
+		nodes temp;
+		temp.id=gameplay->Map[i].neigh[j].id;
+		temp.right=right+get_directions(j).normal;
+		temp.up=up+get_directions(j).tang;
+		checkzones->push_back(temp);
+	}
+	if(level<4*difficulty_level)
+	{
+		for(int k=0;k<8;k++){
+			int a=up+get_directions(k).tang;
+			int b=right+get_directions(k).normal;
+			add_to_vector(gameplay->Map[i].neigh[j],k,a,b,checkzones,level+1);
+		}
+	}
+}
+
+void bots::analyze_view()
+{
+	//clear existing field of view
+	field_of_view.view_players.clear();
+	field_of_view.view_bots.clear();
+	field_of_view.view_bullets.clear();
+	field_of_view.view_boosts.clear();
+	field_of_view.view_armoury.clear();
+	//array to keep track of relative positioning
+	int index;
+	int move_up=0;
+	int move_right=0;
+	vector<nodes>* checkzones;
+	for(int i=0;i<8;i++)
+	{
+		add_to_vector(g_locate,i,0,0,checkzones,0);
+	}
+	for(int i=0;i<checkzones.size();i++)
+	{
+		int a=checkzones[i].id;
+		nodes temp;
+		temp.right=checkzones[i].right;
+		temp.left=checkzones[i].left;
+		for(int j=0;j<gameplay->Map[a].Players.size();j++)
+		{
+			temp.id=gameplay->Map[a].Players[j];
+			field_of_view.view_players.push_back(temp);
+		}
+		for(int j=0;j<gameplay->Map[a].Bots.size();j++)
+		{
+			temp.id=gameplay->Map[a].Bots[j];
+			field_of_view.view_bots.push_back(temp);
+		}
+		for(int j=0;j<gameplay->Map[a].Bullets.size();j++)
+		{
+			temp.id=gameplay->Map[a].Bullets[j];
+			field_of_view.view_bullets.push_back(temp);
+		}
+		for(int j=0;j<gameplay->Map[a].Armoury.size();j++)
+		{
+			temp.id=gameplay->Map[a].Armoury[j];
+			field_of_view.view_armoury.push_back(temp);
+		}
+		for(int j=0;j<gameplay->Map[a].Boosts.size();j++)
+		{
+			temp.id=gameplay->Map[a].Boosts[j];
+			field_of_view.view_boosts.push_back(temp);
+		}
+	}		
+}
+
+vector<int> bots::projected_path(int i,int j,int difficulty)			//i is the player id,j=0 for player,1 for bot,2 for bullet
+{
+	vector<int> trajectory;
+	if(j==0)
+		{player p=gameplay->All_Players[i];}	
+	else if(j==1)
+		{bots p=gameplay->All_Bots[i];}
+	if(p.up==0 && p.right==0)
+	{
+		for(int k=0;k<difficulty;k++)
+			trajectory.push_back(g_locate);
+		return trajectory;
+	}	
+	int a = gameplay->Map[p.g_locate]
+	int b = new_location(p.up,p.right);
+	for(int k=0;k<difficulty;k++)
+	{
+		trajectory.push_back(a.neigh[b]);
+		a=a.neigh[b];
+	}	
+	return trajectory;
+
+}	
+
+void bots::projected_collision()
+{
+	player_collision.clear();
+	bots_collision.clear();
+
+	vector<int> path=projected_path(id,1,difficulty_level);
+	vector<int> opponent_path;
+	for(int i=0;i<field_of_view.view_players.size();i++)
+	{
+		int collide=-1;
+		opponent_path = projected_path(field_of_view.view_players[i].up,field_of_view.view_players[i].right,difficulty_level);
+		
+		for(int j=0;j<difficulty_level;j++)
+		{
+			if(path[j]==opponent_path[j])
+			{
+				collide=j;
+				break;
+			}	
+		}
+		player_collision.push_back(collide);	
+	}
+
+	for(int i=0;i<field_of_view.view_bots.size();i++)
+	{
+		int collide=-1;
+		opponent_path = projected_path(field_of_view.view_bots[i].up,field_of_view.view_bots[i].right,difficulty_level);
+		
+		for(int j=0;j<difficulty_level;j++)
+		{
+			if(path[j]==opponent_path[j])
+			{
+				collide=j;
+				break;
+			}	
+		}
+		bots_collision.push_back(collide);	
+	}
+}
+
+vector<int> bot::level_1_projected_path(int i,int j,int difficulty)
+{
+	vector<int> path = projected_path(i,j,difficulty);
+	vector<int> level_1_path;
+	for(int k=1;k<path.size();k++)
+		level_1_path.push_back(path[k]);
+	int last= path.back();
+	if(j==0)
+		{player p=gameplay->All_Players[i];}	
+	else if(j==1)
+		{bots p=gameplay->All_Bots[i];}
+	if(p.up==0 && p.right==0)
+	{
+		level_1_path.push_back[(path[0])];
+		return path;
+	}
+	else{
+		int a = gameplay->Map[path.back()].neigh(new_location(p.up,p.right));
+		level_1_path.push_back[a];
+		return path;	
+	}
+}
+
+void bots::level_1_projected_collision(int move_up,int move_right)
+{
+	level_1_player_collision.clear();
+	level_1_bots_collision.clear();
+
+	//save present movement directions
+	int a=up;
+	int b=right;
+	int c=g_locate;
+
+	//change movement directions to input parameters
+	up=move_up;
+	right=move_right;
+
+	vector<int> path=level_1_projected_path(id,1,difficulty_level);
+
+	vector<int> opponent_path;
+	for(int i=0;i<field_of_view.view_players.size();i++)
+	{
+		int collide=-1;
+		opponent_path = level_1_projected_path(field_of_view.view_players[i].up,field_of_view.view_players[i].right,difficulty_level);
+		
+		for(int j=0;j<difficulty_level;j++)
+		{
+			if(path[j]==opponent_path[j])
+			{
+				collide=j;
+				break;
+			}	
+		}
+		level_1_player_collision.push_back(collide);	
+	}
+
+	for(int i=0;i<field_of_view.view_bots.size();i++)
+	{
+		int collide=-1;
+		opponent_path = level_1_projected_path(field_of_view.view_bots[i].up,field_of_view.view_bots[i].right,difficulty_level);
+		
+		for(int j=0;j<difficulty_level;j++)
+		{
+			if(path[j]==opponent_path[j])
+			{
+				collide=j;
+				break;
+			}	
+		}
+		level_1_bots_collision.push_back(collide);	
+	}
+}
+
+
+
+
+
