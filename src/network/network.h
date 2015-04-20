@@ -27,7 +27,7 @@ private:
 		,maxTime,minTime,sendGameTo,sockNum;												//session id (never 0)
 																		//number of players
 																		//id of this player
-																		//size of packet
+				 														//size of packet
 																		//number of redundant packets
 																		//length allotted to moves in synchro data
 																		//

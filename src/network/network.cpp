@@ -58,7 +58,7 @@ void Network::encodeSync(vector<game_map::key_tap> moves){
 	}
 }
 
-void Network::encodeSyncReqs(){
+void Network::encodeSyncAns(){
 	vector<char> temp=bufInit(syncPack,0,1),buffer;
 	for(int j=1;j<=numPlayers;j++){
 		if(isPeer[j]){
@@ -81,6 +81,44 @@ void Network::encodeSyncReqs(){
 		buffer.resize(packSize,((char)-1));
 		syncBuf.push_back(pair<int,vector<char> >(j,buffer));
 		}
+	}
+}
+
+void Network::encodeSyncReqs(){
+	vector<int> residue;
+	for(int i=0; i<= numPlayers;i++){
+		if(isPeer[i]&&syncData[i].empty()){
+			residue.push_back(i);
+		}
+	}
+	vector<char> buffer = bufInit(syncReqPack,0,1);
+	for(int i=0;i!=residue.size();i++) buffer.push_back(((char)residue[i]));
+	residue.resize(packSize,((char)-1));
+	syncBuf.push_back(buffer);
+}
+
+void Network::decodeSync(vector<char> data){
+	int i=8;playerID;
+	while(data[i]!=-1&&syncData[data[i]].empty()){
+		playerID=data[i]
+		i++;
+		int x,y,j=0;
+		while(j!=mvsLen/2){
+			x=data[i+j]/16;
+			y=data[i+j]%16;
+			syncData[playerID].push_back(((game_map::key_tap)x));
+			syncData[playerID].push_back(((game_map::key_tap)y));
+			j++;
+		}
+		i+=j;
+	}
+}
+
+void Network::decodeSyncReq(vector<char> pack){
+	int fromPlayer=pack[2];
+	vector<int> temp;
+	for(int i=8;pack[i]!=-1;i++){
+		syncReqs[fromPlayer].push_back(((int)pack[i]));
 	}
 }
 
