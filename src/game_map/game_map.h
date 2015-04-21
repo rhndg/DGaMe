@@ -16,7 +16,7 @@ class game_map{
 private:
 
 public:
-	game_map();
+	game_map(int n);
 	~game_map();
 	vector<grid> Map;				//all the grid instances
 	vector<player> All_Players;		//All_Players[player_id] gives player info
