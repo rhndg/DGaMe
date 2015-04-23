@@ -30,7 +30,7 @@ private:
 	enum packType {
 		syncPack,gamePack,controlPack,syncReqPack,gameReqPack,joinGame,newIp,startGame
 	};
-	bool startSync,isHost;
+	bool startSync,isHost,isDisconnected;
 
 //control and data session should be distinct
 	int movNum,numPlayers,dataSession,controlSession,playerId,packSize,packExtra,mvsLen	//number of moves(keytaps)
@@ -48,14 +48,14 @@ private:
 	sockaddr_in mySock;
 	map< int,sockaddr_in> address;								//socket addressed of given id
 	map< pair<unsigned long,unsigned short>,bool>joinedGame;
-	map< int,bool > isPeer;										//current connected peers
+	map< int,bool > isPeer,disconnected;										//current connected peers
 	map< int,vector<game_map::key_tap> > syncData;				//recieved data
 	map< pair<int,int>,vector<char> > gameData;					//recieved data for recon to be sent data for rec data
 	map< int,vector <int> > syncReqs;							//requested data of players by the given id
 	vector<int> gameReqs;						                //requested data of players by the given id
 	map<pair<int,int>,bool>syncHist;
 	map<int,bool>gameHist;
-	vector<pair<int,vector<char> > > syncBuf;					//contains sync data
+	map<int,vector<pair<int,vector<char> > > > syncBuf;					//contains sync data
 	vector<vector<char> > gameBuf;
 	vector<game_map::key_tap> moves;
 		
@@ -82,12 +82,13 @@ private:
 	void sendGameBuf();
 	void recBuf();														//session no checked here loads all data from socket to buffer wih int field -1 
 	void wait();													//wait for time delay
-	bool resolveDc();
+	void resolveDc();
 	void incCounter();												//increaments counters
 	void clearTemp();												//clears temp data for restarting process
 	void encodeSyncAns();
 	void start();
-
+	bool isDc();
+	bool futureSession(int packSess);
 	//decode**************************
 	void prnt (vector<char> v){
 		for(int i=0;i!=v.size();i++) cout<<((int)v[i])<<" ";
