@@ -11,6 +11,8 @@
 #include <sys/types.h>
 #include <netinet/in.h>
 #include <resolv.h>
+#include <SFML/Network.hpp>
+#include <pthread.h>
 // #include "../main/globals.h"
 // #include "../game_map/game_map.h"
 
@@ -39,19 +41,23 @@ private:
 																		//number of redundant packets
 																		//length allotted to moves in synchro data
 																		//
-	game_map* dGame;
+	pthread_mutex_t mvsmutx;
+	pthread_barrier_t b1,b2;
 
+	game_map* dGame;
+	sockaddr_in mySock;
 	map< int,sockaddr_in> address;								//socket addressed of given id
 	map< int,bool > isPeer;										//current connected peers
 	map< int,vector<game_map::key_tap> > syncData;				//recieved data
 	map< pair<int,int>,vector<char> > gameData;					//recieved data for recon to be sent data for rec data
 	map< int,vector <int> > syncReqs;							//requested data of players by the given id
-	vector<int> gameReqs;						//requested data of players by the given id
+	vector<int> gameReqs;						                //requested data of players by the given id
 	map<pair<int,int>,bool>syncHist;
 	map<int,bool>gameHist;
 	vector<pair<int,vector<char> > > syncBuf;					//contains sync data
 	vector<vector<char> > gameBuf;
-	
+	vector<game_map::key_tap> moves;
+		
 	
 
 	vector<char> bufInit(packType type,int packId,int packCount);	//push the first 8 bytes acc to pack type
@@ -79,13 +85,27 @@ private:
 	void incCounter();												//increaments counters
 	void clearTemp();												//clears temp data for restarting process
 	void encodeSyncAns();
+	void start();
+
+	//decode**************************
+	void prnt (vector<char> v){
+		for(int i=0;i!=v.size();i++) cout<<((int)v[i])<<" ";
+		cout<<endl;
+	}
+	void prnt_(vector<game_map::key_tap>v){
+		for(int i=0;i!=v.size();i++) cout<<((int)v[i])<<" ";
+		cout<<endl;
+
+	}
+	//********************************
+
 
 public:
-	Network(const char* host);
+	Network();
 	~Network();
-	vector<game_map::key_tap> moves;
-	void start();
+	pthread_t data,event;
 	void* data_thread(void* x);
+	void* event_thread(void* x);
 	//vector of non human players, data recieved ***empty if disconnected
 };
 #endif

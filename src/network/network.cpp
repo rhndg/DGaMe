@@ -1,9 +1,36 @@
 #include "network.h"
 
 
-Network::Network(const char* host){
-
+Network::Network(){
+	fd = socket(AF_INET, SOCK_DGRAM, 0);
+	memset(((char*)&mySock),0,sizeof(mySock));
+	mySock.sin_family=AF_INET;
+	mySock.sin_addr.s_addr = htonl(INADDR_ANY); 
+	mySock.sin_port = htons(0);
+	bind(fd, (struct sockaddr *)&mySock, sizeof(mySock));
+	movNum=10;
+	numPlayers=-1;
+	dataSession=-1;
+	controlSession=-1;
+	playerId=-1;
+	packSize=128;
+	packExtra=3;
+	mvsLen=10;
+	maxTime=100000;
+	minTime=50000;
+	sendGameTo=-1;
+	delay=100;
+	iniSampleTime=1000;
+	dcCount=100;
+	startSync=false;
+	
+	pthread_mutex_init(&mvsmutx,0);
+	pthread_barrier_init(&b1, 0, 2);
+	pthread_barrier_init(&b2, 0, 2);
 }
+Network::~Network(){
+}
+
 void Network::clearTemp(){
 	syncData.clear();
 	gameData.clear();
@@ -218,6 +245,7 @@ void Network::encodeNewIp(unsigned long Ip,unsigned short port){
 
 void Network::decodeNewIp(vector<char> pack){
 	playerId = pack[8];
+	address[playerId] = mySock;
 	int ind=9,pId;
 	while(pack[ind]!=-1){
 		pId=pack[ind];
@@ -258,12 +286,19 @@ void* Network::data_thread(void* x){
 		for(int i=0;i!=packExtra;i++)sendto(fd,&buffer[0],buffer.size(),0,(struct sockaddr*)host,sizeof(*host));
 	}
 	while(!startSync){
+		
+
 		memset(((char*)&addr),0,sizeof(addr));
 		recvfrom(fd,&buffer[0],packSize,0,(struct sockaddr*)&addr,&len);
+		prnt (buffer);
 		if(buffer[0]!=0){
 			switch ((packType)buffer[3]){
 				case joinGame :
 				{
+					if(address.empty()){
+						address[1]=mySock;
+						numPlayers++;
+					}
 					unsigned long ip=addr.sin_addr.s_addr;
 					unsigned short port=addr.sin_port;
 					encodeNewIp(ip,port);
@@ -284,12 +319,15 @@ void* Network::data_thread(void* x){
 				break;
 			}
 		}
+		cout<<1<<endl;
 		usleep(iniSampleTime);
 	}
 
 	while(startSync){
-		clearTemp(); 
+		clearTemp();
+		pthread_mutex_lock(&mvsmutx);
 		encodeSync(moves);
+		pthread_mutex_unlock(&mvsmutx);
 		sendSyncBuf();
 		usleep(delay);
 		recBuf();
@@ -310,10 +348,17 @@ void* Network::data_thread(void* x){
 			decodeSyncBuf();
 			count++;
 		}
+		pthread_barrier_wait(&b1);
+		pthread_barrier_wait(&b2);
 		//barrier
 	}
 }
-
+void* Network::event_thread(void*x){
+	while(1){
+		pthread_barrier_wait(&b1);
+		pthread_barrier_wait(&b2);	
+	}
+}
 
 void Network::start(){
 	// startSync=true;
@@ -328,7 +373,19 @@ void Network::start(){
 }
 
 
-int main(void) {
+int main(int argc,char** argv) {
+    Network X;
+    
+    struct sockaddr_in host;
+    if(argc==3){
+	    host.sin_family=AF_INET;
+	    host.sin_addr.s_addr=inet_addr(argv[1]);
+		host.sin_port=htons(atoi(argv[2]));
+		X.data_thread(((void*)&host));
+    }else{
+    	X.data_thread(NULL);
+    }
+
     // struct sockaddr_in si_me, si_other;
     // int s, i, blen, slen = sizeof(si_other);
     // char buf[BUFLEN];
@@ -356,6 +413,7 @@ int main(void) {
     //     diep("sendto()");
 
     // close(s);
+
     return 0;
 
 }
