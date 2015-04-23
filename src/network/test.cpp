@@ -1,93 +1,64 @@
-# include <bits/stdc++.h>
-
-using namespace std;
 
 
-int movNum,numPlayers,dataSession=100,controlSession,playerId=5,packSize=128,mvsLen=10	//number of moves(keytaps)
-		,maxTime,minTime,sendGameTo,sockNum;
-enum packType {
-		syncPack,gamePack,controlPack,syncReqPack,gameReqPack
-	};
-enum key_tap{
-		up,down,left,right,rot_left,rot_right,shoot_up,shoot_down,shoot_left,shoot_right,skill,nop
-	};
+#include <stdio.h>
+#include <stropts.h>
+#include <sys/socket.h>
+#include <sys/ioctl.h>
+#include <linux/netdevice.h>
+#include <arpa/inet.h>
+#include <netinet/in.h>
+#include <unistd.h>
 
-vector<key_tap> nops;
+int print_addresses(const int domain)
+{
+  int s;
+  struct ifconf ifconf;
+  struct ifreq ifr[50];
+  int ifs;
+  int i;
 
-vector<char> bufInit(packType t,int packId,int packCount){
-	vector<char> buffer;
-	int x;
-	if (t!=controlPack)
-		x=dataSession%256;
-	else
-		x=controlSession%256;
-	buffer.push_back(((char)x));
-	if (t!=controlPack)
-		x=dataSession/256;
-	else
-		x=controlSession/256;
-	buffer.push_back(((char)x));
-	buffer.push_back(((char)playerId));
-	buffer.push_back(((char)t));
-	x=packId/256;
-	buffer.push_back(x);
-	x=packId%256;
-	buffer.push_back(x);
-	x=packCount/256;
-	buffer.push_back(x);
-	x=packCount%256;
-	buffer.push_back(x);
-	return buffer;
+  s = socket(domain, SOCK_STREAM, 0);
+  if (s < 0) {
+    perror("socket");
+    return 0;
+  }
+
+  ifconf.ifc_buf = (char *) ifr;
+  ifconf.ifc_len = sizeof ifr;
+
+  if (ioctl(s, SIOCGIFCONF, &ifconf) == -1) {
+    perror("ioctl");
+    return 0;
+  }
+
+  ifs = ifconf.ifc_len / sizeof(ifr[0]);
+  printf("interfaces = %d:\n", ifs);
+  for (i = 0; i < ifs; i++) {
+    char ip[INET_ADDRSTRLEN];
+    struct sockaddr_in *s_in = (struct sockaddr_in *) &ifr[i].ifr_addr;
+
+    if (!inet_ntop(domain, &s_in->sin_addr, ip, sizeof(ip))) {
+      perror("inet_ntop");
+      return 0;
+    }
+
+    printf("%s - %s\n", ifr[i].ifr_name, ip);
+  }
+
+  close(s);
+
+  return 1;
 }
 
-vector<char> encodeSync(vector<key_tap> moves){
-	vector<char> buffer=bufInit(syncPack,0,3);
-	moves.resize(mvsLen,nop);
-	buffer.push_back(((char)playerId));
-	for(int i = 0;i<mvsLen;i+=2){
-		int x=(int)moves[i];
-		x=x*16+((int)moves[i+1]);
-		buffer.push_back(((char)x));
-	}
-	buffer.resize(packSize,((char)-1));
-	return buffer;
+int main(int argc, char *argv[])
+{
+  int domains[] = { AF_INET, AF_INET6 };
+  int i;
+
+  for (i = 0; i < sizeof(domains) / sizeof(domains[0]); i++)
+    if (!print_addresses(domains[i]))
+      return 1;
+
+  return 0;
 }
 
-vector<key_tap> decodeSync(vector<char> data){
-	int i=8,playerID;
-	vector<key_tap>test;
-	while(data[i]!=((char)-1)){
-		playerID=data[i];
-		i++;
-		int x,y,j=0,k;
-		while(j!=mvsLen/2){
-			k=(data[i+j]+256)%256;
-			x=k/16;
-			y=k%16;
-			test.push_back(((key_tap)x));
-			test.push_back(((key_tap)y));
-			j++;
-		}
-		i+=j;
-	}
-	return test;
-}
-
-
-void prnt (vector<char> v){
-	for(int i=0;i!=v.size();i++) cout<<((int)v[i])<<" ";
-	cout<<endl;
-}
-void prnt_(vector<key_tap>v){
-	for(int i=0;i!=v.size();i++) cout<<((int)v[i])<<" ";
-	cout<<endl;
-
-}
-int main(){
-	nops.resize(packSize,nop);
-	nops[0]=up;
-	nops[2]=down;
-	nops[1]=((key_tap)3);
-	prnt(encodeSync(nops));
-	prnt_(decodeSync(encodeSync(nops)));
-}

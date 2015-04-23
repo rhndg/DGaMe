@@ -11,7 +11,7 @@
 #include <sys/types.h>
 #include <netinet/in.h>
 #include <resolv.h>
-#include <SFML/Network.hpp>
+#include <fcntl.h>
 #include <pthread.h>
 // #include "../main/globals.h"
 // #include "../game_map/game_map.h"
@@ -47,6 +47,7 @@ private:
 	game_map* dGame;
 	sockaddr_in mySock;
 	map< int,sockaddr_in> address;								//socket addressed of given id
+	map< pair<unsigned long,unsigned short>,bool>joinedGame;
 	map< int,bool > isPeer;										//current connected peers
 	map< int,vector<game_map::key_tap> > syncData;				//recieved data
 	map< pair<int,int>,vector<char> > gameData;					//recieved data for recon to be sent data for rec data

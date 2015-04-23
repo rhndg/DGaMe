@@ -2,17 +2,21 @@
 
 
 Network::Network(){
+	srand(time(NULL));
 	fd = socket(AF_INET, SOCK_DGRAM, 0);
+	fcntl(fd, F_SETFL, O_NONBLOCK);
 	memset(((char*)&mySock),0,sizeof(mySock));
 	mySock.sin_family=AF_INET;
 	mySock.sin_addr.s_addr = htonl(INADDR_ANY); 
 	mySock.sin_port = htons(0);
 	bind(fd, (struct sockaddr *)&mySock, sizeof(mySock));
+	socklen_t len = sizeof (mySock);
+	getsockname(fd,(struct sockaddr *)&mySock, &len);
 	movNum=10;
-	numPlayers=-1;
+	numPlayers=1;
 	dataSession=-1;
 	controlSession=-1;
-	playerId=-1;
+	playerId=rand();
 	packSize=128;
 	packExtra=3;
 	mvsLen=10;
@@ -20,7 +24,7 @@ Network::Network(){
 	minTime=50000;
 	sendGameTo=-1;
 	delay=100;
-	iniSampleTime=1000;
+	iniSampleTime=100000;
 	dcCount=100;
 	startSync=false;
 	
@@ -190,6 +194,7 @@ void Network::sendSyncBuf(){
 	for(int i=0;i!=syncBuf.size();i++){
 		int len = sizeof(address[syncBuf[i].first]);
 		for(int j=0;j!=packExtra;j++){
+			// cout<<ntohs(address[syncBuf[i].first].sin_port)<<endl;
 			sendto(fd, &syncBuf[i].second[0] , syncBuf[i].second.size(), 0, (struct sockaddr*) &address[syncBuf[i].first], len);
 		}
 	}
@@ -209,19 +214,18 @@ bool Network::resolveDc(){
 
 vector<char> Network::encodeIps(){
 	vector<char> buffer=bufInit(newIp,65000,65000);
-	int ind=buffer.size();
+	int ind=9;
 	buffer.resize(packSize,((char)-1));
-	buffer[ind]=((char)numPlayers+1);
-	ind++;
+	buffer[8]=((char)numPlayers+1);
 	for (int i=0;i<=numPlayers;i++){
 		if(isPeer[i]){
 			buffer[ind]=((char)i);
 			ind++;
 			unsigned long ip = address[i].sin_addr.s_addr;
-			memcpy(&buffer[ind],((char*)&ip),sizeof(ip));
+			memcpy(&buffer[ind],((char*)&ip),4);
 			ind+=4;
 			unsigned short port=address[i].sin_port;
-			memcpy(&buffer[ind],((char*)&port),sizeof(port));
+			memcpy(&buffer[ind],((char*)&port),2);
 			ind+=2;
 		}
 	}
@@ -245,7 +249,6 @@ void Network::encodeNewIp(unsigned long Ip,unsigned short port){
 
 void Network::decodeNewIp(vector<char> pack){
 	playerId = pack[8];
-	address[playerId] = mySock;
 	int ind=9,pId;
 	while(pack[ind]!=-1){
 		pId=pack[ind];
@@ -258,7 +261,7 @@ void Network::decodeNewIp(vector<char> pack){
 			memcpy(((char*)&port),&pack[ind],2);
 			ind+=2;
 			address[pId].sin_family=AF_INET;
-			address[pId].sin_port=htons(port);
+			address[pId].sin_port=port;
 			address[pId].sin_addr.s_addr=Ip;
 			numPlayers++;
 			isPeer[pId]=true;
@@ -270,6 +273,7 @@ void Network::decodeNewIp(vector<char> pack){
 
 vector<char> Network::encodeJoinGame(){
 	vector<char> buffer=bufInit(joinGame,6500,6500);
+	buffer.resize(packSize,((char)-1));
 	return buffer;
 }
 
@@ -280,46 +284,69 @@ void* Network::data_thread(void* x){
 	struct sockaddr_in addr;
 	if(x!=NULL){
 		sockaddr_in* host=((sockaddr_in*)x);
-		// memset(((char*)&addr),0,sizeof(addr));
-		// memcpy(((char*)&addr),((char*)host),sizeof(addr));
 		buffer=encodeJoinGame();
 		for(int i=0;i!=packExtra;i++)sendto(fd,&buffer[0],buffer.size(),0,(struct sockaddr*)host,sizeof(*host));
+	
+	}else{
+		playerId=1;
+		numPlayers=1;
 	}
+	
+	cout<<ntohs(mySock.sin_port)<<endl;
+
 	while(!startSync){
 		
+		// prnt (buffer);
+			memset(((char*)&addr),0,sizeof(addr));
+			buffer.clear();
+			buffer.resize(packSize,0);
+			recvfrom(fd,&buffer[0],packSize,0,(struct sockaddr*)&addr,&len);
+			
+			if(buffer[0]!=0&&buffer[2]!=playerId&&addr.sin_port!=0&&addr.sin_addr.s_addr!=0){
+			// cout<<ntohs(mySock.sin_port)<<endl;
 
-		memset(((char*)&addr),0,sizeof(addr));
-		recvfrom(fd,&buffer[0],packSize,0,(struct sockaddr*)&addr,&len);
-		prnt (buffer);
-		if(buffer[0]!=0){
-			switch ((packType)buffer[3]){
-				case joinGame :
-				{
-					if(address.empty()){
-						address[1]=mySock;
-						numPlayers++;
+			// prnt(buffer);
+				switch ((packType)buffer[3]){
+					case joinGame :
+					{
+						if(!joinedGame[pair<unsigned long,unsigned short>(addr.sin_addr.s_addr,addr.sin_port)]){
+													
+							unsigned long ip=addr.sin_addr.s_addr;
+							unsigned short port=addr.sin_port;
+							
+							encodeNewIp(ip,port);
+							syncBuf.push_back(pair<int,vector<char> >(numPlayers+1,encodeIps()));
+							
+							address[numPlayers+1]=addr;
+							isPeer[numPlayers+1]=true;
+							numPlayers++;
+							
+							sendSyncBuf();
+							joinedGame[pair<unsigned long,unsigned short>(addr.sin_addr.s_addr,addr.sin_port)]=true;
+							// cout<<1<<endl;
+						}
 					}
-					unsigned long ip=addr.sin_addr.s_addr;
-					unsigned short port=addr.sin_port;
-					encodeNewIp(ip,port);
-					address[numPlayers+1]=addr;
-					syncBuf.push_back(pair<int,vector<char> >(numPlayers+1,encodeIps()));
-					sendSyncBuf();
-					isPeer[numPlayers+1]=true;
-					numPlayers++;
+					break;
+					case newIp :
+					if(numPlayers==1||(!isPeer[((int)buffer[9])]&&((int)buffer[9])!=-1)){
+						if(!isPeer[((int)buffer[2])]){
+							address[((int)buffer[2])]=addr;
+							isPeer[((int)buffer[2])]=true;
+							numPlayers++;
+						}
+						// prnt (buffer);
+						decodeNewIp(buffer);
+					}
+					break;
+					case startGame :
+					startSync=true;
+					break;
+					default:
+					break;
 				}
-				break;
-				case newIp :
-				decodeNewIp(buffer);
-				break;
-				case startGame :
-				startSync=true;
-				break;
-				default:
-				break;
 			}
-		}
-		cout<<1<<endl;
+		
+		// cout<<1<<endl;
 		usleep(iniSampleTime);
 	}
 
