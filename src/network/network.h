@@ -11,34 +11,42 @@
 #include <sys/types.h>
 #include <netinet/in.h>
 #include <resolv.h>
-#include "../main/globals.h"
-#include "../game_map/game_map.h"
+// #include "../main/globals.h"
+// #include "../game_map/game_map.h"
 
 using namespace std;
+class game_map{
+public:
+	enum key_tap{
+		up,down,left,rght,nop
+	};
+};
 
 class Network {
 private:
 	
 	enum packType {
-		syncPack,gamePack,controlPack,syncReqPack,gameReqPack
+		syncPack,gamePack,controlPack,syncReqPack,gameReqPack,joinGame,newIp,startGame
 	};
+	bool startSync,isHost;
+
 //control and data session should be distinct
 	int movNum,numPlayers,dataSession,controlSession,playerId,packSize,packExtra,mvsLen	//number of moves(keytaps)
-		,maxTime,minTime,sendGameTo,sockNum,delay,fd;												//session id (never 0)
+		,maxTime,minTime,sendGameTo,sockNum,delay,fd,iniSampleTime,dcCount;						//session id (never 0)
 																		//number of players
 																		//id of this player
 				 														//size of packet
 																		//number of redundant packets
 																		//length allotted to moves in synchro data
 																		//
-	game_map* dGame
+	game_map* dGame;
 
-	map< int,struct sockaddr_in> address;								//socket addressed of given id
+	map< int,sockaddr_in> address;								//socket addressed of given id
 	map< int,bool > isPeer;										//current connected peers
 	map< int,vector<game_map::key_tap> > syncData;				//recieved data
 	map< pair<int,int>,vector<char> > gameData;					//recieved data for recon to be sent data for rec data
 	map< int,vector <int> > syncReqs;							//requested data of players by the given id
-	map< int,vector <int,int> > gameReqs;						//requested data of players by the given id
+	vector<int> gameReqs;						//requested data of players by the given id
 	map<pair<int,int>,bool>syncHist;
 	map<int,bool>gameHist;
 	vector<pair<int,vector<char> > > syncBuf;					//contains sync data
@@ -56,19 +64,27 @@ private:
 	void decodeGame(vector<char> pack,game_map* aGame);				//updates agame with data
 	void decodeSyncReq(vector<char> pack);
 	void decodeGameReq();
+	void decodeNewIp(vector<char> pack);
 
+	vector<char> encodeIps();
+	vector<char> encodeJoinGame();
+	void encodeNewIp(unsigned long Ip,unsigned short port);
 	void sendSyncBuf();												//send contents of the buffer
 	void decodeSyncBuf();											//can contain sync data ,sync req, control
 	void decodeGameBuf();											//can contain game data ,game req
 	void sendGameBuf();
 	void recBuf();														//session no checked here loads all data from socket to buffer wih int field -1 
 	void wait();													//wait for time delay
+	bool resolveDc();
 	void incCounter();												//increaments counters
 	void clearTemp();												//clears temp data for restarting process
+	void encodeSyncAns();
+
 public:
-	Network();
-	Network(string host);
+	Network(const char* host);
 	~Network();
+	vector<game_map::key_tap> moves;
+	void start();
 	void* data_thread(void* x);
 	//vector of non human players, data recieved ***empty if disconnected
 };

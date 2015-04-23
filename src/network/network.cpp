@@ -1,9 +1,7 @@
 #include "network.h"
 
-Network::Network(){
 
-}
-Network::Network(string host){
+Network::Network(const char* host){
 
 }
 void Network::clearTemp(){
@@ -15,7 +13,6 @@ void Network::clearTemp(){
 	gameBuf.clear();
 	syncHist.clear();
 	gameHist.clear();
-	packId=0;
 }
 vector<char> Network::bufInit(Network::packType t,int packId,int packCount){
 	vector<char> buffer;
@@ -45,7 +42,7 @@ vector<char> Network::bufInit(Network::packType t,int packId,int packCount){
 
 void Network::encodeSync(vector<game_map::key_tap> moves){
 	vector<char> buffer=bufInit(syncPack,0,3);
-	moves.resize(mvsLen,nop);
+	moves.resize(mvsLen,game_map::nop);
 	buffer.push_back(((char)playerId));
 	for(int i = 0;i<mvsLen;i+=2){
 		int x=(int)moves[i];
@@ -62,12 +59,12 @@ void Network::encodeSyncAns(){
 	vector<char> temp=bufInit(syncPack,1,3),buffer;
 	for(int j=1;j<=numPlayers;j++){
 		if(isPeer[j]){
-			reqIds=syncReqs[j];
+			vector<int>reqIds=syncReqs[j];
 			for(int i = 0;i!=reqIds.size();i++){
 				buffer=temp;
 				vector<game_map::key_tap> moves = syncData[reqIds[i]];
 				if(moves.size()!=0){
-					moves.resize(mvsLen,nop);
+					moves.resize(mvsLen,game_map::nop);
 					buffer.push_back(((char)reqIds[i]));
 					for(int i = 0;i<mvsLen;i+=2){
 						int x=(int)moves[i];
@@ -89,8 +86,12 @@ void Network::encodeSyncReqs(){
 			buffer.push_back(((char)i));
 		}
 	}
-	residue.resize(packSize,((char)-1));
-	syncBuf.push_back(buffer);
+	buffer.resize(packSize,((char)-1));
+	for(int i=0;i<=numPlayers;i++){
+		if(isPeer[i]){
+			syncBuf.push_back(pair<int,vector<char> >(i,buffer));
+		}
+	}
 }
 
 void Network::decodeSync(vector<char> data){
@@ -123,19 +124,19 @@ void Network::decodeSyncBuf(){
 	
 	vector<char> buffer;
 	while(!syncBuf.empty()){
-		buffer=syncBuf.back();
+		buffer=syncBuf.back().second;
 		syncBuf.pop_back();
 		int sender=((int)(buffer[2]+256)%256),
 		packID=((int)((buffer[4]+256)%256))*256+((int)((buffer[5]+256)%256));
 		if(!syncHist[pair<int,int>(sender,packID)]){
 			switch ((packType)buffer[3]){
-				case: syncPack
+				case syncPack :
 					decodeSync(buffer);
 					break;
-				case: syncReqPack
+				case syncReqPack :
 					decodeSyncReq(buffer);
 					break;
-				case: controlPack
+				case controlPack :
 					//add ips etc etc
 					break;
 			}
@@ -146,28 +147,28 @@ void Network::decodeSyncBuf(){
 
 
 
-void recBuf(){
+void Network::recBuf(){
 	vector<char> buffer ;
 	buffer.resize(packSize);
-	int len=sizeof(address[playerId]);
+	socklen_t len=sizeof(address[playerId]);
 	buffer[0]=1;
 	while(buffer[0]!=0){
 		recvfrom(fd,&buffer[0],packSize,0,0,&len);
 		int session=((int)((buffer[1]+256)%256))*256+((int)((buffer[0]+256)%256));
-		if (session==dataSession) syncBuf.push_back(buffer);
+		if (session==dataSession) syncBuf.push_back(pair<int,vector<char> >(-1,buffer));
 	}
 }
 
-void sendSyncBuf(){
-	for(int i=0;i!=syncBuf.size()){
+void Network::sendSyncBuf(){
+	for(int i=0;i!=syncBuf.size();i++){
 		int len = sizeof(address[syncBuf[i].first]);
 		for(int j=0;j!=packExtra;j++){
-			sendto(fd, &syncBuf[i].second[0] , syncBuf[i].size(), 0, (struct sockaddr*) &address[syncBuf[i].first], len)
+			sendto(fd, &syncBuf[i].second[0] , syncBuf[i].second.size(), 0, (struct sockaddr*) &address[syncBuf[i].first], len);
 		}
 	}
 }
 
-bool resolveDc(){
+bool Network::resolveDc(){
 	if(syncData.empty())  return true;
 
 	for(int i=0;i!=numPlayers;i++){
@@ -176,62 +177,185 @@ bool resolveDc(){
 			address.erase(i);
 		}
 	}
-	return false
-
+	return false;
 }
 
-
-void* data_thread(void* x){
-	clearTemp();
-	encodeSync();
-	sendSyncBuf();
-	wait();
-	recBuf();
-	decodeSyncBuf();
-	sendSyncBuf();
-	wait();
-	recBuf();
-	decodeSyncBuf();
-	encodeSyncReqs();
-	sendSyncBuf();
-	wait();
-	recBuf();
-	decodeSyncBuf();
-	if(resolveDc()){
-
+vector<char> Network::encodeIps(){
+	vector<char> buffer=bufInit(newIp,65000,65000);
+	int ind=buffer.size();
+	buffer.resize(packSize,((char)-1));
+	buffer[ind]=((char)numPlayers+1);
+	ind++;
+	for (int i=0;i<=numPlayers;i++){
+		if(isPeer[i]){
+			buffer[ind]=((char)i);
+			ind++;
+			unsigned long ip = address[i].sin_addr.s_addr;
+			memcpy(&buffer[ind],((char*)&ip),sizeof(ip));
+			ind+=4;
+			unsigned short port=address[i].sin_port;
+			memcpy(&buffer[ind],((char*)&port),sizeof(port));
+			ind+=2;
+		}
 	}
-	//barrier
+	return buffer;
 }
 
+
+void Network::encodeNewIp(unsigned long Ip,unsigned short port){
+	vector<char> temp,buffer=bufInit(newIp,65000,65000);
+	buffer.resize(packSize,((char)-1));
+	buffer[9]=((char)numPlayers+1);
+	memcpy(&buffer[10],((char*)&Ip),4);
+	memcpy(&buffer[14],((char*)&port),2);
+	for(int i=0;i<=numPlayers;i++){
+		if(isPeer[i]){
+			buffer[8]=((char)i);
+			syncBuf.push_back(pair<int,vector<char> >(i,buffer));
+		}
+	}
+}
+
+void Network::decodeNewIp(vector<char> pack){
+	playerId = pack[8];
+	int ind=9,pId;
+	while(pack[ind]!=-1){
+		pId=pack[ind];
+		ind++;
+		if(!isPeer[pId]){
+			unsigned short port;
+			unsigned long Ip;
+			memcpy(((char*)&Ip),&pack[ind],4);
+			ind+=4;
+			memcpy(((char*)&port),&pack[ind],2);
+			ind+=2;
+			address[pId].sin_family=AF_INET;
+			address[pId].sin_port=htons(port);
+			address[pId].sin_addr.s_addr=Ip;
+			numPlayers++;
+			isPeer[pId]=true;
+		}else{
+			ind+=6;
+		}
+	}
+}
+
+vector<char> Network::encodeJoinGame(){
+	vector<char> buffer=bufInit(joinGame,6500,6500);
+	return buffer;
+}
+
+void* Network::data_thread(void* x){
+	vector<char> buffer;
+	buffer.resize(packSize,0);
+	socklen_t len;
+	struct sockaddr_in addr;
+	if(x!=NULL){
+		sockaddr_in* host=((sockaddr_in*)x);
+		// memset(((char*)&addr),0,sizeof(addr));
+		// memcpy(((char*)&addr),((char*)host),sizeof(addr));
+		buffer=encodeJoinGame();
+		for(int i=0;i!=packExtra;i++)sendto(fd,&buffer[0],buffer.size(),0,(struct sockaddr*)host,sizeof(*host));
+	}
+	while(!startSync){
+		memset(((char*)&addr),0,sizeof(addr));
+		recvfrom(fd,&buffer[0],packSize,0,(struct sockaddr*)&addr,&len);
+		if(buffer[0]!=0){
+			switch ((packType)buffer[3]){
+				case joinGame :
+				{
+					unsigned long ip=addr.sin_addr.s_addr;
+					unsigned short port=addr.sin_port;
+					encodeNewIp(ip,port);
+					address[numPlayers+1]=addr;
+					syncBuf.push_back(pair<int,vector<char> >(numPlayers+1,encodeIps()));
+					sendSyncBuf();
+					isPeer[numPlayers+1]=true;
+					numPlayers++;
+				}
+				break;
+				case newIp :
+				decodeNewIp(buffer);
+				break;
+				case startGame :
+				startSync=true;
+				break;
+				default:
+				break;
+			}
+		}
+		usleep(iniSampleTime);
+	}
+
+	while(startSync){
+		clearTemp(); 
+		encodeSync(moves);
+		sendSyncBuf();
+		usleep(delay);
+		recBuf();
+		decodeSyncBuf();
+		sendSyncBuf();
+		usleep(delay);
+		recBuf();
+		decodeSyncBuf();
+		encodeSyncReqs();
+		sendSyncBuf();
+		usleep(delay);
+		recBuf();
+		decodeSyncBuf();
+		int count=0;
+		while(resolveDc()&&count<dcCount){
+			usleep(delay/2);
+			recBuf();
+			decodeSyncBuf();
+			count++;
+		}
+		//barrier
+	}
+}
+
+
+void Network::start(){
+	// startSync=true;
+	// vector<char> buffer=bufInit(startGame,65000,65000);
+	// buffer.resize(packSize,((char)-1));
+	// for(int i =0;i<=numPlayers;i++){
+	// 	if(isPeer[i]){
+	// 		syncBuf.push_back(pair<int,vector<char> >(i,buffer));
+	// 	}
+	// }
+	// sendSyncBuf();
+}
 
 
 int main(void) {
-    struct sockaddr_in si_me, si_other;
-    int s, i, blen, slen = sizeof(si_other);
-    char buf[BUFLEN];
+    // struct sockaddr_in si_me, si_other;
+    // int s, i, blen, slen = sizeof(si_other);
+    // char buf[BUFLEN];
 
-    s = socket(AF_INET, SOCK_DGRAM, IPPROTO_UDP);
-    if (s == -1)
-        die("socket");
+    // s = socket(AF_INET, SOCK_DGRAM, IPPROTO_UDP);
+    // if (s == -1)
+    //     die("socket");
 
-    memset((char *) &si_me, 0, sizeof(si_me));
-    si_me.sin_family = AF_INET;
-    si_me.sin_port = htons(1234);
-    si_me.sin_addr.s_addr = htonl(192.168.1.1);
+    // memset((char *) &si_me, 0, sizeof(si_me));
+    // si_me.sin_family = AF_INET;
+    // si_me.sin_port = htons(1234);
+    // si_me.sin_addr.s_addr = htonl(192.168.1.1);
 
-    if (bind(s, (struct sockaddr*) &si_me, sizeof(si_me))==-1)
-        die("bind");
+    // if (bind(s, (struct sockaddr*) &si_me, sizeof(si_me))==-1)
+    //     die("bind");
 
-    int blen = recvfrom(s, buf, sizeof(buf), 0, (struct sockaddr*) &si_other, &slen);
-    if (blen == -1)
-       diep("recvfrom()");
+    // int blen = recvfrom(s, buf, sizeof(buf), 0, (struct sockaddr*) &si_other, &slen);
+    // if (blen == -1)
+    //    diep("recvfrom()");
 
-    printf("Data: %.*s \nReceived from %s:%d\n\n", blen, buf, inet_ntoa(si_other.sin_addr), ntohs(si_other.sin_port));
+    // printf("Data: %.*s \nReceived from %s:%d\n\n", blen, buf, inet_ntoa(si_other.sin_addr), ntohs(si_other.sin_port));
 
-    //send answer back to the client
-    if (sendto(s, buf, blen, 0, (struct sockaddr*) &si_other, slen) == -1)
-        diep("sendto()");
+    // //send answer back to the client
+    // if (sendto(s, buf, blen, 0, (struct sockaddr*) &si_other, slen) == -1)
+    //     diep("sendto()");
 
-    close(s);
+    // close(s);
     return 0;
+
 }
