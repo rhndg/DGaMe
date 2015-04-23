@@ -40,6 +40,7 @@ public:
 	 * @return Vector sum of type Vector3 of this vector and the vector passed as argument 
 	 */
 	Vector3 add(Vector3 V);
+	Vector3 sub(Vector3 V);
 	/**
 	 * @brief Vector Negation
 	 * @details Switches the sign of each component of the vector giving the reversed vector without updating it

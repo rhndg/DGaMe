@@ -31,7 +31,7 @@ int num_frames = 0;
 int hitDuration = -1;
 
 spark* coll;
-image loadedImgs[11];
+image loadedImgs[21];
 
 sf::Sound sound;
 
@@ -243,7 +243,16 @@ void drawBullet(Vector3 direc, Vector3 normal, Vector3 pos, int imageNo, float s
 	temp = pos.add(direc);
 	Vector3 bl(temp.sub(otherDirec));
 	Vector3 tl(temp.add(otherDirec));
-	drawImg(tl,bl,br,tr,imageNo);
+	drawImg(bl,br,tr,tl,imageNo);
+}
+
+void drawPower(Vector3 normal, Vector3 pos, int timeLeft, int imageNo, float size){
+	Vector3 up(cam.up_x,cam.up_y,cam.up_z);
+	drawBullet(up,normal,pos,imageNo,size);
+	Vector3 otherDirec = up.cross(normal);
+	pos = pos.add(up.setlen(size/2));
+	pos = pos.add(otherDirec.setlen(size/2));
+	drawBullet(up,normal,pos,timeLeft+11,size);
 }
 
 
@@ -468,10 +477,12 @@ void display() {
 	Vector3 frontDirec(0.0,1.0,0.0);
 	Vector3 centre(0.0,0.0,0.0);
 	Vector3 normal(1.0,0.0,1.0);
-	drawPl(frontDirec, centre, normal, 1.0, 0,true);
+	//drawPl(frontDirec, centre, normal, 1.0, 0,true);
 
 	Vector3 normal1(1.0,0.0,0.0);
-	drawBullet(frontDirec, normal1, centre, 7, 1.0);
+	//drawBullet(frontDirec, normal1, centre, 12, 1.0);
+
+	drawPower(normal, centre, 9, 4, 0.3);
 
 	if ((*coll).timeElapsed < 30)
 		(*coll).display(30);
@@ -544,6 +555,16 @@ int main(int argc, char** argv) {
    loadPNG("/home/abhi19gupta/Desktop/COP290_ass3/DGaMe/Abhi/images/bullet2.png",8);
    loadPNG("/home/abhi19gupta/Desktop/COP290_ass3/DGaMe/Abhi/images/bullet3.png",9);
    loadPNG("/home/abhi19gupta/Desktop/COP290_ass3/DGaMe/Abhi/images/bullet7.png",10);
+   loadPNG("/home/abhi19gupta/Desktop/COP290_ass3/DGaMe/Abhi/images/zero.png",11);
+   loadPNG("/home/abhi19gupta/Desktop/COP290_ass3/DGaMe/Abhi/images/one.png",12);
+   loadPNG("/home/abhi19gupta/Desktop/COP290_ass3/DGaMe/Abhi/images/two.png",13);
+   loadPNG("/home/abhi19gupta/Desktop/COP290_ass3/DGaMe/Abhi/images/three.png",14);
+   loadPNG("/home/abhi19gupta/Desktop/COP290_ass3/DGaMe/Abhi/images/four.png",15);
+   loadPNG("/home/abhi19gupta/Desktop/COP290_ass3/DGaMe/Abhi/images/five.png",16);
+   loadPNG("/home/abhi19gupta/Desktop/COP290_ass3/DGaMe/Abhi/images/six.png",17);
+   loadPNG("/home/abhi19gupta/Desktop/COP290_ass3/DGaMe/Abhi/images/seven.png",18);
+   loadPNG("/home/abhi19gupta/Desktop/COP290_ass3/DGaMe/Abhi/images/eight.png",19);
+   loadPNG("/home/abhi19gupta/Desktop/COP290_ass3/DGaMe/Abhi/images/nine.png",20);
    glutMainLoop();                 // Enter the infinite event-processing loop
    return 0;
 }
