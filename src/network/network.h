@@ -23,8 +23,8 @@ private:
 		syncPack,gamePack,controlPack,syncReqPack,gameReqPack
 	};
 //control and data session should be distinct
-	int movNum,numPlayers,dataSession,controlSession,playerId,packSize,packCount,mvsLen	//number of moves(keytaps)
-		,maxTime,minTime,sendGameTo,sockNum;												//session id (never 0)
+	int movNum,numPlayers,dataSession,controlSession,playerId,packSize,packExtra,mvsLen	//number of moves(keytaps)
+		,maxTime,minTime,sendGameTo,sockNum,delay,fd;												//session id (never 0)
 																		//number of players
 																		//id of this player
 				 														//size of packet
@@ -39,9 +39,11 @@ private:
 	map< pair<int,int>,vector<char> > gameData;					//recieved data for recon to be sent data for rec data
 	map< int,vector <int> > syncReqs;							//requested data of players by the given id
 	map< int,vector <int,int> > gameReqs;						//requested data of players by the given id
+	map<pair<int,int>,bool>syncHist;
+	map<int,bool>gameHist;
 	vector<pair<int,vector<char> > > syncBuf;					//contains sync data
 	vector<vector<char> > gameBuf;
-	int delay;													//time delay for message to reach
+	
 	
 
 	vector<char> bufInit(packType type,int packId,int packCount);	//push the first 8 bytes acc to pack type
@@ -68,7 +70,6 @@ public:
 	Network(string host);
 	~Network();
 	void* data_thread(void* x);
-	void* control_thread(void* x);
 	//vector of non human players, data recieved ***empty if disconnected
 };
 #endif
