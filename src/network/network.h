@@ -30,6 +30,7 @@ public:
 
 class Network {
 public:
+	
 /**
  * @brief packet types to be sent
  */	

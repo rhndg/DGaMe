@@ -333,7 +333,7 @@ void* event_thread(void*x){
 			//*************************************************
 			reverse(XXX.begin(),XXX.end());
 			XXX.resize(X.mvsLen,game_map::nop);		
-			// reverse(XXX.begin(),XXX.end());
+			reverse(XXX.begin(),XXX.end());
 			X.moves=XXX;
 			XXX.clear();
 			pthread_barrier_wait(&X.b2);

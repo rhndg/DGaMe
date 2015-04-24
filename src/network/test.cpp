@@ -52,12 +52,11 @@ int print_addresses(const int domain)
 
 int main(int argc, char *argv[])
 {
-  int domains[] = { AF_INET, AF_INET6 };
+  int domains[] = {AF_INET};
   int i;
 
   for (i = 0; i < sizeof(domains) / sizeof(domains[0]); i++)
     if (!print_addresses(domains[i]))
-      return 1;
 
   return 0;
 }
