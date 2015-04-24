@@ -427,7 +427,7 @@ void* Network::data_thread(void* x){
 		// cout<<1<<endl;
 		usleep(iniSampleTime);
 	}
-	syncBuf[dataSession].clear();
+	sendSyncBuf();
 	dataSession=1;
 	
 	for(int i=0;i<=numPlayers;i++){
@@ -483,11 +483,8 @@ void Network::start(){
 	for(int i =1;i<=numPlayers;i++){
 		if(isPeer[i]){
 			syncBuf[dataSession].push_back(pair<int,vector<char> >(i,buffer));
-			syncBuf[dataSession].push_back(pair<int,vector<char> >(i,buffer));
-			syncBuf[dataSession].push_back(pair<int,vector<char> >(i,buffer));
 		}
 	}
-	sendSyncBuf();
 	usleep(iniSampleTime);
 	pthread_mutex_unlock (&strt);
 
