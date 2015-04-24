@@ -16,21 +16,23 @@
 #include <netinet/in.h>
 #include <resolv.h>
 #include <fcntl.h>
+#include <sys/types.h>
+#include <sys/wait.h>
 #include <pthread.h>
 // #include "../main/globals.h"
 // #include "../game_map/game_map.h"
 
 using namespace std;
-class game_map{
+class game_map_{
 public:
 	enum key_tap{
-		up,down,left,rght,nop
+		up,right,down,left,shoot_up,shoot_right,shoot_down,shoot_left,toggle,nop
 	};
 };
 
 class Network {
 public:
-	
+
 /**
  * @brief packet types to be sent
  */	
@@ -41,7 +43,7 @@ public:
 
 //control and data session should be distinct
 	int movNum,numPlayers,dataSession,controlSession,playerId,packSize,packExtra,mvsLen	//number of moves(keytaps)
-		,maxTime,minTime,sendGameTo,sockNum,delay,fd,iniSampleTime,dcCount,frameCount,syncPeriod;						//session id (never 0)
+		,maxTime,minTime,sendGameTo,sockNum,delay,fd,iniSampleTime,dcCount,frameCount,syncPeriod,numBots;						//session id (never 0)
 																		//number of players
 																		//id of this player
 				 														//size of packet
@@ -49,12 +51,12 @@ public:
 																		//length allotted to moves in synchro data
 																		//
 
-	game_map* dGame;
+	// game_map* dGame;
 	sockaddr_in mySock;
 	struct sockaddr_in address[100];								//socket addressed of given id
 	map< pair<unsigned long,unsigned short>,bool>joinedGame;
 	map< int,bool > isPeer,disconnected;										//current connected peers
-	map< int,vector<game_map::key_tap> > syncData;				//recieved data
+	map< int,vector<game_map_::key_tap> > syncData;				//recieved data
 	map< pair<int,int>,vector<char> > gameData;					//recieved data for recon to be sent data for rec data
 	map< int,vector <int> > syncReqs;							//requested data of players by the given id
 	vector<int> gameReqs;						                //requested data of players by the given id
@@ -62,7 +64,7 @@ public:
 	map<int,bool>gameHist;
 	map<int,vector<pair<int,vector<char> > > > syncBuf;					//contains sync data
 	vector<vector<char> > gameBuf;
-	vector<game_map::key_tap> moves;
+	vector<game_map_::key_tap> moves;
 		
 	
 /**
@@ -79,7 +81,7 @@ public:
  * 
  * @param moves vector of moves
  */
-	void encodeSync(vector<game_map::key_tap> moves);
+	void encodeSync(vector<game_map_::key_tap> moves);
 /**
  * @brief encodes req packets and pushes into syncBuf
  */
@@ -106,7 +108,7 @@ public:
  * @param a pack packet
  * @param aGame game_map pointer to be updated
  */
-	void decodeGame(vector<char> pack,game_map* aGame);				//updates agame with data
+	void decodeGame(vector<char> pack,game_map_* aGame);				//updates agame with data
 /**
  * @brief decode sync requests of others
  * 
@@ -208,7 +210,7 @@ public:
 		for(int i=0;i!=v.size();i++) cout<<((int)v[i])<<" ";
 		cout<<endl;
 	}
-	void prnt_(vector<game_map::key_tap>v){
+	void prnt_(vector<game_map_::key_tap>v){
 		for(int i=0;i!=v.size();i++) cout<<((int)v[i])<<" ";
 		cout<<endl;
 
@@ -222,15 +224,15 @@ public:
  * @brief start mutex
  * 
  */
-	pthread_mutex_t strt;
-	pthread_t event;
+	pthread_mutex_t strt,bufMutx;
+	pthread_t data;
 	pthread_barrier_t b1,b2;
 /**
  * @brief data thread to be called in main
  * 
  * @param x sock addr pointer cast to void pointer
  */
-	void* data_thread(void* x);
+	// void* data_thread(void* x);
 	// void* event_thread(void* x);
 	//vector of non human players, data recieved ***empty if disconnected
 };
