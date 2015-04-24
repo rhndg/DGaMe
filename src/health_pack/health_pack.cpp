@@ -1,6 +1,6 @@
 #include "health_pack.h"
 
-boost::boost(int id_,int index)
+health_pack::health_pack(int id_,int index_)
 {
 	id=id_;
 	index=index_;
