@@ -331,8 +331,9 @@ void* event_thread(void*x){
 			}
 			cout<<"**************************"<<endl;
 			//*************************************************
-
+			reverse(XXX.begin(),XXX.end());
 			XXX.resize(X.mvsLen,game_map::nop);		
+			// reverse(XXX.begin(),XXX.end());
 			X.moves=XXX;
 			XXX.clear();
 			pthread_barrier_wait(&X.b2);
@@ -430,11 +431,11 @@ void* Network::data_thread(void* x){
 	sendSyncBuf();
 	dataSession=1;
 	
-	for(int i=0;i<=numPlayers;i++){
-		if(isPeer[i]){
-			cout<<i<<"->"<<address[i].sin_addr.s_addr<<"|"<<ntohs(address[i].sin_port)<<endl;
-		}
-	}
+	// for(int i=0;i<=numPlayers;i++){
+	// 	if(isPeer[i]){
+	// 		cout<<i<<"->"<<address[i].sin_addr.s_addr<<"|"<<ntohs(address[i].sin_port)<<endl;
+	// 	}
+	// }
 
 	while(!isDisconnected){
 		
