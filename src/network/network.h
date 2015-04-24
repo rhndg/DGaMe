@@ -25,7 +25,7 @@ public:
 };
 
 class Network {
-private:
+public:
 	
 	enum packType {
 		syncPack,gamePack,controlPack,syncReqPack,gameReqPack,joinGame,newIp,startGame
@@ -34,15 +34,13 @@ private:
 
 //control and data session should be distinct
 	int movNum,numPlayers,dataSession,controlSession,playerId,packSize,packExtra,mvsLen	//number of moves(keytaps)
-		,maxTime,minTime,sendGameTo,sockNum,delay,fd,iniSampleTime,dcCount;						//session id (never 0)
+		,maxTime,minTime,sendGameTo,sockNum,delay,fd,iniSampleTime,dcCount,frameCount,syncPeriod;						//session id (never 0)
 																		//number of players
 																		//id of this player
 				 														//size of packet
 																		//number of redundant packets
 																		//length allotted to moves in synchro data
 																		//
-	pthread_mutex_t mvsmutx;
-	pthread_barrier_t b1,b2;
 
 	game_map* dGame;
 	sockaddr_in mySock;
@@ -102,12 +100,14 @@ private:
 	//********************************
 
 
-public:
 	Network();
 	~Network();
-	pthread_t data,event;
+
+	pthread_mutex_t strt;
+	pthread_t event;
+	pthread_barrier_t b1,b2;
 	void* data_thread(void* x);
-	void* event_thread(void* x);
+	// void* event_thread(void* x);
 	//vector of non human players, data recieved ***empty if disconnected
 };
 #endif
