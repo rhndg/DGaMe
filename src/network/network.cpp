@@ -35,6 +35,7 @@ Network::Network(){
 	isHost=false;
 	frameCount=0;
 	syncPeriod=7;
+	randSeed=0;
 	pthread_mutex_init(&strt, NULL);
 	pthread_mutex_init(&bufMutx, NULL);
 	pthread_barrier_init(&b1, 0, 2);
@@ -243,7 +244,7 @@ bool Network::isDc(){
 }
 
 vector<char> Network::encodeIps(){
-	vector<char> buffer=bufInit(newIp,65000,numBots);
+	vector<char> buffer=bufInit(newIp,randSeed,numBots);
 	int ind=9;
 	buffer.resize(packSize,((char)-1));
 	buffer[8]=((char)numPlayers+1);
@@ -264,7 +265,7 @@ vector<char> Network::encodeIps(){
 
 
 void Network::encodeNewIp(unsigned long Ip,unsigned short port){
-	vector<char> temp,buffer=bufInit(newIp,65000,numBots);
+	vector<char> temp,buffer=bufInit(newIp,randSeed,numBots);
 	buffer.resize(packSize,((char)-1));
 	buffer[9]=((char)numPlayers+1);
 	memcpy(&buffer[10],((char*)&Ip),4);
@@ -280,6 +281,7 @@ void Network::encodeNewIp(unsigned long Ip,unsigned short port){
 void Network::decodeNewIp(vector<char> pack){
 	numBots=pack[7];
 	playerId = pack[8];
+	randSeed=(int)((pack[4]+256)%256)*256+((pack[5]+256)%256);
 	int ind=9,pId;
 	while(pack[ind]!=-1){
 		pId=pack[ind];
@@ -434,10 +436,14 @@ void* data_thread(void* x){
 	}
 	X.sendSyncBuf();
 	X.dataSession=1;
+	srand(X.randSeed);
 
 //********************************************************
+
 cout<<"numPlayers - "<<X.numPlayers<<endl;
 cout<<"numBots - "<<X.numBots<<endl;
+cout<<"rand seed - "<<X.randSeed<<endl;
+
 // gameInit(numPlayers,numBots,playerId);
 
 //********************************************************
@@ -557,6 +563,7 @@ int main(int argc,char** argv) {
     }else{
     	if(argc==2)X.numBots=atoi(argv[1]);
     	X.isHost=true;
+		X.randSeed=(rand())%65536;
     	pthread_create(&X.data,NULL,data_thread,NULL);
     }
 
@@ -570,7 +577,6 @@ event_thread();
 pthread_mutex_lock(&X.bufMutx);
 pthread_mutex_unlock(&X.bufMutx);
 
-usleep(-1);
 
 //GLUT MAIN LOOP   
 

@@ -43,7 +43,7 @@ public:
 
 //control and data session should be distinct
 	int movNum,numPlayers,dataSession,controlSession,playerId,packSize,packExtra,mvsLen	//number of moves(keytaps)
-		,maxTime,minTime,sendGameTo,sockNum,delay,fd,iniSampleTime,dcCount,frameCount,syncPeriod,numBots;						//session id (never 0)
+		,maxTime,minTime,sendGameTo,sockNum,delay,fd,iniSampleTime,dcCount,frameCount,syncPeriod,numBots,randSeed;						//session id (never 0)
 																		//number of players
 																		//id of this player
 				 														//size of packet
