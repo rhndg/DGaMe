@@ -4,10 +4,14 @@
 #include <bits/stdc++.h>
 #include <pthread.h>
 #include <unistd.h>
+#include <stdio.h>
 #include <errno.h>
+#include <stropts.h>
+#include <sys/socket.h>
+#include <sys/ioctl.h>
+#include <linux/netdevice.h>
 #include <netdb.h>
 #include <arpa/inet.h>
-#include <sys/socket.h>
 #include <sys/types.h>
 #include <netinet/in.h>
 #include <resolv.h>
@@ -44,7 +48,7 @@ public:
 
 	game_map* dGame;
 	sockaddr_in mySock;
-	map< int,sockaddr_in> address;								//socket addressed of given id
+	struct sockaddr_in address[100];								//socket addressed of given id
 	map< pair<unsigned long,unsigned short>,bool>joinedGame;
 	map< int,bool > isPeer,disconnected;										//current connected peers
 	map< int,vector<game_map::key_tap> > syncData;				//recieved data
@@ -87,6 +91,7 @@ public:
 	void start();
 	bool isDc();
 	bool futureSession(int packSess);
+	int print_addresses(const int domain);
 	//decode**************************
 	void prnt (vector<char> v){
 		for(int i=0;i!=v.size();i++) cout<<((int)v[i])<<" ";

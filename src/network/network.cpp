@@ -26,8 +26,8 @@ Network::Network(){
 	maxTime=100000;
 	minTime=50000;
 	sendGameTo=-1;
-	delay=100;
-	iniSampleTime=10000;
+	delay=100000;
+	iniSampleTime=1000;
 	dcCount=100;
 	startSync=false;
 	isDisconnected=false;
@@ -170,15 +170,14 @@ void Network::decodeSyncBuf(){
 		int sender=((int)(buffer[2]+256)%256),
 		packID=((int)((buffer[4]+256)%256))*256+((int)((buffer[5]+256)%256));
 		if(!syncHist[pair<int,int>(sender,packID)]){
+			
 			switch ((packType)buffer[3]){
 				case syncPack :
+					// prnt (buffer);
 					decodeSync(buffer);
 					break;
 				case syncReqPack :
 					decodeSyncReq(buffer);
-					break;
-				case controlPack :
-					//add ips etc etc
 					break;
 				default :
 
@@ -191,18 +190,22 @@ void Network::decodeSyncBuf(){
 
 bool Network::futureSession(int packSess){
 	int diff = (packSess-dataSession+65536)%65536;
-	if(diff<=5&&diff>=0) return true;
+	if(diff<=100&&diff>=0) return true;
 	else return false;
 }
 
 void Network::recBuf(){
 	vector<char> buffer ;
-	buffer.resize(packSize,-1);
+	buffer.resize(packSize,((char)-1));
 	while(buffer[0]!=0){
 		bzero(&buffer[0],packSize);
 		recvfrom(fd,&buffer[0],packSize,0,NULL,0);
+		// prnt (buffer);
 		int session=((int)((buffer[1]+256)%256))*256+((int)((buffer[0]+256)%256));
-		if (futureSession(session)&&buffer[0]!=0) syncBuf[session].push_back(pair<int,vector<char> >(-1,buffer));
+		if (futureSession(session)&&buffer[0]!=0) {
+			// prnt (buffer);
+			syncBuf[session].push_back(pair<int,vector<char> >(-1,buffer));
+		}
 	}
 }
 
@@ -218,9 +221,9 @@ void Network::sendSyncBuf(){
 }
 
 void Network::resolveDc(){
-	if(syncData.empty())  isDisconnected=true;
+	if(syncData.size()==1)  isDisconnected=true;
 	else{
-		for(int i=0;i!=numPlayers;i++){
+		for(int i=0;i<=numPlayers;i++){
 			if(isPeer[i]&&syncData[i].empty()){
 				isPeer[i]=false;
 				disconnected[i]=true;
@@ -230,7 +233,7 @@ void Network::resolveDc(){
 }
 
 bool Network::isDc(){
-	for(int i=0;i!=syncData.size();i++){
+	for(int i=0;i<=numPlayers;i++){
 		if(isPeer[i]&&syncData[i].empty()) return true;
 	}
 	return false;
@@ -306,13 +309,13 @@ void* event_thread(void*x){
 	if(x==NULL){
 		int j;
 		cin>>j;
+		X.start();
 	}else{
-		while(1){
-			if(X.startSync) break;
+		while(!X.startSync){
 			usleep(X.iniSampleTime);
 		}
 	}
-	X.start();
+	
 	while(1){
 		if(X.frameCount==0){
 			pthread_barrier_wait(&X.b1);
@@ -338,12 +341,14 @@ void* event_thread(void*x){
 		X.frameCount=(X.frameCount+1)%X.syncPeriod;
 		XXX.push_back(((game_map::key_tap)(rand()%10)));
 
-		usleep(100000);
+		usleep(X.delay);
 	}
 }
 
 
 void* Network::data_thread(void* x){
+	print_addresses(AF_INET);
+	cout<<"port => "<<ntohs(mySock.sin_port)<<endl;
 
     pthread_create(&event,NULL,event_thread,x);
 
@@ -361,7 +366,7 @@ void* Network::data_thread(void* x){
 		numPlayers=1;
 	}
 	
-	cout<<ntohs(mySock.sin_port)<<endl;
+	
 
 	while(!startSync){
 		
@@ -412,6 +417,7 @@ void* Network::data_thread(void* x){
 					break;
 					case startGame :
 					startSync=true;
+
 					break;
 					default:
 					break;
@@ -421,11 +427,16 @@ void* Network::data_thread(void* x){
 		// cout<<1<<endl;
 		usleep(iniSampleTime);
 	}
-	
 	syncBuf[dataSession].clear();
+	dataSession=1;
 	
+	for(int i=0;i<=numPlayers;i++){
+		if(isPeer[i]){
+			cout<<i<<"->"<<address[i].sin_addr.s_addr<<"|"<<ntohs(address[i].sin_port)<<endl;
+		}
+	}
 
-	while(startSync){
+	while(!isDisconnected){
 		
 		
 		clearTemp();
@@ -440,7 +451,11 @@ void* Network::data_thread(void* x){
 		usleep(delay);
 		recBuf();
 		decodeSyncBuf();
-
+		encodeSyncAns();
+		sendSyncBuf();
+		usleep(delay);
+		recBuf();
+		decodeSyncBuf();
 		int count=0;
 		while(isDc()&&count<dcCount){
 			usleep(delay/2);
@@ -459,6 +474,7 @@ void* Network::data_thread(void* x){
 
 
 void Network::start(){
+
 	pthread_mutex_lock (&strt);
 	
 	startSync=true;
@@ -467,13 +483,55 @@ void Network::start(){
 	for(int i =1;i<=numPlayers;i++){
 		if(isPeer[i]){
 			syncBuf[dataSession].push_back(pair<int,vector<char> >(i,buffer));
+			syncBuf[dataSession].push_back(pair<int,vector<char> >(i,buffer));
+			syncBuf[dataSession].push_back(pair<int,vector<char> >(i,buffer));
 		}
 	}
 	sendSyncBuf();
+	usleep(iniSampleTime);
 	pthread_mutex_unlock (&strt);
 
 }
 
+int Network::print_addresses(const int domain){
+  int s;
+  struct ifconf ifconf;
+  struct ifreq ifr[50];
+  int ifs;
+  int i;
+
+  s = socket(domain, SOCK_STREAM, 0);
+  if (s < 0) {
+    perror("socket");
+    return 0;
+  }
+
+  ifconf.ifc_buf = (char *) ifr;
+  ifconf.ifc_len = sizeof ifr;
+
+  if (ioctl(s, SIOCGIFCONF, &ifconf) == -1) {
+    perror("ioctl");
+    return 0;
+  }
+
+  ifs = ifconf.ifc_len / sizeof(ifr[0]);
+  printf("interfaces = %d:\n", ifs);
+  for (i = 0; i < ifs; i++) {
+    char ip[INET_ADDRSTRLEN];
+    struct sockaddr_in *s_in = (struct sockaddr_in *) &ifr[i].ifr_addr;
+
+    if (!inet_ntop(domain, &s_in->sin_addr, ip, sizeof(ip))) {
+      perror("inet_ntop");
+      return 0;
+    }
+
+    printf("%s - %s\n", ifr[i].ifr_name, ip);
+  }
+
+  close(s);
+
+  return 1;
+}
 
 int main(int argc,char** argv) {
     
