@@ -1,6 +1,6 @@
 #include "weapons.h"
 
-weapons::weapons(bool default_weapon_,int damage_,float speed_,float timespan_,float shot_time_,int max,damage_effect effect_,int upgrade_)
+weapons::weapons(bool default_weapon_,int damage_,float speed_,int timespan_,int shot_time_,int max,int upgrade_,int id)
 {
 	default_weapon=default_weapon_;
 	damage=damage_;
@@ -9,18 +9,19 @@ weapons::weapons(bool default_weapon_,int damage_,float speed_,float timespan_,f
 	shot_time=shot_time_;
 	if(default_weapon)
 		shots=max;
-	effect=effect_;
 	upgrade=upgrade_;
+	ID = id;
+	last_shot = 0;
 }
 void weapons::shot_fired()
 {
 	if((!default_weapon) && (last_shot>shot_time))
 	{
 		shots--;
-		last_shot=0.0;
+		last_shot=0;
 	}
 }
-bool weapons::noshots()
+bool weapons::no_shots()
 {
 	return (shots==0);
 }

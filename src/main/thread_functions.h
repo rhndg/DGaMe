@@ -1,7 +1,7 @@
 #ifndef THREAD_FUNCTIONS_H
 #define THREAD_FUNCTIONS_H
 
-#include <bits/stdc++.h>
+#include <vector>
 #include <pthread.h>
 #include "../network/network.h"
 

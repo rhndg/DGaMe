@@ -1,21 +1,27 @@
 #ifndef PLAYER_H
 #define PLAYER_H
 
-#include <bits/stdc++.h>
+#include <vector>
+#include <string>
 #include "../vector/Vector3.h"
 #include "../weapons/weapons.h"
 #include "../main/globals.h"
+#include "../bots/bots.h"
 #include "../grid/grid.h"
-#include "../main/game_map.h"
+#include "../game_map/game_map.h"
+#include "../health_pack/health_pack.h"
+#include "../bullet/bullet.h"
 
 using namespace std;
 
 class player{
 public:	
-	player(int ID,int gr_id,Vector3 pos,int n_lives,int n_kills);	//add mass,radius
+	player();
+	player(int ID,int gr_id,Vector3 pos,int n_lives,int n_kills,int g);	//add mass,radius
 
+	// player( player &obj);
 	//respawn
-	bool player_reset();
+	void player_reset();
 
 	//health boost
 	void get_health_pack(int id);
@@ -30,7 +36,7 @@ public:
 	void toggle_weapon();
 
 	//attack(add bullet object to bullets)
-	void fire_weapon();
+	void fire_weapon(int i);
 		
 	//check collision
 	int Player_CheckCollision();
@@ -38,7 +44,7 @@ public:
 	int Bot_CheckCollision();
 	
 	//check hit;
-	int CheckHit();
+	// int CheckHit();
 
 	//collision with player(collateral damage)
 	void Player_SolveCollision();
@@ -54,32 +60,32 @@ public:
 
 	int new_location(int move_up,int move_right);
 
-	void update(vector<key_tap> keys_pressed);
+	// void update(vector<key_tap> keys_pressed);
+	void update(vector<int> keys_pressed);
 
 	~player();
 
+	string name;
 	int id;	
 	int group_id;				//for team play(0 for neutral)
 	int g_locate;	
 	/*effective motion taps*/
-	int up;
-	int right;
+	int fwd;
+	int tang;
 
 	/*bounding sphere*/
 	float mass;
 	float radius;
-
-private:
-
 	bool active;				//to check if player is active or dead
-	int health;					//range(0-100); would be displayed on a progress bar
-	vector<weapons> weaponry;	//first element will be the default weapon
 	Vector3 position;
 	Vector3 velocity;
-	Vector3 aim;				//direction of firing shot
-//	int kills;
+	int last_hit;				//used with timestamps; for health recovery 
+private:
+
+	
+	int health;					//range(0-100); would be displayed on a progress bar
+	vector<weapons> weaponry;	//first element will be the default weapon
 	int lives;
-	float last_hit;				//used with timestamps; for health recovery 
 	int current_weapon;
 };
 

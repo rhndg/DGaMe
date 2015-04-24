@@ -1,7 +1,7 @@
 #ifndef VECTOR3_H
 #define VECTOR3_H
 
-#include <bits/stdc++.h>
+#include <vector>
 
 class Vector3 {
 public:
@@ -27,6 +27,7 @@ public:
 	 * @param z_ z coordinate
 	 */
 	void set(float x_,float y_,float z_);
+	void set(Vector3 v);
 	/**
 	 * @brief Vector Addition of 2 vectors
 	 * @details Adds the vector passed as argument to the function to this vector without updating it
@@ -35,6 +36,7 @@ public:
 	 * @return Vector sum of type Vector3 of this vector and the vector passed as argument 
 	 */
 	Vector3 add(Vector3 V);
+	Vector3 sub(Vector3 V);
 	/**
 	 * @brief Vector Negation
 	 * @details Switches the sign of each component of the vector giving the reversed vector without updating it
@@ -77,6 +79,8 @@ public:
 	Vector3 cross(Vector3 V);
 
 	Vector3 rotate(Vector3 axis,float rad);
+
+	bool equal(Vector3 v);
 };
 
 #endif

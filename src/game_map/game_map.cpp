@@ -2,67 +2,130 @@
 
 game_map::game_map(int n){ //n should be even
 	int n2 = n*n;
-	for (int i = 0; i < n2; i++){
-		Vector3* v = new Vector3[4];
-		int* neigh = new int[8];
-		v[0].set(-n/2,(i%n)-n/2,i/n-n/2);
-		v[1].set(-n/2,(i%n)-n/2,i/n-n/2+1);
-		v[2].set(-n/2,(i%n)-n/2-1,i/n-n/2+1);
-		v[3].set(-n/2,(i%n)-n/2-1,i/n-n/2);
-		if(i==0){
-			neigh[0] = 1;
-			neigh[1] = n;
-			neigh[2] = n+1;
-			neigh[3] = n2;
-			neigh[4] = 5*n2+n-1;
-			neigh[5] = n2+n;
-			neigh[6] = 5*n2+2*n-1;
-			neigh[7] = -1;
+	int counter = 0;
+	for (int i = 0; i < n; i++){
+		for(int j = 0; j < n; j++){
+			Vector3* v = new Vector3[4];
+			int* neigh = new int[8];
+			for (int k=0; k < 8; k++) neigh[k]=-1;
+			v[0].set(-n/2,i-n/2,j-n/2);
+			v[1].set(-n/2,i-n/2,j-n/2+1);
+			v[2].set(-n/2,i-n/2+1,j-n/2+1);
+			v[3].set(-n/2,i-n/2+1,j-n/2);
+			
+			grid g(v,neigh,counter);
+			Maps.push_back(g);
+			counter++;
 		}
-		else if(i==n-1){
-			neigh[0] = n-2;
-			neigh[1] = 2*n-2;
-			neigh[2] = 2*n-1;
-			neigh[3] = 2*n2;
-			neigh[4] = 2*n2+n;
-			neigh[5] = 2*n2-n;
-			neigh[6] = 2*n2-2*n;
-			neigh[7] = -1;
+	}
+	for (int i = 0; i < n; i++){
+		for (int j = 0; j < n; j++){
+			Vector3* v = new Vector3[4];
+			int* neigh = new int[8];
+			for (int k=0; k < 8; k++) neigh[k]=-1;
+			v[0].set(i-n/2,j-n/2,-n/2);
+			v[1].set(i-n/2,j-n/2+1,-n/2);
+			v[2].set(i-n/2+1,j-n/2+1,-n/2);
+			v[3].set(i-n/2+1,j-n/2,-n/2);
+			
+			grid g(v,neigh,counter);
+			Maps.push_back(g);
+			counter++;
 		}
-		else if(i==n2-1){
-			neigh[0] = n2-2;
-			neigh[1] = n2-n-1;
-			neigh[2] = n2-n-2;
-			neigh[3] = 3*n2-n;
-			neigh[4] = 3*n2-2*n;
-			neigh[5] = 3*n2;
-			neigh[6] = 3*n2+n;
-			neigh[7] = -1;
-		} 
-		else if(i==n2-n){
-			neigh[0] = n2-2*n;
-			neigh[1] = n2-2*n+1;
-			neigh[2] = n2-n+1;
-			neigh[3] = 6*n2-1;
-			neigh[4] = 6*n2-n-1;
-			neigh[5] = 4*n2-n;
-			neigh[6] = 4*n2-2*n;
-			neigh[7] = -1;
-		} 
-		else{
-			neigh[0] = i-n-1;
-			neigh[1] = i-n;
-			neigh[2] = i-n+1;
-			neigh[3] = i-1;
-			neigh[4] = i+1;
-			neigh[5] = i+n-1;
-			neigh[6] = i+n;
-			neigh[7] = i+n+1;
+	}
+	for (int i = 0; i < n; i++){
+		for (int j = 0; j < n; j++){
+			Vector3* v = new Vector3[4];
+			int* neigh = new int[8];
+			for (int k=0; k < 8; k++) neigh[k]=-1;
+			v[0].set(i-n/2,n/2,j-n/2);
+			v[1].set(i-n/2,n/2,j-n/2+1);
+			v[2].set(i-n/2+1,n/2,j-n/2+1);
+			v[3].set(i-n/2+1,n/2,j-n/2);
+			
+			grid g(v,neigh,counter);
+			Maps.push_back(g);
+			counter++;
 		}
-		grid g(v,neigh);
-		Map.push(g);
+	}
+	for (int i = 0; i < n; i++){
+		for (int j = 0; j < n; j++){
+			Vector3* v = new Vector3[4];
+			int* neigh = new int[8];
+			for (int k=0; k < 8; k++) neigh[k]=-1;
+			v[0].set(i-n/2,n/2-j,n/2);
+			v[1].set(i-n/2,n/2-j-1,n/2);
+			v[2].set(i-n/2+1,n/2-j-1,n/2);
+			v[3].set(i-n/2+1,n/2-j,n/2);
+			
+			grid g(v,neigh,counter);
+			Maps.push_back(g);
+			counter++;
+		}
+	}
+	for (int i = 0; i < n; i++){
+		for (int j = 0; j < n; j++){
+			Vector3* v = new Vector3[4];
+			int* neigh = new int[8];
+			for (int k=0; k < 8; k++) neigh[k]=-1;
+			v[0].set(n/2,n/2-i,j-n/2);
+			v[1].set(n/2,n/2-i-1,j-n/2);
+			v[2].set(n/2,n/2-i-1,j-n/2+1);
+			v[3].set(n/2,n/2-i,j-n/2+1);
+			
+			grid g(v,neigh,counter);
+			Maps.push_back(g);
+			counter++;
+		}
+	}
+	for (int i = 0; i < n; i++){
+		for (int j = 0; j < n; j++){
+			Vector3* v = new Vector3[4];
+			int* neigh = new int[8];
+			for (int k=0; k < 8; k++) neigh[k]=-1;
+			v[0].set(n/2-i,-n/2,j-n/2);
+			v[1].set(n/2-i-1,-n/2,j-n/2);
+			v[2].set(n/2-i-1,-n/2,j-n/2+1);
+			v[3].set(n/2-i,-n/2,j-n/2+1);
+	
+			grid g(v,neigh,counter);
+			Maps.push_back(g);
+			counter++;
+		}
 	}
 
+	for (int i = 0; i < 6*n2 ; i++){
+		grid current = Maps[i];
+		int counter = 0;
+		for (int j = 0; j < 6*n2 ; j++){
+			if (i==j) continue;
+			grid search = Maps[j];
+			bool break1 = false;
+			bool found=false;
+			for (int k = 0; k < 4; k++){
+				for (int l = 0; l < 4; l++){
+					if (current.vertex[k].equal(search.vertex[l])){
+						for(int m = 0; m < 8; m++){
+							if (Maps[i].neigh[m]==j) found=true;
+							break;
+						}
+						if(found) break;
+						else{
+							Maps[i].neigh[counter] = j;
+							// cout << i << " " << j << endl;
+							counter++;
+							if(counter==8) break1=true;
+							found = true;
+							break;
+						} 
+					}
+				}
+				if(found) break;
+			}
+			if(break1) break;
+		}
+		if (counter==7) Maps[i].neigh[7] = i;
+	}
 }
 
 game_map::~game_map(){

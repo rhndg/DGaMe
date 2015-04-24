@@ -17,8 +17,19 @@ void Vector3::set(float x_,float y_,float z_){
 	y=y_;
 	z=z_;
 }
+
+void Vector3::set(Vector3 v){
+	x=v.x;
+	y=v.y;
+	z=v.z;
+}
+
 Vector3 Vector3::add(Vector3 V){
 	return Vector3(x+V.x,y+V.y,z+V.z);
+}
+
+Vector3 Vector3::sub(Vector3 V){
+	return Vector3(x-V.x,y-V.y,z-V.z);
 }
 
 Vector3 Vector3::neg(){
@@ -46,9 +57,21 @@ Vector3 Vector3::cross(Vector3 V){
 	return Vector3(y*V.z-z*V.y,V.x*z-x*V.z,x*V.y-y*V.x);
 }
 
-Vector3 Vector3::rotate(Vector3 axis,float rad)			//left->counter clockwise
+// Vector3 Vector3::rotate(Vector3 axis,float rad)			//left->counter clockwise
+// {
+// 	Vector3 component1 = this->mult(cos(rad));
+// 	Vector3 component2 = (this->cross(axis)).mult(-sin(rad));
+// 	return component1.add(component2);
+// }
+
+Vector3 Vector3::rotate(Vector3 axis,float r)			//left->counter clockwise
 {
-	Vector3 component1 = this.cos(rad);
-	Vector3 component2 = (this.cross(axis)).mult(-sin(rad));
-	return component1.add(component2);
+ 	Vector3 component1 = this->mult(r);
+ 	float a = acos(r);
+ 	Vector3 component2 = (this->cross(axis)).mult(-sin(a));
+ 	return component1.add(component2);
 }
+bool Vector3::equal(Vector3 v)
+{
+	return (x==v.x && y==v.y && z==v.z);
+} 
