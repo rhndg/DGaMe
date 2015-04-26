@@ -1,0 +1,6 @@
+digraph "game_map" {
+  compound=true
+  node [ fontsize="10", fontname="Helvetica"];
+  edge [ labelfontsize="10", labelfontname="Helvetica"];
+  dir_95bf7ce502f94a159ddbb0f4338da34b [shape=box, label="game_map", style="filled", fillcolor="#eeeeff", pencolor="black", URL="dir_95bf7ce502f94a159ddbb0f4338da34b.html"];
+}

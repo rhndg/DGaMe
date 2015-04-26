@@ -1,0 +1,240 @@
+\hypertarget{classgrid}{\section{grid Class Reference}
+\label{classgrid}\index{grid@{grid}}
+}
+
+
+Collaboration diagram for grid\+:
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{classgrid_a333b624e7bc7cc03d494ab3258b1215e}{\hyperlink{classgrid_a333b624e7bc7cc03d494ab3258b1215e}{grid} ()}\label{classgrid_a333b624e7bc7cc03d494ab3258b1215e}
+
+\begin{DoxyCompactList}\small\item\em grid constructor \end{DoxyCompactList}\item 
+\hyperlink{classgrid_abb258c486d84b0cd1add918e9b046e07}{grid} (\hyperlink{class_vector3}{Vector3} $\ast$f, int $\ast$n, int i)
+\begin{DoxyCompactList}\small\item\em other constructor \end{DoxyCompactList}\item 
+\hyperlink{classgrid_a142a37c799371f252af966660d9efd50}{grid} (const \hyperlink{classgrid}{grid} \&g)
+\begin{DoxyCompactList}\small\item\em grid coppy constructor \end{DoxyCompactList}\item 
+float \hyperlink{classgrid_aa0448f7739ea36996f01a86a85009041}{min\+\_\+distance} (\hyperlink{class_vector3}{Vector3} v)
+\begin{DoxyCompactList}\small\item\em minimum distance from given vector \end{DoxyCompactList}\item 
+int \hyperlink{classgrid_a47588bc719ec0342eee14e0038289c55}{check\+\_\+neighbour} (int g)
+\begin{DoxyCompactList}\small\item\em checks whether is neighbour \end{DoxyCompactList}\item 
+\hyperlink{class_vector3}{Vector3} \hyperlink{classgrid_aab14fbe45b1a0c2f8301bb9116b994ad}{set\+\_\+normal} (\hyperlink{class_vector3}{Vector3} $\ast$f)
+\begin{DoxyCompactList}\small\item\em set the normalof a grid to a particalar value \end{DoxyCompactList}\item 
+float \hyperlink{classgrid_af114a177215bf37a140f239da47c688d}{distance\+\_\+from\+\_\+surface} (\hyperlink{class_vector3}{Vector3} pos)
+\begin{DoxyCompactList}\small\item\em distance from the surface \end{DoxyCompactList}\item 
+bool \hyperlink{classgrid_ad5703af71bdd1872108f31d33f420cc8}{point\+\_\+in\+\_\+plane} (\hyperlink{class_vector3}{Vector3} v)
+\begin{DoxyCompactList}\small\item\em check whether pont is in plane \end{DoxyCompactList}\item 
+bool \hyperlink{classgrid_ac915d3be7b22d106f962fc5030565907}{point\+\_\+in\+\_\+plane\+\_\+inclusive} (\hyperlink{class_vector3}{Vector3} v)
+\begin{DoxyCompactList}\small\item\em similar to previous function onlu inclusive \end{DoxyCompactList}\item 
+int \hyperlink{classgrid_a9253c575a79f04292385dce2aa1000d3}{find\+\_\+grid} (\hyperlink{class_vector3}{Vector3} v)
+\begin{DoxyCompactList}\small\item\em find the grid \end{DoxyCompactList}\item 
+\hypertarget{classgrid_a77b694f27014401fa349f9a5a552cf55}{\hyperlink{class_vector3}{Vector3} \hyperlink{classgrid_a77b694f27014401fa349f9a5a552cf55}{set\+\_\+point} ()}\label{classgrid_a77b694f27014401fa349f9a5a552cf55}
+
+\begin{DoxyCompactList}\small\item\em set point \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{classgrid_a7f50eef7c5c1395db01cf6a2706dc32e}{\hyperlink{class_vector3}{Vector3} $\ast$ {\bfseries vertex}}\label{classgrid_a7f50eef7c5c1395db01cf6a2706dc32e}
+
+\item 
+\hypertarget{classgrid_a4d49c9de8412217e0575c134f24d8138}{int {\bfseries id}}\label{classgrid_a4d49c9de8412217e0575c134f24d8138}
+
+\item 
+\hypertarget{classgrid_a8dd6e0cda61e91baa3f6d959ae478090}{vector$<$ int $>$ {\bfseries Players}}\label{classgrid_a8dd6e0cda61e91baa3f6d959ae478090}
+
+\item 
+\hypertarget{classgrid_a05cf0d1175ae0c21c75f398dc0a6441f}{vector$<$ int $>$ {\bfseries Bots}}\label{classgrid_a05cf0d1175ae0c21c75f398dc0a6441f}
+
+\item 
+\hypertarget{classgrid_a45240816bb6ec108df53d40eba468c9b}{vector$<$ \hyperlink{classbullet}{bullet} $>$ {\bfseries Bullets}}\label{classgrid_a45240816bb6ec108df53d40eba468c9b}
+
+\item 
+\hypertarget{classgrid_af8d9fbc22b045813b4d8de06cd95fec4}{vector$<$ int $>$ {\bfseries Armoury}}\label{classgrid_af8d9fbc22b045813b4d8de06cd95fec4}
+
+\item 
+\hypertarget{classgrid_a8db14b5575e279c25ac1e17c6afb1d6a}{vector$<$ int $>$ {\bfseries Boosts}}\label{classgrid_a8db14b5575e279c25ac1e17c6afb1d6a}
+
+\item 
+\hypertarget{classgrid_a32c7438c31386c655c334601a3e7c726}{int $\ast$ {\bfseries neigh}}\label{classgrid_a32c7438c31386c655c334601a3e7c726}
+
+\item 
+\hypertarget{classgrid_a5de0482150283b05add849eb928cdea9}{\hyperlink{class_vector3}{Vector3} {\bfseries normal}}\label{classgrid_a5de0482150283b05add849eb928cdea9}
+
+\end{DoxyCompactItemize}
+
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{classgrid_abb258c486d84b0cd1add918e9b046e07}{\index{grid@{grid}!grid@{grid}}
+\index{grid@{grid}!grid@{grid}}
+\subsubsection[{grid}]{\setlength{\rightskip}{0pt plus 5cm}grid\+::grid (
+\begin{DoxyParamCaption}
+\item[{{\bf Vector3} $\ast$}]{f, }
+\item[{int $\ast$}]{n, }
+\item[{int}]{i}
+\end{DoxyParamCaption}
+)}}\label{classgrid_abb258c486d84b0cd1add918e9b046e07}
+
+
+other constructor 
+
+
+\begin{DoxyParams}{Parameters}
+{\em f} & vector array pointer for vertices \\
+\hline
+{\em n} & neighbour index array pointer \\
+\hline
+{\em i} & grid id \\
+\hline
+\end{DoxyParams}
+\hypertarget{classgrid_a142a37c799371f252af966660d9efd50}{\index{grid@{grid}!grid@{grid}}
+\index{grid@{grid}!grid@{grid}}
+\subsubsection[{grid}]{\setlength{\rightskip}{0pt plus 5cm}grid\+::grid (
+\begin{DoxyParamCaption}
+\item[{const {\bf grid} \&}]{g}
+\end{DoxyParamCaption}
+)}}\label{classgrid_a142a37c799371f252af966660d9efd50}
+
+
+grid coppy constructor 
+
+
+\begin{DoxyParams}{Parameters}
+{\em g} & object to be coppied \\
+\hline
+\end{DoxyParams}
+
+
+\subsection{Member Function Documentation}
+\hypertarget{classgrid_a47588bc719ec0342eee14e0038289c55}{\index{grid@{grid}!check\+\_\+neighbour@{check\+\_\+neighbour}}
+\index{check\+\_\+neighbour@{check\+\_\+neighbour}!grid@{grid}}
+\subsubsection[{check\+\_\+neighbour}]{\setlength{\rightskip}{0pt plus 5cm}int grid\+::check\+\_\+neighbour (
+\begin{DoxyParamCaption}
+\item[{int}]{g}
+\end{DoxyParamCaption}
+)}}\label{classgrid_a47588bc719ec0342eee14e0038289c55}
+
+
+checks whether is neighbour 
+
+
+\begin{DoxyParams}{Parameters}
+{\em g} & grid to be checked \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+result 
+\end{DoxyReturn}
+\hypertarget{classgrid_af114a177215bf37a140f239da47c688d}{\index{grid@{grid}!distance\+\_\+from\+\_\+surface@{distance\+\_\+from\+\_\+surface}}
+\index{distance\+\_\+from\+\_\+surface@{distance\+\_\+from\+\_\+surface}!grid@{grid}}
+\subsubsection[{distance\+\_\+from\+\_\+surface}]{\setlength{\rightskip}{0pt plus 5cm}float grid\+::distance\+\_\+from\+\_\+surface (
+\begin{DoxyParamCaption}
+\item[{{\bf Vector3}}]{pos}
+\end{DoxyParamCaption}
+)}}\label{classgrid_af114a177215bf37a140f239da47c688d}
+
+
+distance from the surface 
+
+
+\begin{DoxyParams}{Parameters}
+{\em pos} & position \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+result 
+\end{DoxyReturn}
+\hypertarget{classgrid_a9253c575a79f04292385dce2aa1000d3}{\index{grid@{grid}!find\+\_\+grid@{find\+\_\+grid}}
+\index{find\+\_\+grid@{find\+\_\+grid}!grid@{grid}}
+\subsubsection[{find\+\_\+grid}]{\setlength{\rightskip}{0pt plus 5cm}int grid\+::find\+\_\+grid (
+\begin{DoxyParamCaption}
+\item[{{\bf Vector3}}]{v}
+\end{DoxyParamCaption}
+)}}\label{classgrid_a9253c575a79f04292385dce2aa1000d3}
+
+
+find the grid 
+
+
+\begin{DoxyParams}{Parameters}
+{\em v} & given vector \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true or not 
+\end{DoxyReturn}
+\hypertarget{classgrid_aa0448f7739ea36996f01a86a85009041}{\index{grid@{grid}!min\+\_\+distance@{min\+\_\+distance}}
+\index{min\+\_\+distance@{min\+\_\+distance}!grid@{grid}}
+\subsubsection[{min\+\_\+distance}]{\setlength{\rightskip}{0pt plus 5cm}float grid\+::min\+\_\+distance (
+\begin{DoxyParamCaption}
+\item[{{\bf Vector3}}]{v}
+\end{DoxyParamCaption}
+)}}\label{classgrid_aa0448f7739ea36996f01a86a85009041}
+
+
+minimum distance from given vector 
+
+
+\begin{DoxyParams}{Parameters}
+{\em v} & vector given \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+float distance 
+\end{DoxyReturn}
+\hypertarget{classgrid_ad5703af71bdd1872108f31d33f420cc8}{\index{grid@{grid}!point\+\_\+in\+\_\+plane@{point\+\_\+in\+\_\+plane}}
+\index{point\+\_\+in\+\_\+plane@{point\+\_\+in\+\_\+plane}!grid@{grid}}
+\subsubsection[{point\+\_\+in\+\_\+plane}]{\setlength{\rightskip}{0pt plus 5cm}bool grid\+::point\+\_\+in\+\_\+plane (
+\begin{DoxyParamCaption}
+\item[{{\bf Vector3}}]{v}
+\end{DoxyParamCaption}
+)}}\label{classgrid_ad5703af71bdd1872108f31d33f420cc8}
+
+
+check whether pont is in plane 
+
+
+\begin{DoxyParams}{Parameters}
+{\em v} & radius vector \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+whether true or not 
+\end{DoxyReturn}
+\hypertarget{classgrid_ac915d3be7b22d106f962fc5030565907}{\index{grid@{grid}!point\+\_\+in\+\_\+plane\+\_\+inclusive@{point\+\_\+in\+\_\+plane\+\_\+inclusive}}
+\index{point\+\_\+in\+\_\+plane\+\_\+inclusive@{point\+\_\+in\+\_\+plane\+\_\+inclusive}!grid@{grid}}
+\subsubsection[{point\+\_\+in\+\_\+plane\+\_\+inclusive}]{\setlength{\rightskip}{0pt plus 5cm}bool grid\+::point\+\_\+in\+\_\+plane\+\_\+inclusive (
+\begin{DoxyParamCaption}
+\item[{{\bf Vector3}}]{v}
+\end{DoxyParamCaption}
+)}}\label{classgrid_ac915d3be7b22d106f962fc5030565907}
+
+
+similar to previous function onlu inclusive 
+
+
+\begin{DoxyParams}{Parameters}
+{\em v} & radius vector \\
+\hline
+\end{DoxyParams}
+\hypertarget{classgrid_aab14fbe45b1a0c2f8301bb9116b994ad}{\index{grid@{grid}!set\+\_\+normal@{set\+\_\+normal}}
+\index{set\+\_\+normal@{set\+\_\+normal}!grid@{grid}}
+\subsubsection[{set\+\_\+normal}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Vector3} grid\+::set\+\_\+normal (
+\begin{DoxyParamCaption}
+\item[{{\bf Vector3} $\ast$}]{f}
+\end{DoxyParamCaption}
+)}}\label{classgrid_aab14fbe45b1a0c2f8301bb9116b994ad}
+
+
+set the normalof a grid to a particalar value 
+
+
+\begin{DoxyParams}{Parameters}
+{\em f} & normal to be set \\
+\hline
+\end{DoxyParams}
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+grid/grid.\+h\item 
+grid/grid.\+cpp\end{DoxyCompactItemize}

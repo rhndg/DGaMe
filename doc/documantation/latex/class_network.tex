@@ -1,0 +1,460 @@
+\hypertarget{class_network}{\section{Network Class Reference}
+\label{class_network}\index{Network@{Network}}
+}
+\subsection*{Public Types}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{class_network_a95cb88240e7c07871d740c2e19b55aab}{enum \hyperlink{class_network_a95cb88240e7c07871d740c2e19b55aab}{pack\+Type} \{ \\*
+{\bfseries sync\+Pack}, 
+{\bfseries game\+Pack}, 
+{\bfseries control\+Pack}, 
+{\bfseries sync\+Req\+Pack}, 
+\\*
+{\bfseries game\+Req\+Pack}, 
+{\bfseries join\+Game}, 
+{\bfseries new\+Ip}, 
+{\bfseries start\+Game}
+ \}}\label{class_network_a95cb88240e7c07871d740c2e19b55aab}
+
+\begin{DoxyCompactList}\small\item\em packet types to be sent \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+vector$<$ char $>$ \hyperlink{class_network_a94b78a90932755049571742c8ae6d305}{buf\+Init} (\hyperlink{class_network_a95cb88240e7c07871d740c2e19b55aab}{pack\+Type} type, int pack\+Id, int pack\+Count)
+\begin{DoxyCompactList}\small\item\em returns packet header \end{DoxyCompactList}\item 
+void \hyperlink{class_network_a42c20072f83c7067b17f60d6ba1a9e86}{encode\+Sync} (vector$<$ game\+\_\+map\+\_\+\+::key\+\_\+tap $>$ moves)
+\begin{DoxyCompactList}\small\item\em encodes the sync packets and puts into sync Buf \end{DoxyCompactList}\item 
+\hypertarget{class_network_a0ebe37571835f8d24a7736085619cc18}{void \hyperlink{class_network_a0ebe37571835f8d24a7736085619cc18}{encode\+Sync\+Reqs} ()}\label{class_network_a0ebe37571835f8d24a7736085619cc18}
+
+\begin{DoxyCompactList}\small\item\em encodes req packets and pushes into sync\+Buf \end{DoxyCompactList}\item 
+\hypertarget{class_network_af2dc5f463ed8ad2c2983101332c8a972}{void \hyperlink{class_network_af2dc5f463ed8ad2c2983101332c8a972}{encode\+Game\+Reqs} ()}\label{class_network_af2dc5f463ed8ad2c2983101332c8a972}
+
+\begin{DoxyCompactList}\small\item\em encodes game request packets \end{DoxyCompactList}\item 
+void \hyperlink{class_network_adbef3dc502d14837b6f617dca60cd740}{encode\+Game} (int for\+Id)
+\begin{DoxyCompactList}\small\item\em encode and push into sync Buf game packets \end{DoxyCompactList}\item 
+void \hyperlink{class_network_a8e8fbc79b2d3101cdd0b2162d5cf57ac}{decode\+Sync} (vector$<$ char $>$ pack)
+\begin{DoxyCompactList}\small\item\em decodes a ync packet and pts data into sync data \end{DoxyCompactList}\item 
+void \hyperlink{class_network_a26fe81bc20bf31fcc741004c9fcd9c97}{decode\+Game} (vector$<$ char $>$ pack, \hyperlink{classgame__map__}{game\+\_\+map\+\_\+} $\ast$a\+Game)
+\begin{DoxyCompactList}\small\item\em decode game packets \end{DoxyCompactList}\item 
+void \hyperlink{class_network_a0ff837b11d772e8af91a027e915f15ea}{decode\+Sync\+Req} (vector$<$ char $>$ pack)
+\begin{DoxyCompactList}\small\item\em decode sync requests of others \end{DoxyCompactList}\item 
+\hypertarget{class_network_a4e224dd40f84385e75421b8cb91d278a}{void \hyperlink{class_network_a4e224dd40f84385e75421b8cb91d278a}{decode\+Game\+Req} ()}\label{class_network_a4e224dd40f84385e75421b8cb91d278a}
+
+\begin{DoxyCompactList}\small\item\em decodes game requests \end{DoxyCompactList}\item 
+void \hyperlink{class_network_a6355166cc92ae92d3733d2f473abcc3a}{decode\+New\+Ip} (vector$<$ char $>$ pack)
+\begin{DoxyCompactList}\small\item\em decodes new ip packets \end{DoxyCompactList}\item 
+vector$<$ char $>$ \hyperlink{class_network_af56c81957d00bac67095c1788b50c9e9}{encode\+Ips} ()
+\begin{DoxyCompactList}\small\item\em encode ips of all present players \end{DoxyCompactList}\item 
+vector$<$ char $>$ \hyperlink{class_network_a3661dd702ec900bf055161d50230014d}{encode\+Join\+Game} ()
+\begin{DoxyCompactList}\small\item\em make a simple joingame packet \end{DoxyCompactList}\item 
+void \hyperlink{class_network_a3261dcafabc7cc28b8e05e8141ad559a}{encode\+New\+Ip} (unsigned long Ip, unsigned short port)
+\begin{DoxyCompactList}\small\item\em pushes new ip packets for all other players \end{DoxyCompactList}\item 
+\hypertarget{class_network_a7a7cc6268a789bb259f7fa125885a5f4}{void \hyperlink{class_network_a7a7cc6268a789bb259f7fa125885a5f4}{send\+Sync\+Buf} ()}\label{class_network_a7a7cc6268a789bb259f7fa125885a5f4}
+
+\begin{DoxyCompactList}\small\item\em sends packets in sync\+Buf \end{DoxyCompactList}\item 
+\hypertarget{class_network_a0e68820722c65d913f7c5c85c6154fe6}{void \hyperlink{class_network_a0e68820722c65d913f7c5c85c6154fe6}{decode\+Sync\+Buf} ()}\label{class_network_a0e68820722c65d913f7c5c85c6154fe6}
+
+\begin{DoxyCompactList}\small\item\em decodes recieved packets \end{DoxyCompactList}\item 
+\hypertarget{class_network_a2a38439b09a7caf647359b0dca311fdc}{void \hyperlink{class_network_a2a38439b09a7caf647359b0dca311fdc}{decode\+Game\+Buf} ()}\label{class_network_a2a38439b09a7caf647359b0dca311fdc}
+
+\begin{DoxyCompactList}\small\item\em decodes game buffer cmponents \end{DoxyCompactList}\item 
+\hypertarget{class_network_ab302134b3fb19690136e5fe34eee45d9}{void \hyperlink{class_network_ab302134b3fb19690136e5fe34eee45d9}{send\+Game\+Buf} ()}\label{class_network_ab302134b3fb19690136e5fe34eee45d9}
+
+\begin{DoxyCompactList}\small\item\em send game buffer to recipients \end{DoxyCompactList}\item 
+\hypertarget{class_network_a1ab5cac1707e27103f64dd259139b126}{void \hyperlink{class_network_a1ab5cac1707e27103f64dd259139b126}{rec\+Buf} ()}\label{class_network_a1ab5cac1707e27103f64dd259139b126}
+
+\begin{DoxyCompactList}\small\item\em loads packets frm socket buffer to sync\+Buf \end{DoxyCompactList}\item 
+\hypertarget{class_network_a0671b3a74b520585e591f2d577dfaad3}{void \hyperlink{class_network_a0671b3a74b520585e591f2d577dfaad3}{wait} ()}\label{class_network_a0671b3a74b520585e591f2d577dfaad3}
+
+\begin{DoxyCompactList}\small\item\em wait for delay \end{DoxyCompactList}\item 
+\hypertarget{class_network_afa00533baa951af393f5bfadcc3348a2}{void \hyperlink{class_network_afa00533baa951af393f5bfadcc3348a2}{resolve\+Dc} ()}\label{class_network_afa00533baa951af393f5bfadcc3348a2}
+
+\begin{DoxyCompactList}\small\item\em desolve state incase of dc \end{DoxyCompactList}\item 
+\hypertarget{class_network_a49239092e2845edefa044195f9efb452}{void \hyperlink{class_network_a49239092e2845edefa044195f9efb452}{inc\+Counter} ()}\label{class_network_a49239092e2845edefa044195f9efb452}
+
+\begin{DoxyCompactList}\small\item\em increament data session \end{DoxyCompactList}\item 
+\hypertarget{class_network_a136c9ca7b831ef417fb66f20d3d4a9f4}{void \hyperlink{class_network_a136c9ca7b831ef417fb66f20d3d4a9f4}{clear\+Temp} ()}\label{class_network_a136c9ca7b831ef417fb66f20d3d4a9f4}
+
+\begin{DoxyCompactList}\small\item\em clear temporary buffers \end{DoxyCompactList}\item 
+\hypertarget{class_network_ad583a71e64ab886a8cbf21d2e6e34eea}{void \hyperlink{class_network_ad583a71e64ab886a8cbf21d2e6e34eea}{encode\+Sync\+Ans} ()}\label{class_network_ad583a71e64ab886a8cbf21d2e6e34eea}
+
+\begin{DoxyCompactList}\small\item\em encode and push answere sync\+Packets acc/ to request packets recieved \end{DoxyCompactList}\item 
+\hypertarget{class_network_aa512c1abc3918e9e419d0430d5a9850c}{void \hyperlink{class_network_aa512c1abc3918e9e419d0430d5a9850c}{start} ()}\label{class_network_aa512c1abc3918e9e419d0430d5a9850c}
+
+\begin{DoxyCompactList}\small\item\em start game \end{DoxyCompactList}\item 
+\hypertarget{class_network_a445cc0a591b33ef222ff8e2d4fff55ba}{bool \hyperlink{class_network_a445cc0a591b33ef222ff8e2d4fff55ba}{is\+Dc} ()}\label{class_network_a445cc0a591b33ef222ff8e2d4fff55ba}
+
+\begin{DoxyCompactList}\small\item\em check if someone is dc'd \end{DoxyCompactList}\item 
+bool \hyperlink{class_network_a7c1e93325fe69b8fb448e1b1a7a49086}{future\+Session} (int pack\+Sess)
+\begin{DoxyCompactList}\small\item\em check if argument is a future session packet \end{DoxyCompactList}\item 
+int \hyperlink{class_network_aa133d29111910963a963b38ab2105553}{print\+\_\+addresses} (const int domain)
+\begin{DoxyCompactList}\small\item\em print the interfaces according to ipv4 domain \end{DoxyCompactList}\item 
+\hypertarget{class_network_a8225652c75f6c7c0442dbecee820b1aa}{void {\bfseries update\+Keys\+Prsd} ()}\label{class_network_a8225652c75f6c7c0442dbecee820b1aa}
+
+\item 
+\hypertarget{class_network_a150c0252d7f71def8cc2740c39bf508b}{void {\bfseries prnt} (vector$<$ char $>$ v)}\label{class_network_a150c0252d7f71def8cc2740c39bf508b}
+
+\item 
+\hypertarget{class_network_a7ff12530f12177be493079fbe168b86b}{void {\bfseries prnt\+\_\+} (vector$<$ game\+\_\+map\+\_\+\+::key\+\_\+tap $>$v)}\label{class_network_a7ff12530f12177be493079fbe168b86b}
+
+\end{DoxyCompactItemize}
+\subsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{class_network_a38a1db9f0e7ac8d97dc923f36be5efd3}{bool {\bfseries start\+Sync}}\label{class_network_a38a1db9f0e7ac8d97dc923f36be5efd3}
+
+\item 
+\hypertarget{class_network_a93c7dd291686498515facdb58d88c4d3}{bool {\bfseries is\+Host}}\label{class_network_a93c7dd291686498515facdb58d88c4d3}
+
+\item 
+\hypertarget{class_network_af652beb0df1352ab5cb272ff18ccc868}{bool {\bfseries is\+Disconnected}}\label{class_network_af652beb0df1352ab5cb272ff18ccc868}
+
+\item 
+\hypertarget{class_network_a6123ba5c5c3217952771b59743ffcb5a}{int {\bfseries mov\+Num}}\label{class_network_a6123ba5c5c3217952771b59743ffcb5a}
+
+\item 
+\hypertarget{class_network_a2aaf7b9056f081e250d4bce75725c29b}{int {\bfseries num\+Players}}\label{class_network_a2aaf7b9056f081e250d4bce75725c29b}
+
+\item 
+\hypertarget{class_network_afc78028d6d6b0c562a499b8a2f20cbe0}{int {\bfseries data\+Session}}\label{class_network_afc78028d6d6b0c562a499b8a2f20cbe0}
+
+\item 
+\hypertarget{class_network_a91c5d2471bb6f8a692a428c3ba40ac41}{int {\bfseries control\+Session}}\label{class_network_a91c5d2471bb6f8a692a428c3ba40ac41}
+
+\item 
+\hypertarget{class_network_a5bcd2f6b474e288230fb66c585b3ebb9}{int {\bfseries player\+Id}}\label{class_network_a5bcd2f6b474e288230fb66c585b3ebb9}
+
+\item 
+\hypertarget{class_network_a4a27feae1fd7c31bbc638db9525f2321}{int {\bfseries pack\+Size}}\label{class_network_a4a27feae1fd7c31bbc638db9525f2321}
+
+\item 
+\hypertarget{class_network_a0f1de2f468ec6e4e58efc08aa6c24d8f}{int {\bfseries pack\+Extra}}\label{class_network_a0f1de2f468ec6e4e58efc08aa6c24d8f}
+
+\item 
+\hypertarget{class_network_a99269901fb907b685aeaa3bb25f9fa82}{int {\bfseries mvs\+Len}}\label{class_network_a99269901fb907b685aeaa3bb25f9fa82}
+
+\item 
+\hypertarget{class_network_a2856cdb1c82472c083b1aec744aa5b80}{int {\bfseries first\+Frame}}\label{class_network_a2856cdb1c82472c083b1aec744aa5b80}
+
+\item 
+\hypertarget{class_network_a3d04accce209cd95aef35b3c600dc1fb}{int {\bfseries max\+Time}}\label{class_network_a3d04accce209cd95aef35b3c600dc1fb}
+
+\item 
+\hypertarget{class_network_abe5f11a9cdeab692ec30a50ee87e6379}{int {\bfseries min\+Time}}\label{class_network_abe5f11a9cdeab692ec30a50ee87e6379}
+
+\item 
+\hypertarget{class_network_a746b6e84313661ed5e09ee3b485a5f7e}{int {\bfseries send\+Game\+To}}\label{class_network_a746b6e84313661ed5e09ee3b485a5f7e}
+
+\item 
+\hypertarget{class_network_ad5191919b7390ece05ad503ed39dc2f6}{int {\bfseries sock\+Num}}\label{class_network_ad5191919b7390ece05ad503ed39dc2f6}
+
+\item 
+\hypertarget{class_network_ac9c27926281eb6b790251de5bcfe7aff}{int {\bfseries delay}}\label{class_network_ac9c27926281eb6b790251de5bcfe7aff}
+
+\item 
+\hypertarget{class_network_a936e0c7144b79fae5cec3bae9b0bbe42}{int {\bfseries fd}}\label{class_network_a936e0c7144b79fae5cec3bae9b0bbe42}
+
+\item 
+\hypertarget{class_network_ac89cc4259bbd0996075a95d8ea0851fc}{int {\bfseries ini\+Sample\+Time}}\label{class_network_ac89cc4259bbd0996075a95d8ea0851fc}
+
+\item 
+\hypertarget{class_network_adb39b7f90ef104a9c7abfe8a9f327b15}{int {\bfseries dc\+Count}}\label{class_network_adb39b7f90ef104a9c7abfe8a9f327b15}
+
+\item 
+\hypertarget{class_network_a472b6887a63c161059eb77fb7699e929}{int {\bfseries frame\+Count}}\label{class_network_a472b6887a63c161059eb77fb7699e929}
+
+\item 
+\hypertarget{class_network_a0964aab66cfd6ab9d627cc786c19c17f}{int {\bfseries sync\+Period}}\label{class_network_a0964aab66cfd6ab9d627cc786c19c17f}
+
+\item 
+\hypertarget{class_network_ac719908e9eb662f632205a83abb7be2e}{int {\bfseries num\+Bots}}\label{class_network_ac719908e9eb662f632205a83abb7be2e}
+
+\item 
+\hypertarget{class_network_a0994f93531b37c3c11e682bd654c3c4b}{int {\bfseries rand\+Seed}}\label{class_network_a0994f93531b37c3c11e682bd654c3c4b}
+
+\item 
+\hypertarget{class_network_a45d45e582034940f2ae452506a710d52}{sockaddr\+\_\+in {\bfseries my\+Sock}}\label{class_network_a45d45e582034940f2ae452506a710d52}
+
+\item 
+\hypertarget{class_network_a20a98965095da80d47c97c187e7e385d}{struct sockaddr\+\_\+in {\bfseries address} \mbox{[}100\mbox{]}}\label{class_network_a20a98965095da80d47c97c187e7e385d}
+
+\item 
+\hypertarget{class_network_ac1ee47631d9883fe9a7419cd89897304}{map$<$ pair$<$ unsigned long, \\*
+unsigned short $>$, bool $>$ {\bfseries joined\+Game}}\label{class_network_ac1ee47631d9883fe9a7419cd89897304}
+
+\item 
+\hypertarget{class_network_a3d1983ee1fcd943e0a8a32bd9ba0b83f}{map$<$ int, bool $>$ {\bfseries is\+Peer}}\label{class_network_a3d1983ee1fcd943e0a8a32bd9ba0b83f}
+
+\item 
+\hypertarget{class_network_a73ddf767aa95b10d109bc0170497a19e}{map$<$ int, bool $>$ {\bfseries disconnected}}\label{class_network_a73ddf767aa95b10d109bc0170497a19e}
+
+\item 
+\hypertarget{class_network_aea75e6ad1936872e9314c4330162d753}{map$<$ int, vector\\*
+$<$ game\+\_\+map\+\_\+\+::key\+\_\+tap $>$ $>$ {\bfseries sync\+Data}}\label{class_network_aea75e6ad1936872e9314c4330162d753}
+
+\item 
+\hypertarget{class_network_aee9e63ab9fa83b453885a98eec502b62}{map$<$ pair$<$ int, int $>$, vector\\*
+$<$ char $>$ $>$ {\bfseries game\+Data}}\label{class_network_aee9e63ab9fa83b453885a98eec502b62}
+
+\item 
+\hypertarget{class_network_a97f4e6af739b6cd278673766bc2986e5}{map$<$ int, vector$<$ int $>$ $>$ {\bfseries sync\+Reqs}}\label{class_network_a97f4e6af739b6cd278673766bc2986e5}
+
+\item 
+\hypertarget{class_network_a55d5112107f84aceb32d6a9e63de64ba}{vector$<$ int $>$ {\bfseries game\+Reqs}}\label{class_network_a55d5112107f84aceb32d6a9e63de64ba}
+
+\item 
+\hypertarget{class_network_a5bdd26ac50a42785988c242a2346d5ff}{map$<$ pair$<$ int, int $>$, bool $>$ {\bfseries sync\+Hist}}\label{class_network_a5bdd26ac50a42785988c242a2346d5ff}
+
+\item 
+\hypertarget{class_network_a18fa1b436ab9b2bbb848dd03a106692d}{map$<$ int, bool $>$ {\bfseries game\+Hist}}\label{class_network_a18fa1b436ab9b2bbb848dd03a106692d}
+
+\item 
+\hypertarget{class_network_a95f9cfacd6ed1bfac90aa57c03a59e8f}{map$<$ int, vector$<$ pair$<$ int, \\*
+vector$<$ char $>$ $>$ $>$ $>$ {\bfseries sync\+Buf}}\label{class_network_a95f9cfacd6ed1bfac90aa57c03a59e8f}
+
+\item 
+\hypertarget{class_network_a517c659b733198e47674da145075be5f}{vector$<$ vector$<$ char $>$ $>$ {\bfseries game\+Buf}}\label{class_network_a517c659b733198e47674da145075be5f}
+
+\item 
+\hypertarget{class_network_ae68f0b3a85704d988c466d9b99f6ded0}{vector$<$ vector$<$ vector$<$ int $>$ $>$ $>$ {\bfseries keys\+Pressed}}\label{class_network_ae68f0b3a85704d988c466d9b99f6ded0}
+
+\item 
+\hypertarget{class_network_a5a36bbfb790cfab740a403a5994daaa2}{vector$<$ game\+\_\+map\+\_\+\+::key\+\_\+tap $>$ {\bfseries moves}}\label{class_network_a5a36bbfb790cfab740a403a5994daaa2}
+
+\item 
+\hypertarget{class_network_a0697389697ba88967ed62090bd677eff}{vector$<$ int $>$ {\bfseries key\+Buffer}}\label{class_network_a0697389697ba88967ed62090bd677eff}
+
+\item 
+\hypertarget{class_network_ab107edaf8614555e72aa478ef6fc014d}{pthread\+\_\+mutex\+\_\+t \hyperlink{class_network_ab107edaf8614555e72aa478ef6fc014d}{strt}}\label{class_network_ab107edaf8614555e72aa478ef6fc014d}
+
+\begin{DoxyCompactList}\small\item\em start mutex \end{DoxyCompactList}\item 
+\hypertarget{class_network_add0146fc5de940a69c6d18022b3de659}{pthread\+\_\+mutex\+\_\+t {\bfseries buf\+Mutx}}\label{class_network_add0146fc5de940a69c6d18022b3de659}
+
+\item 
+\hypertarget{class_network_a19c82d3ba8d9d89c4d7d2410c7506e8b}{pthread\+\_\+t {\bfseries data}}\label{class_network_a19c82d3ba8d9d89c4d7d2410c7506e8b}
+
+\item 
+\hypertarget{class_network_ae5753f779c6b4a1928cfe2ede880c0d4}{pthread\+\_\+barrier\+\_\+t {\bfseries b1}}\label{class_network_ae5753f779c6b4a1928cfe2ede880c0d4}
+
+\item 
+\hypertarget{class_network_abedd7205e19b9686de6bd9457de18fa2}{pthread\+\_\+barrier\+\_\+t {\bfseries b2}}\label{class_network_abedd7205e19b9686de6bd9457de18fa2}
+
+\end{DoxyCompactItemize}
+
+
+\subsection{Member Function Documentation}
+\hypertarget{class_network_a94b78a90932755049571742c8ae6d305}{\index{Network@{Network}!buf\+Init@{buf\+Init}}
+\index{buf\+Init@{buf\+Init}!Network@{Network}}
+\subsubsection[{buf\+Init}]{\setlength{\rightskip}{0pt plus 5cm}vector$<$ char $>$ Network\+::buf\+Init (
+\begin{DoxyParamCaption}
+\item[{{\bf Network\+::pack\+Type}}]{t, }
+\item[{int}]{pack\+Id, }
+\item[{int}]{pack\+Count}
+\end{DoxyParamCaption}
+)}}\label{class_network_a94b78a90932755049571742c8ae6d305}
+
+
+returns packet header 
+
+
+\begin{DoxyParams}{Parameters}
+{\em type} & the packet type \\
+\hline
+{\em pack\+Id} & the packet id for that session \\
+\hline
+{\em pack\+Count} & the total packets to be sent \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+initial header 
+\end{DoxyReturn}
+\hypertarget{class_network_a26fe81bc20bf31fcc741004c9fcd9c97}{\index{Network@{Network}!decode\+Game@{decode\+Game}}
+\index{decode\+Game@{decode\+Game}!Network@{Network}}
+\subsubsection[{decode\+Game}]{\setlength{\rightskip}{0pt plus 5cm}void Network\+::decode\+Game (
+\begin{DoxyParamCaption}
+\item[{vector$<$ char $>$}]{pack, }
+\item[{{\bf game\+\_\+map\+\_\+} $\ast$}]{a\+Game}
+\end{DoxyParamCaption}
+)}}\label{class_network_a26fe81bc20bf31fcc741004c9fcd9c97}
+
+
+decode game packets 
+
+
+\begin{DoxyParams}{Parameters}
+{\em a} & pack packet \\
+\hline
+{\em a\+Game} & \hyperlink{classgame__map}{game\+\_\+map} pointer to be updated \\
+\hline
+\end{DoxyParams}
+\hypertarget{class_network_a6355166cc92ae92d3733d2f473abcc3a}{\index{Network@{Network}!decode\+New\+Ip@{decode\+New\+Ip}}
+\index{decode\+New\+Ip@{decode\+New\+Ip}!Network@{Network}}
+\subsubsection[{decode\+New\+Ip}]{\setlength{\rightskip}{0pt plus 5cm}void Network\+::decode\+New\+Ip (
+\begin{DoxyParamCaption}
+\item[{vector$<$ char $>$}]{pack}
+\end{DoxyParamCaption}
+)}}\label{class_network_a6355166cc92ae92d3733d2f473abcc3a}
+
+
+decodes new ip packets 
+
+
+\begin{DoxyParams}{Parameters}
+{\em pack} & the packet \\
+\hline
+\end{DoxyParams}
+\hypertarget{class_network_a8e8fbc79b2d3101cdd0b2162d5cf57ac}{\index{Network@{Network}!decode\+Sync@{decode\+Sync}}
+\index{decode\+Sync@{decode\+Sync}!Network@{Network}}
+\subsubsection[{decode\+Sync}]{\setlength{\rightskip}{0pt plus 5cm}void Network\+::decode\+Sync (
+\begin{DoxyParamCaption}
+\item[{vector$<$ char $>$}]{pack}
+\end{DoxyParamCaption}
+)}}\label{class_network_a8e8fbc79b2d3101cdd0b2162d5cf57ac}
+
+
+decodes a ync packet and pts data into sync data 
+
+
+\begin{DoxyParams}{Parameters}
+{\em pack} & the packet \\
+\hline
+\end{DoxyParams}
+\hypertarget{class_network_a0ff837b11d772e8af91a027e915f15ea}{\index{Network@{Network}!decode\+Sync\+Req@{decode\+Sync\+Req}}
+\index{decode\+Sync\+Req@{decode\+Sync\+Req}!Network@{Network}}
+\subsubsection[{decode\+Sync\+Req}]{\setlength{\rightskip}{0pt plus 5cm}void Network\+::decode\+Sync\+Req (
+\begin{DoxyParamCaption}
+\item[{vector$<$ char $>$}]{pack}
+\end{DoxyParamCaption}
+)}}\label{class_network_a0ff837b11d772e8af91a027e915f15ea}
+
+
+decode sync requests of others 
+
+
+\begin{DoxyParams}{Parameters}
+{\em pack} & sync req packets \\
+\hline
+\end{DoxyParams}
+\hypertarget{class_network_adbef3dc502d14837b6f617dca60cd740}{\index{Network@{Network}!encode\+Game@{encode\+Game}}
+\index{encode\+Game@{encode\+Game}!Network@{Network}}
+\subsubsection[{encode\+Game}]{\setlength{\rightskip}{0pt plus 5cm}void Network\+::encode\+Game (
+\begin{DoxyParamCaption}
+\item[{int}]{for\+Id}
+\end{DoxyParamCaption}
+)}}\label{class_network_adbef3dc502d14837b6f617dca60cd740}
+
+
+encode and push into sync Buf game packets 
+
+
+\begin{DoxyParams}{Parameters}
+{\em for\+Id} & a disconnected id \\
+\hline
+\end{DoxyParams}
+\hypertarget{class_network_af56c81957d00bac67095c1788b50c9e9}{\index{Network@{Network}!encode\+Ips@{encode\+Ips}}
+\index{encode\+Ips@{encode\+Ips}!Network@{Network}}
+\subsubsection[{encode\+Ips}]{\setlength{\rightskip}{0pt plus 5cm}vector$<$ char $>$ Network\+::encode\+Ips (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}\label{class_network_af56c81957d00bac67095c1788b50c9e9}
+
+
+encode ips of all present players 
+
+\begin{DoxyReturn}{Returns}
+a new Ip packet 
+\end{DoxyReturn}
+\hypertarget{class_network_a3661dd702ec900bf055161d50230014d}{\index{Network@{Network}!encode\+Join\+Game@{encode\+Join\+Game}}
+\index{encode\+Join\+Game@{encode\+Join\+Game}!Network@{Network}}
+\subsubsection[{encode\+Join\+Game}]{\setlength{\rightskip}{0pt plus 5cm}vector$<$ char $>$ Network\+::encode\+Join\+Game (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}\label{class_network_a3661dd702ec900bf055161d50230014d}
+
+
+make a simple joingame packet 
+
+\begin{DoxyReturn}{Returns}
+a joingame packet 
+\end{DoxyReturn}
+\hypertarget{class_network_a3261dcafabc7cc28b8e05e8141ad559a}{\index{Network@{Network}!encode\+New\+Ip@{encode\+New\+Ip}}
+\index{encode\+New\+Ip@{encode\+New\+Ip}!Network@{Network}}
+\subsubsection[{encode\+New\+Ip}]{\setlength{\rightskip}{0pt plus 5cm}void Network\+::encode\+New\+Ip (
+\begin{DoxyParamCaption}
+\item[{unsigned long}]{Ip, }
+\item[{unsigned short}]{port}
+\end{DoxyParamCaption}
+)}}\label{class_network_a3261dcafabc7cc28b8e05e8141ad559a}
+
+
+pushes new ip packets for all other players 
+
+
+\begin{DoxyParams}{Parameters}
+{\em Ip} & ip of joining player \\
+\hline
+{\em port} & port of the joining player \\
+\hline
+\end{DoxyParams}
+\hypertarget{class_network_a42c20072f83c7067b17f60d6ba1a9e86}{\index{Network@{Network}!encode\+Sync@{encode\+Sync}}
+\index{encode\+Sync@{encode\+Sync}!Network@{Network}}
+\subsubsection[{encode\+Sync}]{\setlength{\rightskip}{0pt plus 5cm}void Network\+::encode\+Sync (
+\begin{DoxyParamCaption}
+\item[{vector$<$ game\+\_\+map\+\_\+\+::key\+\_\+tap $>$}]{moves}
+\end{DoxyParamCaption}
+)}}\label{class_network_a42c20072f83c7067b17f60d6ba1a9e86}
+
+
+encodes the sync packets and puts into sync Buf 
+
+
+\begin{DoxyParams}{Parameters}
+{\em moves} & vector of moves \\
+\hline
+\end{DoxyParams}
+\hypertarget{class_network_a7c1e93325fe69b8fb448e1b1a7a49086}{\index{Network@{Network}!future\+Session@{future\+Session}}
+\index{future\+Session@{future\+Session}!Network@{Network}}
+\subsubsection[{future\+Session}]{\setlength{\rightskip}{0pt plus 5cm}bool Network\+::future\+Session (
+\begin{DoxyParamCaption}
+\item[{int}]{pack\+Sess}
+\end{DoxyParamCaption}
+)}}\label{class_network_a7c1e93325fe69b8fb448e1b1a7a49086}
+
+
+check if argument is a future session packet 
+
+
+\begin{DoxyParams}{Parameters}
+{\em pack\+Sess} & session id of the packet \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true if it is 
+\end{DoxyReturn}
+\hypertarget{class_network_aa133d29111910963a963b38ab2105553}{\index{Network@{Network}!print\+\_\+addresses@{print\+\_\+addresses}}
+\index{print\+\_\+addresses@{print\+\_\+addresses}!Network@{Network}}
+\subsubsection[{print\+\_\+addresses}]{\setlength{\rightskip}{0pt plus 5cm}int Network\+::print\+\_\+addresses (
+\begin{DoxyParamCaption}
+\item[{const int}]{domain}
+\end{DoxyParamCaption}
+)}}\label{class_network_aa133d29111910963a963b38ab2105553}
+
+
+print the interfaces according to ipv4 domain 
+
+
+\begin{DoxyParams}{Parameters}
+{\em domain} & ipv4 domain identifier \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+1 if success in getting info 
+\end{DoxyReturn}
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+network/network.\+h\item 
+network/network.\+cpp\end{DoxyCompactItemize}

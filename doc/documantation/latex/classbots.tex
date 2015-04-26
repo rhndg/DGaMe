@@ -1,0 +1,494 @@
+\hypertarget{classbots}{\section{bots Class Reference}
+\label{classbots}\index{bots@{bots}}
+}
+
+
+Collaboration diagram for bots\+:
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{classbots_a1d428a5dcde2417e54fa13fa2415724a}{\hyperlink{classbots_a1d428a5dcde2417e54fa13fa2415724a}{bots} ()}\label{classbots_a1d428a5dcde2417e54fa13fa2415724a}
+
+\begin{DoxyCompactList}\small\item\em constructor of bots class. \end{DoxyCompactList}\item 
+\hyperlink{classbots_a0d70c5e37f51f8b7332fed15592e32bd}{bots} (int I\+D, int gr\+\_\+id, \hyperlink{class_vector3}{Vector3} pos, int n\+\_\+lives, int difficulty, int g)
+\begin{DoxyCompactList}\small\item\em constructor of bots class. \end{DoxyCompactList}\item 
+\hypertarget{classbots_a84f6e1b5953f357c2779555c18f4353c}{\hyperlink{classbots_a84f6e1b5953f357c2779555c18f4353c}{bots} (const \hyperlink{classbots}{bots} \&b)}\label{classbots_a84f6e1b5953f357c2779555c18f4353c}
+
+\begin{DoxyCompactList}\small\item\em Copy Constructor. \end{DoxyCompactList}\item 
+\hypertarget{classbots_af0fb461cedb0d93f6463872eb39acab3}{void \hyperlink{classbots_af0fb461cedb0d93f6463872eb39acab3}{bot\+\_\+reset} ()}\label{classbots_af0fb461cedb0d93f6463872eb39acab3}
+
+\begin{DoxyCompactList}\small\item\em It respawns the bot if possible else deactivates it. \end{DoxyCompactList}\item 
+\hypertarget{classbots_a0eb1d61d9cce692085f59f3448e3c578}{void \hyperlink{classbots_a0eb1d61d9cce692085f59f3448e3c578}{get\+\_\+health\+\_\+pack} (int id)}\label{classbots_a0eb1d61d9cce692085f59f3448e3c578}
+
+\begin{DoxyCompactList}\small\item\em Effect of health pack taken. \end{DoxyCompactList}\item 
+\hypertarget{classbots_a8aba8237e3fd990f8b131dadc52f4c49}{void \hyperlink{classbots_a8aba8237e3fd990f8b131dadc52f4c49}{recovery} ()}\label{classbots_a8aba8237e3fd990f8b131dadc52f4c49}
+
+\begin{DoxyCompactList}\small\item\em Natural health recovery of Bots. \end{DoxyCompactList}\item 
+\hypertarget{classbots_a264b2afbb99934a8d2925bbb66a7c7c3}{void \hyperlink{classbots_a264b2afbb99934a8d2925bbb66a7c7c3}{get\+\_\+weapon} (int I\+D)}\label{classbots_a264b2afbb99934a8d2925bbb66a7c7c3}
+
+\begin{DoxyCompactList}\small\item\em Effect of weaponry taken. \end{DoxyCompactList}\item 
+\hypertarget{classbots_acd5b19e2cc646cf5557339b837369ada}{void \hyperlink{classbots_acd5b19e2cc646cf5557339b837369ada}{toggle\+\_\+weapon} ()}\label{classbots_acd5b19e2cc646cf5557339b837369ada}
+
+\begin{DoxyCompactList}\small\item\em Allows toggling of weapon. \end{DoxyCompactList}\item 
+\hypertarget{classbots_a22a03965570f88b9e44e2d648e959f2d}{void \hyperlink{classbots_a22a03965570f88b9e44e2d648e959f2d}{fire\+\_\+weapon} (int i)}\label{classbots_a22a03965570f88b9e44e2d648e959f2d}
+
+\begin{DoxyCompactList}\small\item\em Attack(add bullet object to bullets). \end{DoxyCompactList}\item 
+\hypertarget{classbots_a638b6976e5e76c3bebb5d72b76463d74}{int \hyperlink{classbots_a638b6976e5e76c3bebb5d72b76463d74}{Player\+\_\+\+Check\+Collision} ()}\label{classbots_a638b6976e5e76c3bebb5d72b76463d74}
+
+\begin{DoxyCompactList}\small\item\em Checks collision with \hyperlink{classplayer}{player(collateral damage)} \end{DoxyCompactList}\item 
+int \hyperlink{classbots_af3310df339a45ab9afc51237f23ff2ef}{Bots\+\_\+\+Check\+Collision} ()
+\begin{DoxyCompactList}\small\item\em Checks collision with player. \end{DoxyCompactList}\item 
+\hypertarget{classbots_a2a28f79d12e59cc519e8f3a5a01ac7c1}{void \hyperlink{classbots_a2a28f79d12e59cc519e8f3a5a01ac7c1}{Player\+\_\+\+Solve\+Collision} ()}\label{classbots_a2a28f79d12e59cc519e8f3a5a01ac7c1}
+
+\begin{DoxyCompactList}\small\item\em Takes necessary action on collision. \end{DoxyCompactList}\item 
+\hypertarget{classbots_a2e87752c651117ed23a941cd577170be}{void \hyperlink{classbots_a2e87752c651117ed23a941cd577170be}{Bots\+\_\+\+Solve\+Collision} ()}\label{classbots_a2e87752c651117ed23a941cd577170be}
+
+\begin{DoxyCompactList}\small\item\em Takes necessary action on Bot collision. \end{DoxyCompactList}\item 
+\hypertarget{classbots_a4030cac6ad70f3505f88b0a0971a5cdf}{void \hyperlink{classbots_a4030cac6ad70f3505f88b0a0971a5cdf}{On\+Hit} ()}\label{classbots_a4030cac6ad70f3505f88b0a0971a5cdf}
+
+\begin{DoxyCompactList}\small\item\em Hit by \hyperlink{classbullet}{bullet(remove bullet object from bullets)}. \end{DoxyCompactList}\item 
+\hyperlink{class_vector3}{Vector3} \hyperlink{classbots_aa0084ed6b2648d3ff4c0da10ecb24b83}{set\+\_\+velocity} (int up, int right, int move\+\_\+up, int move\+\_\+right, \hyperlink{class_vector3}{Vector3} v)
+\begin{DoxyCompactList}\small\item\em Sets the velocity of the bot. \end{DoxyCompactList}\item 
+\hypertarget{classbots_a1232690e5224c0606eb188caea7a2b1c}{void \hyperlink{classbots_a1232690e5224c0606eb188caea7a2b1c}{surface\+\_\+constraint} ()}\label{classbots_a1232690e5224c0606eb188caea7a2b1c}
+
+\begin{DoxyCompactList}\small\item\em Keeps the bot bounded to the surface. \end{DoxyCompactList}\item 
+\hypertarget{classbots_a7bfa54c4f188be79d0efe8302613114b}{int \hyperlink{classbots_a7bfa54c4f188be79d0efe8302613114b}{new\+\_\+location} (int move\+\_\+up, int move\+\_\+right)}\label{classbots_a7bfa54c4f188be79d0efe8302613114b}
+
+\begin{DoxyCompactList}\small\item\em Returns the new location. \end{DoxyCompactList}\item 
+\hypertarget{classbots_a10b20a02c670c3ff5dba0a37c250beb6}{void \hyperlink{classbots_a10b20a02c670c3ff5dba0a37c250beb6}{update} ()}\label{classbots_a10b20a02c670c3ff5dba0a37c250beb6}
+
+\begin{DoxyCompactList}\small\item\em Updates the characteristics of bot. \end{DoxyCompactList}\item 
+\hyperlink{classdirection}{direction} $\ast$ \hyperlink{classbots_a11cb2158c03a102f7d3e6b5beb95a6f8}{get\+\_\+directions} (int i, int j, \hyperlink{class_vector3}{Vector3} v)
+\begin{DoxyCompactList}\small\item\em Calculates the direction to given vector. \end{DoxyCompactList}\item 
+bool \hyperlink{classbots_a0ff313e9698200bdd52c1150364e6b51}{present\+\_\+in\+\_\+vector} (int i)
+\begin{DoxyCompactList}\small\item\em Checks if the integer is present in vector. \end{DoxyCompactList}\item 
+void \hyperlink{classbots_a58d1c91a37cbd2973c7601268fce08c7}{add\+\_\+to\+\_\+vector} (int i, int up, int right, int level, \hyperlink{class_vector3}{Vector3} v)
+\begin{DoxyCompactList}\small\item\em Adds the given vector to a global vector using various parameters. \end{DoxyCompactList}\item 
+\hypertarget{classbots_aca68616e2efca8313feae0820ed0be46}{void \hyperlink{classbots_aca68616e2efca8313feae0820ed0be46}{analyze\+\_\+view} ()}\label{classbots_aca68616e2efca8313feae0820ed0be46}
+
+\begin{DoxyCompactList}\small\item\em Analyze the view around a bot and fills various field of view vectors. \end{DoxyCompactList}\item 
+vector$<$ int $>$ \hyperlink{classbots_a425014edfe2141ca13c98147507ca013}{projected\+\_\+path} (int i, int j, int difficulty)
+\begin{DoxyCompactList}\small\item\em Calcuates the projected path from the present condition. \end{DoxyCompactList}\item 
+\hypertarget{classbots_a7557015d7d0fe5285c03ee86c360b867}{void \hyperlink{classbots_a7557015d7d0fe5285c03ee86c360b867}{projected\+\_\+collision} ()}\label{classbots_a7557015d7d0fe5285c03ee86c360b867}
+
+\begin{DoxyCompactList}\small\item\em Fills the values of projected collision in a vector. \end{DoxyCompactList}\item 
+vector$<$ int $>$ \hyperlink{classbots_abc69770c70ca3a9d8ea7ebf6f4f91359}{level\+\_\+1\+\_\+projected\+\_\+path} (int i, int j, int difficulty)
+\begin{DoxyCompactList}\small\item\em Calculates the projected path based on next assumed move. \end{DoxyCompactList}\item 
+void \hyperlink{classbots_a7e42df7ad71b464582f83935647f6468}{level\+\_\+1\+\_\+projected\+\_\+collision} (int move\+\_\+up, int move\+\_\+right)
+\begin{DoxyCompactList}\small\item\em Calculates the collision based on next assumed move. \end{DoxyCompactList}\item 
+vector$<$ int $>$ \hyperlink{classbots_aff6c1e465921f81e32d3e9b04ea4c3de}{projected\+\_\+bullet} (\hyperlink{classbullet}{bullet} b, int difficulty)
+\begin{DoxyCompactList}\small\item\em Projected path for bullet. \end{DoxyCompactList}\item 
+\hypertarget{classbots_a5cf49ce84a7c4fa6f4ab7649908eb3f8}{vector$<$ int $>$ {\bfseries level\+\_\+1\+\_\+projected\+\_\+bullet} (\hyperlink{classbullet}{bullet} b, int difficulty)}\label{classbots_a5cf49ce84a7c4fa6f4ab7649908eb3f8}
+
+\item 
+vector$<$ int $>$ \hyperlink{classbots_a15757e21e3d78ad377082898f669b44f}{projected\+\_\+hit} (vector$<$ int $>$ path)
+\begin{DoxyCompactList}\small\item\em Calculates the collision using given path. \end{DoxyCompactList}\item 
+vector$<$ int $>$ \hyperlink{classbots_a96a90529116ed48c440a236b87e3b4a3}{projected\+\_\+shoot} (int i)
+\begin{DoxyCompactList}\small\item\em Shoots in a direction. \end{DoxyCompactList}\item 
+bool \hyperlink{classbots_ae97de8f55e8b0fb0608c0c8b732df08f}{search\+\_\+boosts} ()
+\begin{DoxyCompactList}\small\item\em State pursuing health pack. \end{DoxyCompactList}\item 
+bool \hyperlink{classbots_a723aa0d14cf72f5a6bd87b51cdf05f8f}{search\+\_\+armoury} ()
+\begin{DoxyCompactList}\small\item\em State pursuing armoury. \end{DoxyCompactList}\item 
+bool \hyperlink{classbots_abbec312aa72dcdd5eae3431dff83f858}{dodge} ()
+\begin{DoxyCompactList}\small\item\em State dodging players. \end{DoxyCompactList}\item 
+bool \hyperlink{classbots_acfa25d77886914d21946330f569b4afb}{dodgebullet} ()
+\begin{DoxyCompactList}\small\item\em State dodging bullets. \end{DoxyCompactList}\item 
+\hypertarget{classbots_a5d73e89cf3c8276d9828820ec5dc194f}{void \hyperlink{classbots_a5d73e89cf3c8276d9828820ec5dc194f}{attack} ()}\label{classbots_a5d73e89cf3c8276d9828820ec5dc194f}
+
+\begin{DoxyCompactList}\small\item\em Function for bot firing. \end{DoxyCompactList}\item 
+bool \hyperlink{classbots_a1a4ca80cf9182cbcc426ccc784ae7315}{wander} ()
+\begin{DoxyCompactList}\small\item\em Idle state. \end{DoxyCompactList}\item 
+\hypertarget{classbots_a85969ec33e2c3f6d009a8806ce1f34c1}{void \hyperlink{classbots_a85969ec33e2c3f6d009a8806ce1f34c1}{stack\+\_\+change} ()}\label{classbots_a85969ec33e2c3f6d009a8806ce1f34c1}
+
+\begin{DoxyCompactList}\small\item\em F\+S\+M stack maintaing function. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{classbots_a4fb49114a690b168a733d87e46424f87}{int {\bfseries id}}\label{classbots_a4fb49114a690b168a733d87e46424f87}
+
+\item 
+\hypertarget{classbots_a93665bc265d99309b2d55df908557489}{int {\bfseries group\+\_\+id}}\label{classbots_a93665bc265d99309b2d55df908557489}
+
+\item 
+\hypertarget{classbots_a4b09c916cbb7c0037ac732e5698b4f13}{int {\bfseries g\+\_\+locate}}\label{classbots_a4b09c916cbb7c0037ac732e5698b4f13}
+
+\item 
+\hypertarget{classbots_abd45b3775c6656c9cd685e6bf51e86ef}{int {\bfseries fwd}}\label{classbots_abd45b3775c6656c9cd685e6bf51e86ef}
+
+\item 
+\hypertarget{classbots_ab977fb2bff23b95cd9bb426e3b1e81b4}{int {\bfseries tang}}\label{classbots_ab977fb2bff23b95cd9bb426e3b1e81b4}
+
+\item 
+\hypertarget{classbots_afa8c00def2a9a14c1444192fb9820eff}{float {\bfseries mass}}\label{classbots_afa8c00def2a9a14c1444192fb9820eff}
+
+\item 
+\hypertarget{classbots_aebde904e546d3ff52efc7f2b6dee2fc5}{float {\bfseries radius}}\label{classbots_aebde904e546d3ff52efc7f2b6dee2fc5}
+
+\item 
+\hypertarget{classbots_a4c0db530a0ceb2e5faf8fdf2268d0345}{\hyperlink{class_vector3}{Vector3} {\bfseries position}}\label{classbots_a4c0db530a0ceb2e5faf8fdf2268d0345}
+
+\item 
+\hypertarget{classbots_a8bc7711d8c7495f7eb0267a0bb89fea8}{\hyperlink{class_vector3}{Vector3} {\bfseries velocity}}\label{classbots_a8bc7711d8c7495f7eb0267a0bb89fea8}
+
+\item 
+\hypertarget{classbots_a88d7ac823cd725d345c606213cd5294f}{bool {\bfseries active}}\label{classbots_a88d7ac823cd725d345c606213cd5294f}
+
+\item 
+\hypertarget{classbots_ab85db83c833ab007c17e601ca3947368}{int {\bfseries health}}\label{classbots_ab85db83c833ab007c17e601ca3947368}
+
+\item 
+\hypertarget{classbots_a357231ec3cdecd8b9b4edbfa7412ef86}{\hyperlink{classfield__view}{field\+\_\+view} $\ast$ {\bfseries field\+\_\+of\+\_\+view}}\label{classbots_a357231ec3cdecd8b9b4edbfa7412ef86}
+
+\item 
+\hypertarget{classbots_a337beb7b3f3deeac01f22c0f1003b432}{int {\bfseries last\+\_\+hit}}\label{classbots_a337beb7b3f3deeac01f22c0f1003b432}
+
+\end{DoxyCompactItemize}
+
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{classbots_a0d70c5e37f51f8b7332fed15592e32bd}{\index{bots@{bots}!bots@{bots}}
+\index{bots@{bots}!bots@{bots}}
+\subsubsection[{bots}]{\setlength{\rightskip}{0pt plus 5cm}bots\+::bots (
+\begin{DoxyParamCaption}
+\item[{int}]{I\+D, }
+\item[{int}]{gr\+\_\+id, }
+\item[{{\bf Vector3}}]{pos, }
+\item[{int}]{n\+\_\+lives, }
+\item[{int}]{difficulty, }
+\item[{int}]{g}
+\end{DoxyParamCaption}
+)}}\label{classbots_a0d70c5e37f51f8b7332fed15592e32bd}
+
+
+constructor of bots class. 
+
+\mbox{[}long description\mbox{]}
+
+
+\begin{DoxyParams}{Parameters}
+{\em I\+D} & Bot I\+D. \\
+\hline
+{\em gr\+\_\+id} & Team I\+D. \\
+\hline
+{\em pos} & Initial Position. \\
+\hline
+{\em n\+\_\+lives} & Intial number of lives. \\
+\hline
+{\em difficulty} & Difficulty level. \\
+\hline
+{\em g} & grid location. \\
+\hline
+\end{DoxyParams}
+
+
+\subsection{Member Function Documentation}
+\hypertarget{classbots_a58d1c91a37cbd2973c7601268fce08c7}{\index{bots@{bots}!add\+\_\+to\+\_\+vector@{add\+\_\+to\+\_\+vector}}
+\index{add\+\_\+to\+\_\+vector@{add\+\_\+to\+\_\+vector}!bots@{bots}}
+\subsubsection[{add\+\_\+to\+\_\+vector}]{\setlength{\rightskip}{0pt plus 5cm}void bots\+::add\+\_\+to\+\_\+vector (
+\begin{DoxyParamCaption}
+\item[{int}]{i, }
+\item[{int}]{up, }
+\item[{int}]{right, }
+\item[{int}]{level, }
+\item[{{\bf Vector3}}]{v}
+\end{DoxyParamCaption}
+)}}\label{classbots_a58d1c91a37cbd2973c7601268fce08c7}
+
+
+Adds the given vector to a global vector using various parameters. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em v} & Given Initial vector to be added. \\
+\hline
+\end{DoxyParams}
+\hypertarget{classbots_af3310df339a45ab9afc51237f23ff2ef}{\index{bots@{bots}!Bots\+\_\+\+Check\+Collision@{Bots\+\_\+\+Check\+Collision}}
+\index{Bots\+\_\+\+Check\+Collision@{Bots\+\_\+\+Check\+Collision}!bots@{bots}}
+\subsubsection[{Bots\+\_\+\+Check\+Collision}]{\setlength{\rightskip}{0pt plus 5cm}int bots\+::\+Bots\+\_\+\+Check\+Collision (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}\label{classbots_af3310df339a45ab9afc51237f23ff2ef}
+
+
+Checks collision with player. 
+
+\mbox{[}long description\mbox{]} \begin{DoxyReturn}{Returns}
+\mbox{[}description\mbox{]} 
+\end{DoxyReturn}
+\hypertarget{classbots_abbec312aa72dcdd5eae3431dff83f858}{\index{bots@{bots}!dodge@{dodge}}
+\index{dodge@{dodge}!bots@{bots}}
+\subsubsection[{dodge}]{\setlength{\rightskip}{0pt plus 5cm}bool bots\+::dodge (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}\label{classbots_abbec312aa72dcdd5eae3431dff83f858}
+
+
+State dodging players. 
+
+\begin{DoxyReturn}{Returns}
+Returns if successful. 
+\end{DoxyReturn}
+\hypertarget{classbots_acfa25d77886914d21946330f569b4afb}{\index{bots@{bots}!dodgebullet@{dodgebullet}}
+\index{dodgebullet@{dodgebullet}!bots@{bots}}
+\subsubsection[{dodgebullet}]{\setlength{\rightskip}{0pt plus 5cm}bool bots\+::dodgebullet (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}\label{classbots_acfa25d77886914d21946330f569b4afb}
+
+
+State dodging bullets. 
+
+\begin{DoxyReturn}{Returns}
+Returns if successful. 
+\end{DoxyReturn}
+\hypertarget{classbots_a11cb2158c03a102f7d3e6b5beb95a6f8}{\index{bots@{bots}!get\+\_\+directions@{get\+\_\+directions}}
+\index{get\+\_\+directions@{get\+\_\+directions}!bots@{bots}}
+\subsubsection[{get\+\_\+directions}]{\setlength{\rightskip}{0pt plus 5cm}{\bf direction} $\ast$ bots\+::get\+\_\+directions (
+\begin{DoxyParamCaption}
+\item[{int}]{i, }
+\item[{int}]{j, }
+\item[{{\bf Vector3}}]{v}
+\end{DoxyParamCaption}
+)}}\label{classbots_a11cb2158c03a102f7d3e6b5beb95a6f8}
+
+
+Calculates the direction to given vector. 
+
+\mbox{[}long description\mbox{]}. 
+\begin{DoxyParams}{Parameters}
+{\em v} & Given vector of position. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Return the calculated direction. 
+\end{DoxyReturn}
+\hypertarget{classbots_a7e42df7ad71b464582f83935647f6468}{\index{bots@{bots}!level\+\_\+1\+\_\+projected\+\_\+collision@{level\+\_\+1\+\_\+projected\+\_\+collision}}
+\index{level\+\_\+1\+\_\+projected\+\_\+collision@{level\+\_\+1\+\_\+projected\+\_\+collision}!bots@{bots}}
+\subsubsection[{level\+\_\+1\+\_\+projected\+\_\+collision}]{\setlength{\rightskip}{0pt plus 5cm}void bots\+::level\+\_\+1\+\_\+projected\+\_\+collision (
+\begin{DoxyParamCaption}
+\item[{int}]{move\+\_\+up, }
+\item[{int}]{move\+\_\+right}
+\end{DoxyParamCaption}
+)}}\label{classbots_a7e42df7ad71b464582f83935647f6468}
+
+
+Calculates the collision based on next assumed move. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em move\+\_\+up} & Given up down direction. \\
+\hline
+{\em move\+\_\+right} & Given right left direction. \\
+\hline
+\end{DoxyParams}
+\hypertarget{classbots_abc69770c70ca3a9d8ea7ebf6f4f91359}{\index{bots@{bots}!level\+\_\+1\+\_\+projected\+\_\+path@{level\+\_\+1\+\_\+projected\+\_\+path}}
+\index{level\+\_\+1\+\_\+projected\+\_\+path@{level\+\_\+1\+\_\+projected\+\_\+path}!bots@{bots}}
+\subsubsection[{level\+\_\+1\+\_\+projected\+\_\+path}]{\setlength{\rightskip}{0pt plus 5cm}vector$<$ int $>$ bots\+::level\+\_\+1\+\_\+projected\+\_\+path (
+\begin{DoxyParamCaption}
+\item[{int}]{i, }
+\item[{int}]{j, }
+\item[{int}]{difficulty}
+\end{DoxyParamCaption}
+)}}\label{classbots_abc69770c70ca3a9d8ea7ebf6f4f91359}
+
+
+Calculates the projected path based on next assumed move. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em i} & Given up down direction. \\
+\hline
+{\em j} & Given left right direction. \\
+\hline
+{\em difficulty} & Difficulty level of bot. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Returns the vector of projected path. 
+\end{DoxyReturn}
+\hypertarget{classbots_a0ff313e9698200bdd52c1150364e6b51}{\index{bots@{bots}!present\+\_\+in\+\_\+vector@{present\+\_\+in\+\_\+vector}}
+\index{present\+\_\+in\+\_\+vector@{present\+\_\+in\+\_\+vector}!bots@{bots}}
+\subsubsection[{present\+\_\+in\+\_\+vector}]{\setlength{\rightskip}{0pt plus 5cm}bool bots\+::present\+\_\+in\+\_\+vector (
+\begin{DoxyParamCaption}
+\item[{int}]{i}
+\end{DoxyParamCaption}
+)}}\label{classbots_a0ff313e9698200bdd52c1150364e6b51}
+
+
+Checks if the integer is present in vector. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em i} & Given integer. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Boolean output showing presence. 
+\end{DoxyReturn}
+\hypertarget{classbots_aff6c1e465921f81e32d3e9b04ea4c3de}{\index{bots@{bots}!projected\+\_\+bullet@{projected\+\_\+bullet}}
+\index{projected\+\_\+bullet@{projected\+\_\+bullet}!bots@{bots}}
+\subsubsection[{projected\+\_\+bullet}]{\setlength{\rightskip}{0pt plus 5cm}vector$<$ int $>$ bots\+::projected\+\_\+bullet (
+\begin{DoxyParamCaption}
+\item[{{\bf bullet}}]{b, }
+\item[{int}]{difficulty}
+\end{DoxyParamCaption}
+)}}\label{classbots_aff6c1e465921f81e32d3e9b04ea4c3de}
+
+
+Projected path for bullet. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em b} & Given a bullet. \\
+\hline
+{\em difficulty} & Difficulty level.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Returns the vector of path. 
+\end{DoxyReturn}
+\hypertarget{classbots_a15757e21e3d78ad377082898f669b44f}{\index{bots@{bots}!projected\+\_\+hit@{projected\+\_\+hit}}
+\index{projected\+\_\+hit@{projected\+\_\+hit}!bots@{bots}}
+\subsubsection[{projected\+\_\+hit}]{\setlength{\rightskip}{0pt plus 5cm}vector$<$ int $>$ bots\+::projected\+\_\+hit (
+\begin{DoxyParamCaption}
+\item[{vector$<$ int $>$}]{path}
+\end{DoxyParamCaption}
+)}}\label{classbots_a15757e21e3d78ad377082898f669b44f}
+
+
+Calculates the collision using given path. 
+
+\mbox{[}long description\mbox{]}
+
+
+\begin{DoxyParams}{Parameters}
+{\em path} & Given path of bullet. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+\mbox{[}description\mbox{]} 
+\end{DoxyReturn}
+\hypertarget{classbots_a425014edfe2141ca13c98147507ca013}{\index{bots@{bots}!projected\+\_\+path@{projected\+\_\+path}}
+\index{projected\+\_\+path@{projected\+\_\+path}!bots@{bots}}
+\subsubsection[{projected\+\_\+path}]{\setlength{\rightskip}{0pt plus 5cm}vector$<$ int $>$ bots\+::projected\+\_\+path (
+\begin{DoxyParamCaption}
+\item[{int}]{i, }
+\item[{int}]{j, }
+\item[{int}]{difficulty}
+\end{DoxyParamCaption}
+)}}\label{classbots_a425014edfe2141ca13c98147507ca013}
+
+
+Calcuates the projected path from the present condition. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em difficulty} & Difficulty level of bot. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Returns the grid vector. 
+\end{DoxyReturn}
+\hypertarget{classbots_a96a90529116ed48c440a236b87e3b4a3}{\index{bots@{bots}!projected\+\_\+shoot@{projected\+\_\+shoot}}
+\index{projected\+\_\+shoot@{projected\+\_\+shoot}!bots@{bots}}
+\subsubsection[{projected\+\_\+shoot}]{\setlength{\rightskip}{0pt plus 5cm}vector$<$ int $>$ bots\+::projected\+\_\+shoot (
+\begin{DoxyParamCaption}
+\item[{int}]{i}
+\end{DoxyParamCaption}
+)}}\label{classbots_a96a90529116ed48c440a236b87e3b4a3}
+
+
+Shoots in a direction. 
+
+\mbox{[}long description\mbox{]}
+
+
+\begin{DoxyParams}{Parameters}
+{\em i} & Direction to shoot. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Path followed. 
+\end{DoxyReturn}
+\hypertarget{classbots_a723aa0d14cf72f5a6bd87b51cdf05f8f}{\index{bots@{bots}!search\+\_\+armoury@{search\+\_\+armoury}}
+\index{search\+\_\+armoury@{search\+\_\+armoury}!bots@{bots}}
+\subsubsection[{search\+\_\+armoury}]{\setlength{\rightskip}{0pt plus 5cm}bool bots\+::search\+\_\+armoury (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}\label{classbots_a723aa0d14cf72f5a6bd87b51cdf05f8f}
+
+
+State pursuing armoury. 
+
+\begin{DoxyReturn}{Returns}
+Returns if successful. 
+\end{DoxyReturn}
+\hypertarget{classbots_ae97de8f55e8b0fb0608c0c8b732df08f}{\index{bots@{bots}!search\+\_\+boosts@{search\+\_\+boosts}}
+\index{search\+\_\+boosts@{search\+\_\+boosts}!bots@{bots}}
+\subsubsection[{search\+\_\+boosts}]{\setlength{\rightskip}{0pt plus 5cm}bool bots\+::search\+\_\+boosts (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}\label{classbots_ae97de8f55e8b0fb0608c0c8b732df08f}
+
+
+State pursuing health pack. 
+
+\begin{DoxyReturn}{Returns}
+Returns if successful. 
+\end{DoxyReturn}
+\hypertarget{classbots_aa0084ed6b2648d3ff4c0da10ecb24b83}{\index{bots@{bots}!set\+\_\+velocity@{set\+\_\+velocity}}
+\index{set\+\_\+velocity@{set\+\_\+velocity}!bots@{bots}}
+\subsubsection[{set\+\_\+velocity}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Vector3} bots\+::set\+\_\+velocity (
+\begin{DoxyParamCaption}
+\item[{int}]{up, }
+\item[{int}]{right, }
+\item[{int}]{move\+\_\+up, }
+\item[{int}]{move\+\_\+right, }
+\item[{{\bf Vector3}}]{v}
+\end{DoxyParamCaption}
+)}}\label{classbots_aa0084ed6b2648d3ff4c0da10ecb24b83}
+
+
+Sets the velocity of the bot. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em Given} & up integer. \\
+\hline
+{\em right} & Given right integer. \\
+\hline
+{\em move\+\_\+up} & Given move\+\_\+up integer. \\
+\hline
+{\em move\+\_\+right} & Given move\+\_\+right integer. \\
+\hline
+{\em v} & Given \hyperlink{class_vector3}{Vector3} parameter. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Returns the changed velocity. 
+\end{DoxyReturn}
+\hypertarget{classbots_a1a4ca80cf9182cbcc426ccc784ae7315}{\index{bots@{bots}!wander@{wander}}
+\index{wander@{wander}!bots@{bots}}
+\subsubsection[{wander}]{\setlength{\rightskip}{0pt plus 5cm}bool bots\+::wander (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}\label{classbots_a1a4ca80cf9182cbcc426ccc784ae7315}
+
+
+Idle state. 
+
+\mbox{[}long description\mbox{]} \begin{DoxyReturn}{Returns}
+Returns if successful. 
+\end{DoxyReturn}
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+bots/bots.\+h\item 
+bots/bots.\+cpp\end{DoxyCompactItemize}

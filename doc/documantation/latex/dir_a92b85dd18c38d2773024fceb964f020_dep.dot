@@ -1,0 +1,6 @@
+digraph "bots" {
+  compound=true
+  node [ fontsize="10", fontname="Helvetica"];
+  edge [ labelfontsize="10", labelfontname="Helvetica"];
+  dir_a92b85dd18c38d2773024fceb964f020 [shape=box, label="bots", style="filled", fillcolor="#eeeeff", pencolor="black", URL="dir_a92b85dd18c38d2773024fceb964f020.html"];
+}

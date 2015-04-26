@@ -1,0 +1,6 @@
+digraph "weapons" {
+  compound=true
+  node [ fontsize="10", fontname="Helvetica"];
+  edge [ labelfontsize="10", labelfontname="Helvetica"];
+  dir_f9c9c8c78e18fad7d63c56a86a71b7e5 [shape=box, label="weapons", style="filled", fillcolor="#eeeeff", pencolor="black", URL="dir_f9c9c8c78e18fad7d63c56a86a71b7e5.html"];
+}

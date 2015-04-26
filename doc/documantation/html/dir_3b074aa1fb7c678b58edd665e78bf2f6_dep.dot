@@ -1,0 +1,6 @@
+digraph "player" {
+  compound=true
+  node [ fontsize="10", fontname="Helvetica"];
+  edge [ labelfontsize="10", labelfontname="Helvetica"];
+  dir_3b074aa1fb7c678b58edd665e78bf2f6 [shape=box, label="player", style="filled", fillcolor="#eeeeff", pencolor="black", URL="dir_3b074aa1fb7c678b58edd665e78bf2f6.html"];
+}

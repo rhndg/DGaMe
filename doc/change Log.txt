@@ -1,0 +1,98 @@
+change Log--
+************
+
+final network structure lay-out:-
+
+----packet encoding----
+
+#using 64 byte packets 
+#first 8 bytes costitute packet header
+
+~header elements
+##Session number----------------------2
+##Sender id---------------------------1
+##Packet type-------------------------1
+##Packet Id for this session----------2
+##Total packet count for this session-2
+
+~body
+##Data body (containing all the data to be conveyed)
+##Request body (packet ids not recieved by the machine)
+##Control Body (control data like new ip of new peer ,set delay)
+
+----Main Data flow----
+
+->accumulate data
+#encode data to be sent
+#distribute to all peers
+#wait for peer data to come
+#recieve & decode peer data
+
+->compute lost packet Ids
+#encode request packet
+#distribute request packets among peers
+#wait to recieve req packets
+#recieve  and decode packets (both req and data)
+
+->compute requests of peers
+#encode anwere data packets for peers
+#distribute packets to peers
+#wait for packets to arrive
+#recieve and decode packets
+
+#if no data has come machine is disconnected from peers
+#if packets of a peer is absent that peer is disconnected
+-ret
+
+----features----
+
+#perfect lockstep synchronization
+#minimal data usage through clever encoding of data 
+#rigid data distribution model (as long as peers form a
+ connected tree synchronization will take place)
+
+-----------------------------------------------------------------
+
+Integration with RAZM
+
+------------------------------------------------------------------
+
+#Network modute run in parallel thread
+#synchronization takes place every 5 five frames
+
+------------------------------------------------------------------
+
+Implementation of AI in RAZM
+
+------------------------------------------------------------------
+
+#AI has been implemented using State Based Transition using FSM.
+#Various state like dodge player, dodge bullet, search_boosts, search_armoury etc.
+#Default state being wander.
+#Notion of team play has been implemented to some extent.
+#Neutral bots have not been implemented.
+
+------------------------------------------------------------------
+
+Game Engine in RAZM
+
+------------------------------------------------------------------
+
+#All the weaponry have same damage inflicting dynamics.
+#Only one mode has been implemented i.e. 'Survival Mode'.
+#Scoring pattern is not implemented.
+------------------------------------------------------------------
+
+Limitations 
+
+-------------------------------------------------------------------
+
+#dynamic setting of delay time and sync-frames period was to be 
+done periodically by a control thread but could not be implemented 
+due to tome constrains.
+
+#Game state was to sent in reconnection but could not be implemented
+ due to time constrains
+
+                             ---X---
+

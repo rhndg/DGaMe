@@ -1,0 +1,6 @@
+digraph "effects" {
+  compound=true
+  node [ fontsize="10", fontname="Helvetica"];
+  edge [ labelfontsize="10", labelfontname="Helvetica"];
+  dir_63bb297c276a119495816091bcd678e9 [shape=box, label="effects", style="filled", fillcolor="#eeeeff", pencolor="black", URL="dir_63bb297c276a119495816091bcd678e9.html"];
+}

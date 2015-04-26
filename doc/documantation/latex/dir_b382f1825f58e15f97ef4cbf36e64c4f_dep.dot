@@ -1,0 +1,6 @@
+digraph "bullet" {
+  compound=true
+  node [ fontsize="10", fontname="Helvetica"];
+  edge [ labelfontsize="10", labelfontname="Helvetica"];
+  dir_b382f1825f58e15f97ef4cbf36e64c4f [shape=box, label="bullet", style="filled", fillcolor="#eeeeff", pencolor="black", URL="dir_b382f1825f58e15f97ef4cbf36e64c4f.html"];
+}

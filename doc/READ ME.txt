@@ -1,0 +1,43 @@
+*********************************************
+                   READ ME
+
+               MULTIPLAYER GAME
+
+        Anmol Mahajan        2013cs50272
+        Abhishek Gupta       2013cs50278
+        Dhruvang Makadia     2013cs50289
+        Rohan Das            2013cs10251
+
+*********************************************
+
+                    RAZM
+
+*********************************************
+
+Debugging mode
+***************
+make debug
+
+for debugging mode
+
+Join Game
+**********
+make join IP=<ipv4> PORT=<port no>
+
+for joining a game with host ip and port number given as arguments
+
+Host a Game
+************
+make host BOTS=<no of bots>
+
+host a game with given number of bots
+
+************************************************
+              -----Features-----
+                   ********
+- Attractive 3D Graphics
+- Anvanced AI
+- Perfectly synchronized Lock-step based networking
+- Peer to Peer networking
+- Creative gameplay
+

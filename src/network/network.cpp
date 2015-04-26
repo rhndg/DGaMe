@@ -27,13 +27,14 @@ Network::Network(){
 	maxTime=100000;
 	minTime=50000;
 	sendGameTo=-1;
-	delay=100000;
+	delay=70000;
 	iniSampleTime=1000;
 	dcCount=100;
 	startSync=false;
 	isDisconnected=false;
 	isHost=false;
-	frameCount=0;
+	firstFrame=true;
+	frameCount=1;
 	syncPeriod=7;
 	randSeed=0;
 	pthread_mutex_init(&strt, NULL);
@@ -322,18 +323,23 @@ void event_thread(){
 	}else{
 		if(X.frameCount==0){
 			pthread_barrier_wait(&X.b1);
-
-			//update game state using syncData*****************
-			cout<<"**************************"<<endl;
-			for(int i=1;i<=X.numPlayers;i++){
-				cout<<i<<"==>";
-				for(int j=0;j!=X.syncData[i].size();j++){
-					cout<<((int)X.syncData[i][j])<<",";
-				}
-				cout<<endl;
+			if(X.firstFrame){
+				X.firstFrame=false;
 			}
-			cout<<"**************************"<<endl;
-			//*************************************************
+			else{
+				
+				//update game state using syncData*****************
+				cout<<"**************************"<<endl;
+				for(int i=1;i<=X.numPlayers;i++){
+					cout<<i<<"==>";
+					for(int j=0;j!=X.syncData[i].size();j++){
+						cout<<((int)X.syncData[i][j])<<",";
+					}
+					cout<<endl;
+				}
+				cout<<"**************************"<<endl;
+				//*************************************************
+			}
 			pthread_mutex_lock(&X.bufMutx);
 			reverse(XXX.begin(),XXX.end());
 			XXX.resize(X.mvsLen,((int)game_map_::nop));		
@@ -444,8 +450,6 @@ cout<<"numPlayers - "<<X.numPlayers<<endl;
 cout<<"numBots - "<<X.numBots<<endl;
 cout<<"rand seed - "<<X.randSeed<<endl;
 
-// gameInit(numPlayers,numBots,playerId);
-
 //********************************************************
 	
 	while(!X.isDisconnected){
@@ -496,6 +500,11 @@ void Network::start(){
 				syncBuf[dataSession].push_back(pair<int,vector<char> >(i,buffer));
 			}
 		}
+//**********************************************
+
+// gameInit(numPlayers,numBots,playerId);
+
+//***********************************************		
 		usleep(iniSampleTime);
 		pthread_mutex_unlock (&strt);
 	}
@@ -576,7 +585,8 @@ event_thread();
 
 pthread_mutex_lock(&X.bufMutx);
 pthread_mutex_unlock(&X.bufMutx);
-
+// on click call start
+// use mutex and pushback into xxx int cast
 
 //GLUT MAIN LOOP   
 

@@ -42,7 +42,7 @@ public:
 	bool startSync,isHost,isDisconnected;
 
 //control and data session should be distinct
-	int movNum,numPlayers,dataSession,controlSession,playerId,packSize,packExtra,mvsLen	//number of moves(keytaps)
+	int movNum,numPlayers,dataSession,controlSession,playerId,packSize,packExtra,mvsLen,firstFrame	//number of moves(keytaps)
 		,maxTime,minTime,sendGameTo,sockNum,delay,fd,iniSampleTime,dcCount,frameCount,syncPeriod,numBots,randSeed;						//session id (never 0)
 																		//number of players
 																		//id of this player
